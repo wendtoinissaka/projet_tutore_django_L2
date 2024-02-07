@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegisterForm
+from .models import Biens
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 
 def home(request):
-    return render(request, 'users/home.html')
+    biens = Biens.objects.all()
+    return render(request, 'users/home.html', {'biens' : biens})
 
 
 def register(request):

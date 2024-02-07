@@ -360,6 +360,13 @@ border-radius: remy(35px);
 &:focus,
 &:hover {background: lighten(#111, 13%);}
 }
+.animation{
+color: #fff;
+background: #111;
+border-radius: remy(35px);
+&:focus,
+&:hover {background: lighten(#111, 13%);}
+}
 .signup__link {
 font-size: .8rem;
 font-weight: 600;
@@ -390,4 +397,26 @@ color: #999;
   transition-delay: 0.1s;
   text-decoration: none;
   border-radius: 9px;
+}
+
+.container {
+    display: flex;
+    align-items: center; /* Alignement vertical */
+    justify-content: space-between; /* Espace entre les éléments */
+}
+
+.child1 {
+    /* Styles pour le premier enfant */
+}
+
+.child2 {
+    display: flex; /* Utilisation de flexbox pour aligner les enfants */
+}
+
+#search-bar {
+    /* Styles pour la barre de recherche */
+}
+
+#search-button {
+    /* Styles pour le bouton de recherche */
 }
