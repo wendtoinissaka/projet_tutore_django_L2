@@ -8,7 +8,7 @@
             <h1 class="text-warning mt-5 mx-5" style="color: white;" id="dynamic-text"></h1>
         </div>
         <div class="col-sm-6 mt-5 col-md-4">
-            <a href="{% url 'create_product' %}" class="btn mt-5" style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Ajouter un Bien</a>
+            <a class="btn mt-5" style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Ajouter un Bien</a>
         </div>
     </div>
 </div>
@@ -29,25 +29,25 @@
                         <!-- home.html -->
 
                         <li class="nav-item">
-                            <a href="filter/?category=all" class="nav-link {% if category == 'all' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Tous les produits</a>
+                            <a href="?category=all" class="nav-link {% if category == 'all' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Tous les produits</a>
                         </li>
                         <li class="nav-item">
-                            <a href="filter/?category=immobilier" class="nav-link {% if category == 'immobilier' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Immobilier</a>
+                            <a href="?category=immobilier" class="nav-link {% if category == 'immobilier' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Immobilier</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/filter/?category=vehicule" class="nav-link {% if category == 'vehicule' %}active{% endif %} d-flex m-2 py-3  bg-light rounded-pill">Vehicule</a>
+                            <a href="?category=vehicule" class="nav-link {% if category == 'vehicule' %}active{% endif %} d-flex m-2 py-3  bg-light rounded-pill">Vehicule</a>
                         </li>
                         <li class="nav-item">
-                            <a href="filter/?category=equipements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Équipements</a>
+                            <a href="?category=equipements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Équipements</a>
                         </li>
                         <li class="nav-item">
-                            <a href="filter/?category=autres" class="nav-link {% if category == 'autres' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Autres</a>
+                            <a href="?category=autres" class="nav-link {% if category == 'autres' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Autres</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="row g-4 mx-2">
-                {% for bien in biens %}
+                {% for bien in biens_a_filtrer %}
                 <div class="col-md-6 col-lg-4 col-xl-3">
     <div class="rounded position-relative fruite-item bg-white">
         <div class="fruite-img min-height-200">

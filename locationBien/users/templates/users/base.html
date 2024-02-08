@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{% static 'users/css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'users/css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'users/css/style.css' %}" type="text/css">
-
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <!--Font Link-->
@@ -21,28 +20,49 @@
   <body id="bg" style="background-image: url({% static 'users/images/bg.png' %});">
 
   {% load static %}
+
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5  fixed-top" id="main-navbar">
         <div class="container">
-
+<!--          <a class="navbar-brand" href="{% url 'home_without_filter' %}"><img src="{% static 'users/images/in-logo-1.svg' %}" alt="" ></a>-->
+<!--          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--          </button>-->
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-              <a class="nav-link active" aria-current="page" href="{% url 'home_without_filter' %}">Accueil</a>
-              <a class="nav-link" href="#">Reservation</a>
-              <a class="nav-link" href="#">Ajouter un bien</a>
-              <a class="nav-link" href="#">Nous contacter</a>
+            <div class="navbar-nav "><!--
+                <a class="nav-link active d-flex m-2 py-3 bg-light text-warning rounded-pill" aria-current="page" href="{% url 'home_without_filter' %}">Accueil</a>
+                <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Accueil </a>
+                <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Reservation </a>
+                <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Ajouter Produit </a>-->
 
+                <a href="{% url 'home_without_filter' %}" class="nav-link active btn btn-warning border-0 border-secondary py-4 px-4 mx-1 rounded-pill text-white"  > Accueil </a>
+                <a href="{% url 'home_without_filter' %}" class="nav-link btn btn-warning border-0 border-secondary py-4 px-4 mx-1 rounded-pill text-white" href="#">Reservation</a>
+
+              <a href="{% url 'create_product' %}" class="nav-link btn btn-warning border-0 border-secondary py-3 px-4 mx-1 rounded-pill text-white" href="#">Ajouter un bien</a>
+              <a href="{% url 'home_without_filter' %}" class="nav-link btn btn-warning border-0 border-secondary py-3 px-4 mx-1 rounded-pill text-white" href="#">Nous contacter</a>
+
+<!--                <a class="nav-link active" href="#">Accueil</a>
+<a class="nav-link" href="#">Reservation</a>
+<a class="nav-link" href="#">Ajouter un bien</a>
+<a class="nav-link" href="#">Nous contacter</a>-->
+<!--              <a class="nav-link" href="#">Education</a>-->
+<!--              <a class="nav-link" href="#">Resouces</a>-->
 
             </div>
-             <div class="col-lg-3">
-        <div class="position-relative mx-auto">
-            <input class="form-control border-0 w-100 border-warning py-4 px-4 rounded-pill" type="number" placeholder="entrer votre recherche ici">
+             <div class="col-lg-4">
+        <div class="position-relative mx-1">
+            <input class="form-control border-0 w-100 border-warning py-3 px-5 rounded-pill" type="number" placeholder="entrer votre recherche ici">
             <button type="submit" class="btn btn-warning border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Rechercher</button>
         </div>
     </div>
             <form class="d-flex" id="authstyle">
+
               {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Profile </a>
+
+                <a href="{% url 'profile' %}" class="btn mx-1" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Profile </a>
                 <a href="{% url 'logout' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Logout </a>
+<!--                <a href="{% url 'logout' %}" class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Logout </a>-->
+
               {% else %}
                 <a href="{% url 'register' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Create Account </a>
                 <a href="{% url 'login' %}" class="btn" style="color: white; background-color: #fd5e14; margin-left: 10px; "type="submit" id="header-links">Log In</a>
@@ -65,9 +85,15 @@
         {% block content %}
         {% endblock content %}
       </div>
-{% block footer %}
-    {% include 'users/footer.html' %}
-{% endblock footer %}
+
+<footer>
+  <div class="container d-flex align-items-center justify-content-center">
+    <p class="text-white">
+      © FEVRIER 2024 All Rights Reserved. Design by <span>SAOUDATOU</span> & <span>ISSAKA</span>
+    </p>
+  </div>
+</footer>
+
        <!-- Back to Top -->
         <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 

@@ -9,7 +9,6 @@
   font-size: 15px;
 }
 #authstyle{
-  margin-left: 17%;
   border-radius: 50%;
 }
 #header-text{
@@ -421,4 +420,13 @@ color: #999;
     /* Styles pour le bouton de recherche */
 }
 
-/* nav */
+
+
+
+/*footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}*/

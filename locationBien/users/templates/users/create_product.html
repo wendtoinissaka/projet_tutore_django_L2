@@ -1,0 +1,15 @@
+<!-- create_product.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Créer un produit</title>
+</head>
+<body>
+    <h2>Créer un nouveau produit</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Créer le produit</button>
+    </form>
+</body>
+</html>
