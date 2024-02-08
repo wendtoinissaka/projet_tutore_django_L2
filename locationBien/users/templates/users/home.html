@@ -1,443 +1,193 @@
 {% extends 'users/base.html' %}
 {% load static %}
+
 {% block content %}
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <script>
-        // Fonction pour écrire et effacer le texte
-        function writeAndEraseText() {
-            var textElement = document.getElementById("dynamic-text");
-            var text = "Louez sans stress, avec CAPADATA.";
-            var speed = 100; // Vitesse d'écriture en millisecondes
-            var eraseSpeed = 50; // Vitesse d'effacement en millisecondes
+<!--<div class="container">-->
+<!--    <div class="row g-0">-->
+<!--        <div class="col-sm-6 col-md-8" id="header-text">-->
+<!--            <a class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Ajouter un Bien</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<h1 class=" text-warning mt-5"  style="color: white;" id="dynamic-text" >Louez sans stress, avec CAPADATA!</h1>-->
 
-            // Écrire le texte
-            var i = 0;
-            var timer = setInterval(function() {
-                textElement.innerHTML += text.charAt(i);
-                i++;
-                if (i > text.length) {
-                    clearInterval(timer);
-                    setTimeout(function() {
-                        eraseText();
-                    }, 1000); // Temps avant d'effacer le texte
-                }
-            }, speed);
+<div class="container mt-5">
+</div>
+<!--<div class="container mt-5">-->
 
-            // Effacer le texte
-            function eraseText() {
-                var timer2 = setInterval(function() {
-                    var currentText = textElement.innerHTML;
-                    textElement.innerHTML = currentText.slice(0, -1);
-                    if (currentText.length === 0) {
-                        clearInterval(timer2);
-                        setTimeout(function() {
-                            writeAndEraseText(); // Répéter le processus
-                        }, 1000); // Temps avant de réécrire le texte
-                    }
-                }, eraseSpeed);
-            }
-        }
+<!--    <div class="row g-0 mt-5">-->
+<!--        <div class="col-sm-6 col-md-4 mt-5 mt-sm-2 mt-md-0">-->
+<!--            <h1 class="text-warning mt-5" style="color: white;" id="dynamic-text">Louez sans stress, avec CAPADATA!</h1>-->
+<!--        </div>-->
+<!--        <div class="col-sm-6 mt-5 col-md-8">-->
+<!--            <a class="btn" mt-5 style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Ajouter un Bien</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
-        // Appeler la fonction au chargement de la page
-        window.onload = function() {
-            writeAndEraseText();
-        };
-    </script>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <div class="container">
-        <div class="row g-0">
-            <div class="col-sm-6 col-md-8" id="header-text">
-                <h2 class="animation" style="color: white;" id="dynamic-text">Louez sans stress, avec CAPADATA.</h2>
-
-                <!-- Affichage des biens -->
-<!--                {% for bien in biens %}-->
-<!--                    <div>-->
-<!--                        <h3>{{ bien.nom }}</h3>-->
-<!--                        <p>Catégorie: {{ bien.categories }}</p>-->
-<!--                        <p>Localisation: {{ bien.localisation }}</p>-->
-<!--                        <p>Description: {{ bien.description }}</p>-->
-<!--                        <p>Prix: {{ bien.prix }}</p>-->
-<!--                        &lt;!&ndash; Ajoutez ici d'autres champs de votre modèle Biens &ndash;&gt;-->
-<!--                    </div>-->
-<!--                {% endfor %}-->
-
-                <a class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Discover More</a>
-            </div>
-            <div class="col-6 col-md-4" id="header-image"><img src="{% static 'users/images/in-liquid-slide-2.svg' %} " alt=""></div>
+<!--<div class="container mt-5">-->
+<!--    <div class="row g-0 mt-5">-->
+<!--&lt;!&ndash;        <div class="col-sm-6 col-md-4 mt-5 mt-sm-2 mt-md-0">&ndash;&gt;-->
+<!--&lt;!&ndash;            <h1 class="text-warning mt-5" style="color: white;" id="dynamic-text">Louez sans stress, avec CAPADATA!</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--        <div class="col-sm-6 mt-5 mr-5 col-md-8">-->
+<!--            <a class="btn mt-5" style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Ajouter un Bien</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="container mt-5">
+    <div class="row g-0 mt-5">
+        <div class="col-sm-6 mt-5 col-md-8">
+            <h1 class="text-warning mt-5 mx-5" style="color: white;" id="dynamic-text"></h1>
+        </div>
+        <div class="col-sm-6 mt-5 col-md-4">
+            <a class="btn mt-5" style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Ajouter un Bien</a>
         </div>
     </div>
-     <!-- Fruits Shop Start-->
-        <div class="container-fluid fruite py-5">
-            <div class="container py-5">
-                <div class="tab-class text-center">
-                    <div class="row g-4">
-                        <div class="col-lg-4 text-start">
-                            <h1>Our Organic Products</h1>
-                        </div>
-                        <div class="col-lg-8 text-end">
-                            <ul class="nav nav-pills d-inline-flex text-center mb-5">
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
-                                        <span class="text-dark" style="width: 130px;">All Products</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
-                                        <span class="text-dark" style="width: 130px;">Vegetables</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
-                                        <span class="text-dark" style="width: 130px;">Fruits</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
-                                        <span class="text-dark" style="width: 130px;">Bread</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
-                                        <span class="text-dark" style="width: 130px;">Meat</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="tab-content">
-                        <div id="tab-1" class="tab-pane fade show p-0 active">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <div class="row g-4">
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-5.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Grapes</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
+</div>
 
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-5.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Grapes</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-2.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Raspberries</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
 
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-4.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Apricots</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
 
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-3.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Banana</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
 
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-1.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Oranges</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
+<!-- Fruits Shop Start-->
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="tab-class text-center">
+            <div class="row g-4">
+                <div class="col-lg-4 text-start">
+                    <h1 class="text-white">Nos différents biens</h1>
+                </div>
+                <div class="col-lg-8 text-end">
+                    <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                        <!-- home.html -->
 
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-2.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Raspberries</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
+                        <li class="nav-item">
+                            <a href="?category=all" class="nav-link {% if category == 'all' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Tous les produits</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="?category=immobilier" class="nav-link {% if category == 'immobilier' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Immobilier</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="?category=vehicule" class="nav-link {% if category == 'vehicule' %}active{% endif %} d-flex m-2 py-3  bg-light rounded-pill">Vehicule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="?category=equipements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Équipements</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="?category=autres" class="nav-link {% if category == 'autres' %}active{% endif %} d-flex m-2 py-3 bg-light rounded-pill">Autres</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row g-4 mx-2">
+                {% for bien in biens %}
+                <div class="col-md-6 col-lg-4 col-xl-3">
+    <div class="rounded position-relative fruite-item bg-white">
+        <div class="fruite-img min-height-200">
+            {% if bien.photos %}
+            <img src="{{ bien.photos.url }}" class="img-fluid w-100 rounded-top bien-image" alt="{{ bien.nom }}" style="height: 200px;">
+<!--            {% else %}-->
+<!--            <img src="{% static 'media/biens_photos/default_image.png' %}" class="img-fluid w-100 rounded-top bien-image" alt="Image par défaut" height="200px">-->
+            {% endif %}
+        </div>
+        <div class="position-absolute" style="top: 10px; left: 10px;">
+            <div class="text-white bg-warning px-3 py-1 rounded">{{ bien.categories }}</div>
+        </div>
+        <div class="position-absolute" style="top: 10px; left: 180px;">
+<!--            etat biens{disponible/ non disponible }-->
+            <div class="text-white bg-warning px-3 py-1 rounded">{{ bien.categories }}</div>
+        </div>
 
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-5.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Grapes</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab-2" class="tab-pane fade show p-0">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <div class="row g-4">
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-5.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Grapes</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-2.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Raspberries</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab-3" class="tab-pane fade show p-0">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <div class="row g-4">
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-1.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Oranges</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-6.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Apple</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab-4" class="tab-pane fade show p-0">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <div class="row g-4">
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-5.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Grapes</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-4.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Apricots</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab-5" class="tab-pane fade show p-0">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <div class="row g-4">
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-3.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Banana</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-2.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Raspberries</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{% static 'users/img/fruite-item-1.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Oranges</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-
-                                                        <div><a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Reserver</a></div>                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="p-4 border-top-0 rounded-bottom">
+            <h4 href="{% url 'detail_bien' bien.id %}" class="text-warning">{{ bien.nom|truncatechars:40 }}</h4>
+            <!-- Affiche les 100 premiers caractères de la description -->
+            <p style="color: #ffc053" class="text-dark">{{ bien.description|truncatechars:100 }}</p>
+            <div class="d-flex justify-content-between flex-lg-wrap">
+                <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix|truncatechars:7 }} Fcfa</p>
+                <div class="d-flex">
+                    <a href="{% url 'detail_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Details</a>
+                    <a href="{% url 'do_reservation' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Reserver</a>
                 </div>
             </div>
         </div>
-        <!-- Fruits Shop End-->
+    </div>
+</div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fruits Shop End-->
+
+
+
+<script>
+  // Fonction pour écrire et effacer le texte
+function writeAndEraseText() {
+    var textElement = document.getElementById("dynamic-text");
+    var text = "Louez sans stress, avec CAPADATA.";
+    var speed = 100; // Vitesse d'écriture en millisecondes
+    var eraseSpeed = 50; // Vitesse d'effacement en millisecondes
+    var isWriting = false;
+
+    // Écrire le texte
+    function writeText() {
+        isWriting = true;
+        for (var i = 0; i < text.length; i++) {
+            (function(i) {
+                setTimeout(function() {
+                    textElement.innerHTML += text.charAt(i);
+                }, i * speed);
+            })(i);
+        }
+        isWriting = false;
+        setTimeout(function() {
+            eraseText();
+        }, text.length * speed); // Temps avant d'effacer le texte
+    }
+
+    // Effacer le texte
+    function eraseText() {
+        if (!isWriting) {
+            var timer2 = setInterval(function() {
+                var currentText = textElement.innerHTML;
+                textElement.innerHTML = currentText.slice(0, -1);
+                if (currentText.length === 0) {
+                    clearInterval(timer2);
+                    setTimeout(function() {
+                        writeText(); // Répéter le processus
+                    }, 1000); // Temps avant de réécrire le texte
+                }
+            }, eraseSpeed);
+        }
+    }
+
+    // Débuter l'écriture du texte
+    writeText();
+}
+
+// Appeler la fonction au chargement de la page
+window.onload = function() {
+    writeAndEraseText();
+};
+
+    // Appeler la fonction au chargement de la page
+    window.onload = function() {
+        writeAndEraseText();
+    };
+
+
+
+
+
+
+
+
+
+</script>
+    <script src="{% static 'users/js/script.js' %}"></script>
+
+
 
 {% endblock content %}

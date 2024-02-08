@@ -1,0 +1,160 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <h3 style="color: white;" id="dynamic-text" >Louez sans stress, avec CAPADATA!</h3>
+    <div class="row g-0">
+        <div class="col-sm-6 col-md-8" id="header-text">
+            <a class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Discover More</a>
+        </div>
+<!--        <div class="col-6 col-md-4" id="header-image"><img src="{% static 'users/images/in-liquid-slide-2.svg' %} " alt=""></div>-->
+    </div>
+</div>
+
+<!-- Fruits Shop Start-->
+<div class="container-fluid fruite py-5">
+            <div class="container py-5">
+<div class="tab-class text-center">
+                    <div class="row g-4">
+                        <div class="col-lg-4 text-start">
+                            <h1>Our Organic Products</h1>
+                        </div>
+                        <div class="col-lg-8 text-end">
+                            <!-- Afficher les liens de catégorie -->
+<!--                    <ul>-->
+<!--                        <li><a href="?category=vegetables">Vegetables</a></li>-->
+<!--                        <li><a href="?category=fruits">Fruits</a></li>-->
+<!--                        &lt;!&ndash; Ajoutez d'autres liens de catégorie au besoin &ndash;&gt;-->
+<!--                    </ul>-->
+                            <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="{% url 'home' %}">
+                                        <span class="text-dark" style="width: 130px;">All Products</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="?category=immobilier">
+                                        <span class="text-dark" style="width: 130px;">Immobilier</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="?category=immobilier">
+                                        <span class="text-dark" style="width: 130px;">vehicule</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="?category=equipements">
+                                        <span class="text-dark" style="width: 130px;">equipements</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="?category=autres">
+                                        <span class="text-dark" style="width: 130px;">autres</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+<div class="row g-4 mx-2">
+    {% for bien in biens %}
+    <div class="col-md-6 col-lg-4 col-xl-3 ">
+        <div class="rounded position-relative fruite-item bg-white " >
+            <div class="fruite-img min-height-200">
+                {% if bien.photos %}
+                <img src="{{ bien.photos.url }}" class="img-fluid w-100 rounded-top bien-image"  alt="{{ bien.nom }}" style="height: 200px;" >
+                {% else %}
+                <img src="{% static 'media/biens_photos/default_image.png' %}" class="img-fluid w-100 rounded-top bien-image" alt="Image par défaut"  **height="200px"**>
+                {% endif %}
+            </div>
+            <div class="text-white bg-warning px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ bien.categories }}</div>
+            <div class="text-white bg-warning px-3 py-1 rounded position-absolute" style="top: 10px; left: 170px;">{{ bien.categories }}</div>
+            <div class="p-4 border-top-0 rounded-bottom ">
+                <h4 class="text-warning  ">{{ bien.nom|truncatechars:10  }}</h4>
+                <!-- Affiche les 100 premiers caractères de la description -->
+                <p style="color:#ffc053" class="text-dark">{{ bien.description|truncatechars:100 }}</p>
+
+                <div class="d-flex justify-content-between flex-lg-wrap">
+                    <p class="text-dark fs-5 fw-bold mb-0">${{ bien.prix }}</p>
+                    <div class="d-flex ">
+                        <a href="#" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Details</a>
+                        <a href="#" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag  text-primary"></i>Reserver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+</div>
+</div>
+
+<!-- Fruits Shop End-->
+<script>
+    // Fonction pour écrire et effacer le texte
+    function writeAndEraseText() {
+        var textElement = document.getElementById("dynamic-text");
+        var text = "Louez sans stress, avec CAPADATA.";
+        var speed = 100; // Vitesse d'écriture en millisecondes
+        var eraseSpeed = 50; // Vitesse d'effacement en millisecondes
+
+        // Écrire le texte
+        var i = 0;
+        var timer = setInterval(function() {
+            textElement.innerHTML += text.charAt(i);
+            i++;
+            if (i > text.length) {
+                clearInterval(timer);
+                setTimeout(function() {
+                    eraseText();
+                }, 1000); // Temps avant d'effacer le texte
+            }
+        }, speed);
+
+        // Effacer le texte
+        function eraseText() {
+            var timer2 = setInterval(function() {
+                var currentText = textElement.innerHTML;
+                textElement.innerHTML = currentText.slice(0, -1);
+                if (currentText.length === 0) {
+                    clearInterval(timer2);
+                    setTimeout(function() {
+                        writeAndEraseText(); // Répéter le processus
+                    }, 1000); // Temps avant de réécrire le texte
+                }
+            }, eraseSpeed);
+        }
+    }
+
+    // Appeler la fonction au chargement de la page
+    window.onload = function() {
+        writeAndEraseText();
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock content %}
