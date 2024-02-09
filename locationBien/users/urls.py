@@ -4,9 +4,11 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_view
 from django.conf.urls import handler404
-from .views import error_404_view, create_product
+from .views import error_404_view, create_product, user_update
 
-handler404 = error_404_view
+# handler404 = error_404_view
+handler404 = 'users.views.error_404_view'
+
 
 urlpatterns = [
     path('', views.home_without_filter, name='home_without_filter'),
@@ -22,6 +24,7 @@ urlpatterns = [
     path('chackout/', views.chackout, name='chackout'),
     path('404/', views.error_404_view, name='handler404'),
     path('create_product/', views.create_product, name='create_product'),
+    path('user_update/', views.user_update, name='user_update'),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

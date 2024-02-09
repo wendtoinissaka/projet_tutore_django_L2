@@ -1,0 +1,30 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'users/css/main.css' %}">
+    <style>
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Utiliser la hauteur de la fenêtre pour centrer verticalement */
+            border-radius:20px;
+        }
+        /* Modifier le style et la couleur des messages d'obligation */
+
+    </style>
+    <div class="center-content">
+        <form action="" method="POST" class="card p-4">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4 text-primary">Modifier mes informations</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button type="submit" class="btn btn-warning text-white mt-2">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

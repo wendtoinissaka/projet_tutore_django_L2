@@ -1,6 +1,57 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
+
+
+
+
+
+
+
+class CustomUser(AbstractUser):
+    TYPES_USERS = (
+        ('locataire', 'Locataire'),
+        ('proprietaire', 'Propriétaire'),
+        ('administrateur', 'Administrateur'),
+    )
+    nom = models.CharField(max_length=100)
+    numero_tel = models.CharField(max_length=15)
+    email = models.EmailField(unique=True)  # Ajout du champ email
+    type = models.CharField(max_length=20,choices=TYPES_USERS, default='locataire')  # Par défaut, type = 'locataire'
+    # Ajout des related_names pour résoudre les conflits
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',  # Nouveau related_name pour éviter le conflit
+        blank=True,
+        verbose_name='groups',
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_set',  # Nouveau related_name pour éviter le conflit
+        blank=True,
+        verbose_name='user permissions',
+        help_text='Specific permissions for this user.',
+    )
+
+    def __str__(self):
+        return self.username
+
+# class CustomUser(AbstractUser):
+#     nom = models.CharField(max_length=100)
+#     numero_tel = models.CharField(max_length=15)
+#     email = models.EmailField(unique=True)  # Ajout du champ email
+#     type = models.CharField(max_length=20, default='locataire')  # Par défaut, type = 'locataire'
+#
+#     def __str__(self):
+#         return self.username
+
+
+
+
+
+
+
 
 
 class Biens(models.Model):

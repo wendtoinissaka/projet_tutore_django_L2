@@ -1,7 +1,7 @@
 <!doctype html>
 {% load static %}
 <html lang="en">
-  <head>
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,103 +10,108 @@
     <link rel="stylesheet" href="{% static 'users/css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'users/css/style.css' %}" type="text/css">
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous">
     <!--Font Link-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
-
-  </head>
-
-  <body id="bg" style="background-image: url({% static 'users/images/bg.png' %});">
-
-  {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Open+Sans:wght@800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-W2gwaIkF2h/nQ84Kyi3RbYNTQEZ3OBvo+qr8eGQW4eDz9t8i9VzRkmSgfiE28f3IdtzoWYqZaO6/oM6vOxq0gA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5  fixed-top" id="main-navbar">
-        <div class="container">
-<!--          <a class="navbar-brand" href="{% url 'home_without_filter' %}"><img src="{% static 'users/images/in-logo-1.svg' %}" alt="" ></a>-->
-<!--          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--            <span class="navbar-toggler-icon"></span>-->
-<!--          </button>-->
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav "><!--
-                <a class="nav-link active d-flex m-2 py-3 bg-light text-warning rounded-pill" aria-current="page" href="{% url 'home_without_filter' %}">Accueil</a>
-                <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Accueil </a>
-                <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Reservation </a>
-                <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Ajouter Produit </a>-->
+    <style>
+        .navbar-nav .nav-link {
+            font-size: 16px; /* Taille de police pour les liens de la navbar */
+            padding: 0.5rem 1rem; /* Espacement des liens de la navbar */
+        }
+        @media (max-width: 992px) {
+    .navbar-nav .nav-link {
+        color: white; /* Couleur du texte en blanc */
+        background-color: #fd5e14; /* Fond orange */
+        margin : 3px;
+        width : 200px;
+    }
+}
 
-                <a href="{% url 'home_without_filter' %}" class="nav-link active btn btn-warning border-0 border-secondary py-4 px-4 mx-1 rounded-pill text-white"  > Accueil </a>
-                <a href="{% url 'home_without_filter' %}" class="nav-link btn btn-warning border-0 border-secondary py-4 px-4 mx-1 rounded-pill text-white" href="#">Reservation</a>
 
-              <a href="{% url 'create_product' %}" class="nav-link btn btn-warning border-0 border-secondary py-3 px-4 mx-1 rounded-pill text-white" href="#">Ajouter un bien</a>
-              <a href="{% url 'home_without_filter' %}" class="nav-link btn btn-warning border-0 border-secondary py-3 px-4 mx-1 rounded-pill text-white" href="#">Nous contacter</a>
+        @media (max-width: 992px) {
+            .navbar-nav .nav-link {
+                font-size: 14px; /* Réduire la taille de police sur les petits écrans */
+            }
 
-<!--                <a class="nav-link active" href="#">Accueil</a>
-<a class="nav-link" href="#">Reservation</a>
-<a class="nav-link" href="#">Ajouter un bien</a>
-<a class="nav-link" href="#">Nous contacter</a>-->
-<!--              <a class="nav-link" href="#">Education</a>-->
-<!--              <a class="nav-link" href="#">Resouces</a>-->
+            .navbar-toggler.custom-toggler {
+                background-color: #fd5e14; /* Couleur du bouton du menu sur les petits écrans */
+                border-color: #ffffff; /* Bordure du bouton du menu sur les petits écrans */
+            }
+        }
+    </style>
+</head>
 
-            </div>
-             <div class="col-lg-4">
-        <div class="position-relative mx-1">
-            <input class="form-control border-0 w-100 border-warning py-3 px-5 rounded-pill" type="number" placeholder="entrer votre recherche ici">
-            <button type="submit" class="btn btn-warning border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Rechercher</button>
+<body id="bg" style="background-image: url({% static 'users/images/bg.png' %});">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5  fixed-top" id="main-navbar">
+    <div class="container">
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+        <a href="{% url 'home_without_filter' %}" class="nav-link active btn btn-warning border-0 border-secondary py-2 px-3 mx-1 rounded-pill text-white"> Accueil </a>
+        <a href="{% url 'home_without_filter' %}" class="nav-link btn btn-warning border-0 border-secondary py-2 px-3 mx-1 rounded-pill text-white" href="#">Reservation</a>
+        <a href="{% url 'create_product' %}" class="nav-link btn btn-warning border-0 border-secondary py-2 px-3 mx-1 rounded-pill text-white" href="#">Ajouter un bien</a>
+        <a href="{% url 'home_without_filter' %}" class="nav-link btn btn-warning border-0 border-secondary py-2 px-3 mx-1 rounded-pill text-white" href="#">Nous contacter</a>
+    </div>
+</div>
+
+
+
+        <div class="col-lg-4">
+            <form class="d-flex">
+                {% if CustomUser.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Profile </a>
+                    <a href="{% url 'logout' %}" class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Logout </a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Create Account </a>
+                    <a href="{% url 'login' %}" class="btn" style="color: white; background-color: #fd5e14; margin-left: 10px; " type="submit" id="header-links">Log In</a>
+                {% endif %}
+            </form>
         </div>
     </div>
-            <form class="d-flex" id="authstyle">
+</nav>
 
-              {% if user.is_authenticated %}
+<div>
+    <div class="container">
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">{{message}}</div>
+    {% endfor %}
+{% endif %}
+</div>
 
-                <a href="{% url 'profile' %}" class="btn mx-1" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Profile </a>
-                <a href="{% url 'logout' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Logout </a>
-<!--                <a href="{% url 'logout' %}" class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Logout </a>-->
-
-              {% else %}
-                <a href="{% url 'register' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Create Account </a>
-                <a href="{% url 'login' %}" class="btn" style="color: white; background-color: #fd5e14; margin-left: 10px; "type="submit" id="header-links">Log In</a>
-              {% endif %}
-              </form>
-          </div>
-
-        </div>
-
-    </nav>
-
-      <div>
-        <div class="container">
-          {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-{{message.tags}}">{{message}}</div>
-          {% endfor %}
-        {% endif %}
-        </div>
-        {% block content %}
-        {% endblock content %}
-      </div>
+{% block content %}
+{% endblock content %}
+</div>
 
 <footer>
-  <div class="container d-flex align-items-center justify-content-center">
-    <p class="text-white">
-      © FEVRIER 2024 All Rights Reserved. Design by <span>SAOUDATOU</span> & <span>ISSAKA</span>
-    </p>
-  </div>
+    <div class="container d-flex align-items-center justify-content-center">
+        <p class="text-white">
+            © FEVRIER 2024 All Rights Reserved. Design by <span>SAOUDATOU</span> & <span>ISSAKA</span>
+        </p>
+    </div>
 </footer>
 
-       <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary border-3 border-warning px-1 rounded-circle back-to-top">TOP<i class="fa fa-arrow-up"></i></a>
 
-
-      <!-- Optional JavaScript; choose one of the two! -->
-    <script src="{% static 'users/js/script.js' %}"></script>
-      <!-- Option 1: Bootstrap Bundle with Popper -->
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-
-      <!-- Option 2: Separate Popper and Bootstrap JS -->
-      <!--
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
-      -->
-  </body>
+<!-- Optional JavaScript; choose one of the two! -->
+<script src="{% static 'users/js/script.js' %}"></script>
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+</body>
 </html>

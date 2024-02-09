@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from .forms import UserRegisterForm, BiensCreationForm
+from .forms import UserRegisterForm, BiensCreationForm, UserUpdateForm
 from .models import Biens
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -72,6 +72,17 @@ def register(request):
 def profile(request):
     return render(request, 'users/profile.html')
 
+
+
+def user_update(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Rediriger vers la page du profil de l'utilisateur après la mise à jour
+    else:
+        form = UserUpdateForm(instance=request.user)
+    return render(request, 'users/user_update.html', {'form': form})
 
 
 def erreur(request):

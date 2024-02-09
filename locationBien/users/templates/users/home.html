@@ -70,7 +70,7 @@
             <!-- Affiche les 100 premiers caractères de la description -->
             <p style="color: #ffc053" class="text-dark">{{ bien.description|truncatechars:100 }}</p>
             <div class="d-flex justify-content-between flex-lg-wrap">
-                <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix|truncatechars:7 }} Fcfa</p>
+                <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix }} Fcfa</p>
                 <div class="d-flex">
                     <a href="{% url 'detail_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Details</a>
                     <a href="{% url 'do_reservation' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Reserver</a>
