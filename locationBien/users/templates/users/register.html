@@ -11,6 +11,7 @@
             align-items: center;
             height: 100vh; /* Utiliser la hauteur de la fenêtre pour centrer verticalement */
             border-radius: 20px;
+            padding-top:100px;
         }
         /* Modifier le style et la couleur des messages d'obligation */
         .form-control-feedback {
@@ -29,8 +30,9 @@
     <div class="center-content mt-5 mx-5">
         <form action="" method="POST" class="card p-4"> {# Ajout de la classe card et p-4 #}
             {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4" style="color: blue;">Se Connecter</legend>
+            <fieldset class="form-group mt-5">
+
+                <legend class="border-bottom mt-5" style="color: blue;">Se Connecter</legend>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group bg-warning mt-2" id="signup-button">
@@ -42,3 +44,4 @@
         </form>
     </div>
 {% endblock %}
+

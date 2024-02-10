@@ -28,10 +28,9 @@
         }
         @media (max-width: 992px) {
     .navbar-nav .nav-link {
-        color: white; /* Couleur du texte en blanc */
-        background-color: #fd5e14; /* Fond orange */
         margin : 3px;
-        width : 200px;
+        width: 30px;
+
     }
 }
 
@@ -46,6 +45,11 @@
                 border-color: #ffffff; /* Bordure du bouton du menu sur les petits écrans */
             }
         }
+        /* Style pour ajouter une ligne en bas lors du survol */
+.underline-on-hover:hover {
+    border-bottom: 5px solid Yellow; /* Couleur et épaisseur de la ligne */
+}
+
     </style>
 </head>
 
@@ -60,10 +64,13 @@
 
 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-        <a href="{% url 'home_without_filter' %}" class="nav-link active btn btn-warning border-0 border-secondary py-2 px-3 mx-1 rounded-pill text-white"> Accueil </a>
-        <a href="{% url 'home_without_filter' %}" class="nav-link btn btn-warning border-0 border-secondary py-2 px-3 mx-1 rounded-pill text-white" href="#">Reservation</a>
-        <a href="{% url 'create_product' %}" class="nav-link btn btn-warning border-0 border-secondary py-2 px-3 mx-1 rounded-pill text-white" href="#">Ajouter un bien</a>
-        <a href="{% url 'home_without_filter' %}" class="nav-link btn btn-warning border-0 border-secondary py-2 px-3 mx-1 rounded-pill text-white" href="#">Nous contacter</a>
+        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover"> Accueil </a>
+<!--        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover"> Accueil </a>-->
+<!--        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover"> Reservation </a>-->
+
+        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover">Reservation</a>
+        <a href="{% url 'create_product' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover">Ajouter un bien</a>
+        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover">Nous contacter</a>
     </div>
 </div>
 
