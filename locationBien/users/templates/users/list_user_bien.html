@@ -1,0 +1,178 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="height: 200px;
+    width: 100%;
+    background-image: url({% static 'users/images/bg44.jpg' %});
+    background-size: cover; /* Ajuste la taille de l'image pour couvrir la div */
+    background-position: center; /* Centre l'image horizontalement */
+    display: flex;
+    justify-content: center;
+    align-items: center;">
+<!--    <div class="container" style="background-image: url({% static 'users/images/bg.png' %}); background-repeat: no-repeat;">-->
+    <div class="row g-0 ">
+        <div class="col-sm-6 mt-5 col-md-8">
+            <h1 class="text-white mt-5 mx-5" id="dynamic-text"></h1>
+        </div>
+        <div class="col-sm-6 mt-5 col-md-4">
+<!--            <a href="{% url 'create_product' %}" class="btn mt-5" style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Ajouter un Bien</a>-->
+            <a href="{% url 'create_product' %}" class="btn mt-5 nav-link active py-2 px-3 mx-1 text-dark underline-on-hover " style="background-color:#ffff00" type="submit" id="body-link-row">Ajouter un Bien</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Fruits Shop Start-->
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="tab-class text-center">
+            <div class="row g-4">
+                <div class="col-lg-4 text-start">
+                    <h1 class="text-dark">Nos différents biens</h1>
+                </div>
+
+                <div class="col-lg-8 text-end"><!-- Dans list_user_bien.html -->
+
+<ul class="nav nav-pills d-inline-flex text-center mb-5">
+    <li class="nav-item">
+        <a href="?category=all" class="nav-link {% if category == 'all' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="color: black; background-color: yellow;">Tous les produits</a>
+    </li>
+    <li class="nav-item">
+        <a href="?category=immobilier" class="nav-link {% if category == 'immobilier' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: yellow">Immobilier</a>
+    </li>
+    <li class="nav-item">
+        <a href="?category=vehicule" class="nav-link {% if category == 'vehicule' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: yellow;">Vehicule</a>
+    </li>
+    <li class="nav-item">
+        <a href="?category=equipements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: yellow">Équipements</a>
+    </li>
+    <li class="nav-item">
+        <a href="?category=autres" class="nav-link {% if category == 'autres' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: yellow">Autres</a>
+    </li>
+</ul>
+
+</div>
+
+
+            </div>
+<!-- templates/users/detail_bien.html -->
+    <div class="row g-4 mx-2">
+        {% for bien in user_biens %}
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="rounded position-relative fruite-item bg-white">
+                    <div class="fruite-img min-height-200">
+                        {% if bien.image_principale %}
+                            <a href="{% url 'detail_bien' bien.id %}"><img src="{{ bien.image_principale.url }}" class="img-fluid w-100 rounded-top bien-image" alt="{{ bien.nom }}" style="height: 200px; cursor: pointer;"></a>
+                        {% else %}
+                            <a href="{% url 'detail_bien' bien.id %}"><img src="{% static 'media/biens_photos/default_image.png' %}" class="img-fluid w-100 rounded-top bien-image" alt="Image par défaut" height="200px" style="cursor: pointer;"></a>
+                        {% endif %}
+                    </div>
+                    <div class="position-absolute" style="top: 10px; left: 10px;">
+                        <div class="text-white bg-warning px-2 py-1 rounded">{{ bien.categories }}</div>
+                    </div>
+                    <div class="position-absolute" style="top: 10px; left: 150px;">
+                        <!-- Etat des biens (Disponible / Non Disponible)-->
+                        <div class="text-white bg-warning px-2 py-1 rounded">{{ bien.etat }}</div>
+                    </div>
+
+                    <div class="p-4 border-top-0 rounded-bottom">
+                        <h4 class="text-warning"><a href="{% url 'detail_bien' bien.id %}" class="text-decoration-none text-reset">{{ bien.nom|truncatechars:40 }}</a></h4>
+                        <!-- Afficher les 100 premiers caractères de la description -->
+                        <p class="text-dark  mb-0">{{ bien.description|truncatechars:100 }}</p>
+                        <div class="d-flex justify-content-between flex-lg-wrap">
+                            <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix }} Fcfa</p>
+<!--                            <div class="d-flex">-->
+<!--                                <a href="{% url 'detail_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Modifier</a>-->
+<!--                                <a href="{% url 'do_reservation' bien.id %}" class="btn border mx-1 border-danger rounded-pill px-3 text-danger"><i class="fa fa-shopping-bag text-primary"></i> Supprimer</a>-->
+<!--                            </div>-->
+                            <div class="d-flex">
+                              <a href="{% url 'edit_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-pen text-primary"></i> Modifier</a>
+                              <a href="{% url 'delete_bien' bien.id %}" class="btn border mx-1 border-danger rounded-pill px-3 text-danger"><i class="fa fa-trash text-danger"></i> Supprimer</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+        </div>
+    </div>
+</div>
+<!-- Fruits Shop End-->
+
+
+
+<script>
+  // Fonction pour écrire et effacer le texte
+function writeAndEraseText() {
+    var textElement = document.getElementById("dynamic-text");
+    var text = "Louez sans stress, avec CAPADATA.";
+    var speed = 100; // Vitesse d'écriture en millisecondes
+    var eraseSpeed = 50; // Vitesse d'effacement en millisecondes
+    var isWriting = false;
+
+    // Écrire le texte
+    function writeText() {
+        isWriting = true;
+        for (var i = 0; i < text.length; i++) {
+            (function(i) {
+                setTimeout(function() {
+                    textElement.innerHTML += text.charAt(i);
+                }, i * speed);
+            })(i);
+        }
+        isWriting = false;
+        setTimeout(function() {
+            eraseText();
+        }, text.length * speed); // Temps avant d'effacer le texte
+    }
+
+    // Effacer le texte
+    function eraseText() {
+        if (!isWriting) {
+            var timer2 = setInterval(function() {
+                var currentText = textElement.innerHTML;
+                textElement.innerHTML = currentText.slice(0, -1);
+                if (currentText.length === 0) {
+                    clearInterval(timer2);
+                    setTimeout(function() {
+                        writeText(); // Répéter le processus
+                    }, 1000); // Temps avant de réécrire le texte
+                }
+            }, eraseSpeed);
+        }
+    }
+
+    // Débuter l'écriture du texte
+    writeText();
+}
+
+// Appeler la fonction au chargement de la page
+window.onload = function() {
+    writeAndEraseText();
+};
+
+    // Appeler la fonction au chargement de la page
+    window.onload = function() {
+        writeAndEraseText();
+    };
+
+
+
+
+
+
+
+
+
+</script>
+    <script src="{% static 'users/js/script.js' %}"></script>
+
+
+
+{% endblock content %}
+

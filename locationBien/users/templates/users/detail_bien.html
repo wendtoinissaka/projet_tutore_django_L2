@@ -1,7 +1,48 @@
+<!-- templates/users/detail_bien.html -->
 {% extends 'users/base.html' %}
-{% load static %}
 
 {% block content %}
+<style>
+  .carousel-item img:hover {
+    transform: scale(1.1); /* Changez la valeur selon vos préférences */
+    transition: transform 0.3s ease; /* Animation de transition */
+  }
+</style>
+					<!-- /Product thumb imgs -->
+<div class="container mt-5 mb-5">
+  <div class="row align-items-center justify-content-md-between mt-5">
+    <div class="col-lg-6 order-last order-lg-first mt-5">
+      <img src="{{ bien.image_principale.url }}" alt="Image Principale" class="w-100 mt-5 mb-4 mb-lg-0">
+    </div>
+    <div class="col-lg-5 ml-auto mt-5">
+      <h1>{{ bien.nom }}</h1>
+      <p><strong>Catégorie:</strong> {{ bien.categories }}</p>
+      <p><strong>Date:</strong> {{ bien.date_created }}</p>
+      <p><strong>Localisation:</strong> {{ bien.localisation }}</p>
+      <p><strong>Description:</strong></p>
+      <p>{{ bien.description|safe }}</p>
+      <p><strong>Prix:</strong> {{ bien.prix }}</p>
+      <p><strong>État:</strong> {{ bien.etat }}</p>
 
-{% endblock content %}
+      <!-- Affichage des avis sur le bien -->
+      <h2>Avis sur le bien</h2>
+      {% for avis in bien.avis.all %}
+        <p><strong>Note:</strong> {{ avis.note }}/5</p>
+        <p><strong>Commentaire:</strong> {{ avis.commentaire }}</p>
+        <hr>
+      {% empty %}
+        <p>Aucun avis pour le moment.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 
+<script>
+  $(document).ready(function(){
+    $('#carouselExampleIndicators').carousel({
+      interval: 2000 // Changez cette valeur selon vos préférences (en millisecondes)
+    });
+  });
+</script>
+
+{% endblock %}

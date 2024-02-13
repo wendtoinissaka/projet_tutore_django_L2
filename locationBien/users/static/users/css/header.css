@@ -1,0 +1,38 @@
+/*
+
+        .navbar-nav .nav-link {
+            font-size: 16px; */
+/* Taille de police pour les liens de la navbar *//*
+
+            padding: 0.5rem 1rem; */
+/* Espacement des liens de la navbar *//*
+
+        color:black;
+
+        }
+        @media (max-width: 992px) {
+    .navbar-nav .nav-link {
+        margin-top : 5px;
+        width: 100%;
+        background-color:black;
+
+    }
+}
+*/
+
+
+        @media (max-width: 992px) {
+            .navbar-nav .nav-link {
+                font-size: 14px; /* Réduire la taille de police sur les petits écrans */
+            }
+
+            .navbar-toggler.custom-toggler {
+                background-color: yellow; /* Couleur du bouton du menu sur les petits écrans */
+                border-color: ; /* Bordure du bouton du menu sur les petits écrans */
+            }
+        }
+        /* Style pour ajouter une ligne en bas lors du survol */
+.underline-on-hover:hover {
+    border-bottom: 5px solid Yellow; /* Couleur et épaisseur de la ligne */
+}
+

@@ -5,18 +5,47 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'users/css/main.css' %}">
     <style>
-        /* Ajoutez ici vos styles CSS pour le formulaire */
-        /* Utilisez les mêmes styles que ceux utilisés dans register.html */
-        .center-content {
+        /* Styles spécifiques au bloc content */
+        .content-container {
+            margin-top: 30px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Utiliser la hauteur de la fenêtre pour centrer verticalement */
+            justify-content: center; /* Centrer horizontalement */
+            align-items: center; /* Centrer verticalement */
+            min-height: 80vh; /* Hauteur minimale de 80% de la hauteur de la fenêtre */
         }
-        .form-control-feedback {
-            color: red; /* Couleur du texte */
-            font-size: 12px; /* Taille de police */
+
+        /* Style du formulaire */
+        .form-style {
+            width: 100%;
+            max-width: 400px; /* Largeur maximale du formulaire */
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px; /* Bord arrondi */
+            background-color: #343a40; /* Fond gris foncé */
+
         }
+
+        /* Style du bouton */
+        .btn {
+            padding: 5px 5px;
+            font-size: 1rem;
+            border: none; /* Supprimer la bordure */
+            color: #fff; /* Couleur du texte blanc */
+            border-radius: 5px; /* Bord arrondi */
+            transition: background-color 0.3s ease; /* Animation de transition */
+            text-decoration: none; /* Supprimer le soulignement du texte */
+        }
+
+        /* Style au survol du bouton */
+        .btn:hover {
+        }
+
+        /* Style du lien */
+        .link {
+            color: #fff; /* Couleur du texte blanc */
+        }
+
+        /* Style du champ obligatoire */
         .required-field::after {
             content: "*"; /* Ajouter un astérisque */
             color: red; /* Couleur de l'astérisque */
@@ -24,14 +53,20 @@
             font-size: 12px; /* Taille de police */
         }
     </style>
-    <div class="center-content mt-5 mx-5 mb-5">
-        <form method="post" enctype="multipart/form-data" class="bg-primary mt-5">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4" style="color: white;">Créer un nouveau produit</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <button class="btn btn-primary" type="submit">Créer le produit</button>
-        </form>
+
+    <div class="content-container">
+        <div class="form-style" >
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group ">
+                    <legend class="border-bottom mb-4" style="color: white;">Créer un nouveau produit</legend>
+                    {{ form|crispy }}
+                </fieldset>
+<!--                <button class="btn" type="submit">Créer le produit</button>-->
+                <div class="form-group mt-2 bg-warning" id="signup-button">
+                    <button class="btn ">Sign Up</button>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}

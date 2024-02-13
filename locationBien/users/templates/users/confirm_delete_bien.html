@@ -1,0 +1,11 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% load i18n %} <!-- Ajoutez cette ligne pour charger le tag de traduction -->
+{% block content %}
+  <h1>{% trans "Supprimer le bien" %}</h1>
+  <p>{% blocktrans %}Êtes-vous sûr de vouloir supprimer ce bien ? Cette opération est irréversible.{% endblocktrans %}</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">{% trans "Oui, supprimer ce bien" %}</button>
+  </form>
+{% endblock %}

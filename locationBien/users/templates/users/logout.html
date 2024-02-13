@@ -1,11 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logout Page</title>
+  <style>
+    /* Style général de la page */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffffff; /* Fond blanc */
+    }
 
-{% extends 'users/base.html' %}
-{% load crispy_forms_tags %}
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
 
+    .logout-section h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #333;
+    }
 
-{% block content %}
-    <div class="container">
-        <h1>You have been Logged out</h1>
-        <h5><a href="{% url 'login' %}">Login In Again</a></h5>
+    .logout-section p {
+      font-size: 1.1rem;
+      color: #666;
+    }
+
+    /* Style du bouton de reconnexion */
+    .btn-lg {
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      background-color: #fd5e14; /* Couleur de fond orange */
+      border: none; /* Supprimer la bordure */
+      color: #fff; /* Couleur du texte blanc */
+      border-radius: 5px; /* Bord arrondi */
+      transition: background-color 0.3s ease; /* Animation de transition */
+      text-decoration: none; /* Supprimer le soulignement du texte */
+    }
+
+    /* Style au survol du bouton */
+    .btn-lg:hover {
+      background-color: #ff7f50; /* Changement de couleur au survol */
+    }
+  </style>
+</head>
+<body>
+  <div class="container logout-section">
+    <div class="text-center mb-4">
+      <h1>Logged Out Successfully!</h1>
+      <p>Click the button below to log back in.</p>
+      <a href="{% url 'login' %}" class="btn btn-lg">Login Again</a>
     </div>
-{% endblock %}</title>
+  </div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .col-md-4 {
+            flex-basis: calc(33.33% - 20px);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .product-preview img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .product-preview img:hover {
+            transform: scale(1.1);
+        }
+
+        .product-details {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .product-details h2 {
+            font-size: 24px;
+            margin-top: 0;
+        }
+
+        .product-details p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="product-preview">
+                    <img src="{% static 'users/images/bg.png' %}" alt="">
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="product-details">
+                    <h2>Product Name Goes Here</h2>
+                    <div class="product-rating">
+                        <!-- Rating stars can be added here -->
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.</p>
+                    <div class="product-options">
+                        <!-- Product options (e.g., size, color) can be added here -->
+                    </div>
+                    <div class="add-to-cart">
+                        <div class="qty-label">
+                            Qty
+                            <div class="input-number">
+                                <input type="number" value="1">
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                    </div>
+                    <ul class="product-btns">
+                        <li><a href="#"><i class="fa fa-heart-o"></i> Add to Wishlist</a></li>
+                        <li><a href="#"><i class="fa fa-exchange"></i> Add to Compare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

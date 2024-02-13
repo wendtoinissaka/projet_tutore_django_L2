@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'users/css/header.css' %}">
+<!--    <style>-->
+<!--        .navbar-nav .nav-link {-->
+<!--            font-size: 16px; /* Taille de police pour les liens de la navbar */-->
+<!--            padding: 0.5rem 1rem; /* Espacement des liens de la navbar */-->
+<!--        color:black;-->
+
+<!--        }-->
+<!--        @media (max-width: 992px) {-->
+<!--    .navbar-nav .nav-link {-->
+<!--        margin-top : 5px;-->
+<!--        width: 100%;-->
+<!--        background-color:black;-->
+
+<!--    }-->
+<!--}-->
+
+
+<!--        @media (max-width: 992px) {-->
+<!--            .navbar-nav .nav-link {-->
+<!--                font-size: 14px; /* Réduire la taille de police sur les petits écrans */-->
+<!--            }-->
+
+<!--            .navbar-toggler.custom-toggler {-->
+<!--                background-color: #fd5e14; /* Couleur du bouton du menu sur les petits écrans */-->
+<!--                border-color: #ffffff; /* Bordure du bouton du menu sur les petits écrans */-->
+<!--            }-->
+<!--        }-->
+<!--        /* Style pour ajouter une ligne en bas lors du survol */-->
+<!--.underline-on-hover:hover {-->
+<!--    border-bottom: 5px solid Yellow; /* Couleur et épaisseur de la ligne */-->
+<!--}-->
+
+<!--    </style>-->
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5  fixed-top" id="main-navbar">
+    <div class="container">
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+<!--<div class="collapse navbar-collapse" id="navbarNavAltMarkup">-->
+<!--    <div class="navbar-nav">-->
+<!--        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover"> Accueil </a>-->
+<!--&lt;!&ndash;        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover"> Accueil </a>&ndash;&gt;-->
+<!--&lt;!&ndash;        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover"> Reservation </a>&ndash;&gt;-->
+
+<!--        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover">Reservation</a>-->
+<!--        <a href="{% url 'create_product' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover">Ajouter un bien</a>-->
+<!--        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover">Nous contacter</a>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+        <a href="{% url 'home_without_filter' %}" class="nav-link {% if current_page == 'home' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover"> Accueil </a>
+        <a href="{% url 'home_without_filter' %}" class="nav-link {% if current_page == 'reservation' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">Reservation</a>
+        <a href="{% url 'create_product' %}" class="nav-link {% if current_page == 'create_product' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">Ajouter un bien</a>
+        <a href="{% url 'home_without_filter' %}" class="nav-link {% if current_page == 'contact' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">Nous contacter</a>
+    </div>
+</div>
+
+
+
+        <div class="col-lg-4">
+            <form class="d-flex">
+                {% if CustomUser.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Profile </a>
+                    <a href="{% url 'logout' %}" class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Logout </a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn" style="color: black; background-color: yellow;" type="submit" id="header-links"> Create Account </a>
+                    <a href="{% url 'login' %}" class="btn" style="color: black; background-color: yellow; margin-left: 10px; " type="submit" id="header-links">Log In</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

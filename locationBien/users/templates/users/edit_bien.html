@@ -1,0 +1,12 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% load i18n %} <!-- Ajoutez cette ligne pour charger le tag de traduction -->
+{% block content %}
+
+<h1>{% translate "Editer le bien" %}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% trans "Enregistrer les modifications" %}</button>
+  </form>
+{% endblock %}

@@ -1,6 +1,30 @@
 from django.contrib import admin
-from .models import Biens, Avis, Reservation
+from django.contrib.auth.admin import UserAdmin
 
+from .models import Biens, Avis, Reservation, CustomUser
+
+# Créez une classe d'administration personnalisée pour votre modèle CustomUser
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+    list_display = ('username', 'email', 'nom', 'type')  # Ajoutez les champs que vous souhaitez afficher dans l'interface d'administration
+    search_fields = ('username', 'email', 'nom', 'type')  # Ajoutez les champs que vous souhaitez inclure dans la recherche
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        ('Personal info', {'fields': ('email', 'nom', 'numero_tel', 'type')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2', 'nom', 'numero_tel', 'type'),
+        }),
+    )
+
+# Enregistrez votre modèle CustomUser avec la classe d'administration personnalisée
+admin.site.register(CustomUser, CustomUserAdmin)
+
+# Enregistrez vos autres modèles
 @admin.register(Biens)
 class BiensAdmin(admin.ModelAdmin):
     list_display = ('nom', 'proprietaire', 'categories', 'localisation', 'prix')
@@ -11,32 +35,9 @@ class AvisAdmin(admin.ModelAdmin):
     list_display = ('bien', 'locataire', 'note', 'commentaire')
     search_fields = ('bien__nom', 'locataire__username')
 
+
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
     list_display = ('bienloue', 'locataire', 'proprietaire', 'status', 'prix', 'datereservation')
     list_filter = ('status',)
     search_fields = ('bienloue__nom', 'locataire__username', 'proprietaire__username')
-
-
-
-
-# from django.contrib import admin
-# from django.contrib.auth.models import User
-# from .models import Biens
-#
-# # Définir la classe d'administration pour le modèle Biens
-# class BiensAdmin(admin.ModelAdmin):
-#     list_display = ('nom', 'categories', 'proprietaire', 'localisation', 'prix')  # Les champs à afficher dans la liste d'administration
-#
-# # Enregistrer le modèle Biens dans l'interface d'administration avec sa classe d'administration
-# admin.site.register(Biens, BiensAdmin)
-#
-# # Désenregistrer la classe d'administration par défaut pour le modèle User
-# admin.site.unregister(User)
-#
-# # Définir une classe d'administration personnalisée pour le modèle User
-# class UtilisateurAdmin(admin.ModelAdmin):
-#     list_display = ('username', 'email', 'is_active', 'date_joined')  # Exemple de champs à afficher dans la liste d'administration
-#
-# # Enregistrer le modèle User avec la classe d'administration personnalisée
-# admin.site.register(User, UtilisateurAdmin)
