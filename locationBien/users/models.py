@@ -1,7 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User, AbstractUser
-
+from django.utils import timezone
 class CustomUser(AbstractUser):
     TYPES_USERS = (
         ('locataire', 'Locataire'),
@@ -10,7 +10,7 @@ class CustomUser(AbstractUser):
     )
     nom = models.CharField(max_length=100)
     numero_tel = models.CharField(max_length=15)
-    email = models.EmailField(unique=True)  # Ajout du champ email
+    email = models.EmailField(unique=True)  # Ajout du champ emails
     type = models.CharField(max_length=20,choices=TYPES_USERS, default='locataire')  # Par défaut, type = 'locataire'
     # Ajout des related_names pour résoudre les conflits
     groups = models.ManyToManyField(
@@ -32,6 +32,18 @@ class CustomUser(AbstractUser):
         return self.username
 
 class Biens(models.Model):
+    date_disponibilite_debut = models.DateTimeField(null=True, blank=True)
+    date_disponibilite_fin = models.DateTimeField(null=True, blank=True)
+
+    def is_available(self):
+        return self.date_disponibilite_debut is None or self.date_disponibilite_fin is None
+
+    def get_reservation_price(self, num_days):
+        if not self.is_available():
+            return None
+        return self.prix * num_days
+
+
     CATEGORIES_CHOICES = (
         ('immobilier', 'Immobilier'),
         ('vehicule', 'Véhicule'),
@@ -42,6 +54,7 @@ class Biens(models.Model):
     ETAT_CHOICES = (
         ('disponible', 'Disponible'),
         ('non_disponible', 'Non disponible'),
+        ('en_cours', 'En cours'),
     )
 
     proprietaire = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -50,22 +63,66 @@ class Biens(models.Model):
     categories = models.CharField(max_length=20, choices=CATEGORIES_CHOICES)
     localisation = models.CharField(max_length=255)
     description = models.TextField()
-    prix = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])  # Prix non négatif
-    image_principale = models.ImageField(upload_to='biens_photos/')  # Image principale obligatoire
-    image_facultative_1 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)  # Image facultative 1
-    image_facultative_2 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)  # Image facultative 2
-    image_facultative_3 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)  # Image facultative 3
-    etat = models.CharField(max_length=20, choices=ETAT_CHOICES,
-                            default='disponible')  # Etat du bien (disponible par défaut)
+    prix = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    image_principale = models.ImageField(upload_to='biens_photos/')
+    image_facultative_1 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
+    image_facultative_2 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
+    image_facultative_3 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
+    etat = models.CharField(max_length=20, choices=ETAT_CHOICES, default='disponible')
 
     def __str__(self):
         return self.nom
 
-# class Avis(models.Model):
-#     note = models.IntegerField()
-#     commentaire = models.TextField()
-#     bien = models.ForeignKey(Biens, on_delete=models.CASCADE)
-#     locataire = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    def get_time_remaining(self):
+        now = timezone.now()
+        if self.date_disponibilite_fin and now < self.date_disponibilite_fin:
+            time_difference = self.date_disponibilite_fin - now
+            return time_difference
+        return None
+
+
+
+class Reservation(models.Model):
+    nombre_jours = models.PositiveIntegerField(default=1)
+    prix_total = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], null=True)
+    paiement_effectue = models.BooleanField(default=False)
+    date_expiration_paiement = models.DateTimeField(null=True, blank=True)
+    def save(self, *args, **kwargs):
+        bien = self.bienloue
+        prix_reservation = bien.get_reservation_price(self.nombre_jours)
+        if prix_reservation:
+            self.prix_total = prix_reservation
+            bien.date_disponibilite_debut = None
+            bien.date_disponibilite_fin = None
+            bien.save()
+        # Définir l'heure d'expiration du paiement (30 minutes après la création de la réservation)
+        if not self.date_expiration_paiement:
+            self.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=30)
+
+        super().save(*args, **kwargs)
+
+    STATUS_CHOICES = (
+        ('en_attente', 'En attente'),
+        ('validee', 'Validée'),
+        ('annulee', 'Annulée'),
+    )
+
+    datereservation = models.DateTimeField(auto_now_add=True)
+    bienloue = models.ForeignKey(Biens, on_delete=models.CASCADE)
+    locataire = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    proprietaire = models.ForeignKey(CustomUser, related_name='reservations_recues', on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='en_attente')
+
+    def is_payment_expired(self):
+        return timezone.now() > self.date_expiration_paiement
+
+    def __str__(self):
+        return f"Réservation de {self.bienloue.nom} par {self.locataire.username}, statut: {self.status}"
+
+
+
+
+
 
 class Avis(models.Model):
     NOTE_CHOICES = [(i, f'{"⭐"*i}') for i in range(1, 6)]
@@ -79,37 +136,12 @@ class Avis(models.Model):
     def __str__(self):
         return f'{self.note}/5 par {self.locataire} sur {self.bien}'
 
-
-
-
-# class Avis(models.Model):
-#     note = models.IntegerField()
-#     commentaire = models.TextField()
-#     bien = models.ForeignKey(Biens, on_delete=models.CASCADE)
-#     locataire = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return f"Avis sur {self.bien.nom} par {self.locataire.username}"
-
-
-class Reservation(models.Model):
-    STATUS_CHOICES = (
-        ('en_attente', 'En attente'),
-        ('validee', 'Validée'),
-        ('annulee', 'Annulée'),
-    )
-
-    datereservation = models.DateTimeField(auto_now_add=True)
-    bienloue = models.ForeignKey(Biens, on_delete=models.CASCADE)
-    locataire = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    proprietaire = models.ForeignKey(CustomUser, related_name='reservations_recues', on_delete=models.CASCADE)
-    prix = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])  # Prix non négatif
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='en_attente')
+class Payment(models.Model):
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    reference = models.CharField(max_length=255)
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name='payments')
+    paid_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='payments')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Réservation de {self.bienloue.nom} par {self.locataire.username}, statut: {self.status}"
-
-
-
-
-
+        return f'{self.paid_by.username}: ${self.amount} ({self.reservation})'

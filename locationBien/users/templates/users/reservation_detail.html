@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation Detail</title>
+</head>
+<body>
+    <h1>Reservation Detail</h1>
+    <!-- Afficher les détails de la réservation -->
+
+    {% if not payment_expired %}
+    <p id="payment-countdown"></p>
+    <script>
+        // Compte à rebours
+        var deadline = new Date("{{ reservation.date_expiration_paiement|date:'Y-m-d H:i:s' }}").getTime();
+
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = deadline - now;
+            var hours = Math.floor(distance / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("payment-countdown").innerHTML = "Temps restant pour le paiement : " + hours + "h " + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("payment-countdown").innerHTML = "Délai de paiement expiré.";
+            }
+        }, 1000);
+    </script>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,19 @@
+Bonjour,
+
+Merci pour votre réservation chez nous. Veuillez trouver ci-dessous les détails de votre facture.
+
+---
+
+Nom du bien : {{ bien.nom }}
+Nom du locataire : {{ request.user.username }}
+Nom du propriétaire : {{ bien.proprietaire }}
+Prix pour 1 jour : {{ bien.prix }} F
+Nombre de jours : ---
+Prix Total : {{ total_price }} F
+
+---
+
+
+Vous avez 24 heures pour faire le paiement selon les moyens  paiements mentionnész   de votre choix, au cas contraire votre reservation sera annulé automatiquement!
+Cordialement,
+La Team CAPADATA

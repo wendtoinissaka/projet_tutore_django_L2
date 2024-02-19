@@ -1,12 +1,100 @@
 {% extends 'users/base.html' %}
 {% load static %}
-{% load i18n %} <!-- Ajoutez cette ligne pour charger le tag de traduction -->
-{% block content %}
+{% load i18n %}
+{% load crispy_forms_tags %}
 
-<h1>{% translate "Editer le bien" %}</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">{% trans "Enregistrer les modifications" %}</button>
-  </form>
+{% block content %}
+<link rel="stylesheet" href="{% static 'users/css/main.css' %}">
+<style>
+    /* Styles spécifiques au bloc content */
+    .content-container {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center; /* Centrer horizontalement */
+        align-items: center; /* Centrer verticalement */
+        min-height: 80vh; /* Hauteur minimale de 80% de la hauteur de la fenêtre */
+    }
+
+    /* Style du formulaire */
+    .form-style {
+        width: 100%;
+        max-width: 400px; /* Largeur maximale du formulaire */
+        padding: 20px;
+        text-align: left; /* Changer l'alignement du texte en left */
+        border-radius: 10px; /* Bord arrondi */
+        background-color: #343a40; /* Fond gris foncé */
+
+
+
+    }
+
+    /* Style du bouton */
+    .btn {
+        padding: 5px 5px;
+        font-size: 1rem;
+        border: none; /* Supprimer la bordure */
+        color: #fff; /* Couleur du texte blanc */
+        border-radius: 5px; /* Bord arrondi */
+        transition: background-color 0.3s ease; /* Animation de transition */
+        text-decoration: none; /* Supprimer le soulignement du texte */
+    }
+
+    /* Style au survol du bouton */
+    .btn:hover {
+    }
+
+    /* Style du lien */
+    .link {
+        color: #fff; /* Couleur du texte blanc */
+    }
+
+    /* Style du champ obligatoire */
+    .required-field::after {
+        content: "*"; /* Ajouter un astérisque */
+        color: red; /* Couleur de l'astérisque */
+        margin-left: 5px; /* Marge à gauche de l'astérisque */
+        font-size: 12px; /* Taille de police */
+    }
+
+    /* Correction de la taille de la police pour les labels */
+    legend {
+        font-size: 1.5rem;
+    }
+
+    /* Remplacer le fond gris clair par du noir pour les input */
+    .form-control {
+        background-color: #212529;
+        border-color: transparent;
+    }
+
+    /* Remplacer le placeholder en blanc */
+    ::placeholder {
+        color: rgb(230, 230, 230);
+    }
+
+    /* Remplacer la couleur de la barre de progression en rouge */
+    .progress-bar {
+        background-color: tomato;
+    }
+
+    /* Masquer le texte "Nouvelle tentative dans X secondes..." */
+    .help-block {
+        display: none;
+    }
+</style>
+
+<div class="content-container">
+    <div class="form-style">
+        <form method="post">
+            {% csrf_token %}
+            <fieldset class="form-group ">
+                <legend class="border-bottom mb-4" style="color:white">{% trans "Editer le bien" %}</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group mt-2 bg-warning" id="signup-button">
+                <button class="btn ">{% trans "Enregistrer les modifications" %}</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

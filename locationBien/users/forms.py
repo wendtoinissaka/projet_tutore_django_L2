@@ -4,10 +4,10 @@ from django import forms
 from .models import Biens, Avis
 from .models import CustomUser
 from django.contrib.auth.forms import AuthenticationForm
-
+from .models import Reservation
 #
 # class UserRegisterForm(UserCreationForm):
-#     email = forms.EmailField()
+#     emails = forms.EmailField()
 #
 #     class Meta:
 #         model = User
@@ -26,7 +26,7 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'nom', 'numero_tel', 'email', 'password1', 'password2', 'type']
+        fields = ['username', 'nom', 'numero_tel', 'email', 'password1', 'password2']
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -38,7 +38,7 @@ class UserUpdateForm(forms.ModelForm):
 class BiensCreationForm(forms.ModelForm):
     class Meta:
         model = Biens
-        exclude = ('proprietaire',)
+        exclude = ('proprietaire','date_disponibilite_debut', 'date_disponibilite_fin')
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
@@ -64,3 +64,18 @@ class AvisForm(forms.ModelForm):
     class Meta:
         model = Avis
         exclude = ('created_at', 'bien', 'locataire')
+
+
+
+class ReservationForm(forms.ModelForm):
+    nombre_jours = forms.NumberInput(attrs={'id': 'quantity', 'min': 1, 'max': ''})
+
+    class Meta:
+        model = Reservation
+        fields = ('nombre_jours',)
+
+class CustomUserForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['nom', 'numero_tel', 'email', 'password']  # Ajoutez d'autres champs au besoin
+

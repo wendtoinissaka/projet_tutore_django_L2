@@ -3,47 +3,10 @@
 {% load static %}
 
 {% block content %}
-    <style>
-        /* Styles spécifiques au bloc content */
-        .content-container {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center; /* Centrer horizontalement */
-            align-items: center; /* Centrer verticalement */
-            min-height: 80vh; /* Hauteur minimale de 80% de la hauteur de la fenêtre */
-        }
-
-        /* Style du formulaire */
-        .login-form {
-            width: 100%;
-            max-width: 400px; /* Largeur maximale du formulaire */
-            padding: 20px;
-            text-align: center;
-            background-color: #343a40; /* Fond gris foncé */
-            border-radius: 10px; /* Bord arrondi */
-        }
-
-        /* Style du bouton */
-        .btn {
-            padding: 5px 5px;
-            font-size: 1rem;
-            border: none; /* Supprimer la bordure */
-            color: #fff; /* Couleur du texte blanc */
-            border-radius: 5px; /* Bord arrondi */
-            transition: background-color 0.3s ease; /* Animation de transition */
-            text-decoration: none; /* Supprimer le soulignement du texte */
-        }
 
 
-
-        /* Style du lien */
-        .link {
-            color: #fff; /* Couleur du texte blanc */
-        }
-    </style>
-
-    <div class="content-container">
-        <div class="login-form" >
+    <div class="content-container_login">
+        <div class="login-form_login" >
             <form action="" method="POST">
                 {% csrf_token %}
                 <fieldset class="form-group">
@@ -51,7 +14,7 @@
                     {{ form|crispy }}
                 </fieldset>
                 <div class="form-group mt-2 bg-warning" id="signup-button">
-                    <button class="btn ">Sign Up</button>
+                    <button class="btn_login bg-warning">Sign Up</button>
                 </div>
                 <div class="form-group">
                     <small class="text-muted ml-3">Already have an account? <a class="link text-warning" href="{% url 'login' %}">Sign In</a></small>

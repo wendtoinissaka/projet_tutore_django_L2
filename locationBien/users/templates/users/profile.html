@@ -4,11 +4,16 @@
  {% load static %}
 
 {% block content %}
-    <div class="container">
+    <div class="container mt-5">
         <h2>{{user.username}}</h2>
         <h1>utilisateur</h1>
     <h2>{{user.email}}</h2>
-                    <img src="{% static 'users/images/bg11.png' %}" class="img-fluid w-100 rounded-top" alt="Image par défaut">
+        <a href="{% url 'updateProfile' %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"> Modifier</a>
 
     </div>
+<div class="form-group mt-2 bg-warning" id="signup-button">
+    <button class="btn_login bg-warning text-none text-center">
+        <a href="{% url 'updateProfile' %}" >Modifier</a>
+    </button>
+</div>
 {% endblock %}

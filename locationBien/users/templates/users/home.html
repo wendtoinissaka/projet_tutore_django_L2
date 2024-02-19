@@ -79,9 +79,43 @@
             </div>
 <!-- templates/users/detail_bien.html -->
 <div class="row g-4 mx-2">
+    {% if biens %}
     {% for bien in biens %}
+<!--    <div class="col-md-6 col-lg-4 col-xl-3">-->
+<!--        <div class="rounded position-relative fruite-item bg-white">-->
+<!--            <div class="fruite-img min-height-200">-->
+<!--                {% if bien.image_principale %}-->
+<!--                <a href="{% url 'detail_bien' bien.id %}"><img src="{{ bien.image_principale.url }}" class="img-fluid w-100 rounded-top bien-image" alt="{{ bien.nom }}" style="height: 200px; cursor: pointer;"></a>-->
+<!--                {% else %}-->
+<!--                <a href="{% url 'detail_bien' bien.id %}"><img src="{% static 'media/biens_photos/default_image.png' %}" class="img-fluid w-100 rounded-top bien-image" alt="Image par défaut" height="200px" style="cursor: pointer;"></a>-->
+<!--                {% endif %}-->
+<!--            </div>-->
+<!--            <div class="position-absolute" style="top: 10px; left: 10px;">-->
+<!--                <div class="text-white bg-warning px-2 py-1 rounded">{{ bien.categories }}</div>-->
+<!--            </div>-->
+<!--            <div class="position-absolute" style="top: 10px; left: 150px;">-->
+<!--                &lt;!&ndash; Etat des biens (Disponible / Non Disponible)&ndash;&gt;-->
+<!--                <div class="text-white bg-warning px-2 py-1 rounded">{{ bien.etat }}</div>-->
+<!--            </div>-->
+
+<!--            <div class="p-4 border-top-0 rounded-bottom">-->
+<!--&lt;!&ndash;                <div class="text-white bg-warning px-2 py-1 rounded">dans 24heure</div>&ndash;&gt;-->
+
+<!--                <h4 class="text-warning"><a href="{% url 'detail_bien' bien.id %}" class="text-decoration-none text-reset">{{ bien.nom|truncatechars:40 }}</a></h4>-->
+<!--                &lt;!&ndash; Afficher les 100 premiers caractères de la description &ndash;&gt;-->
+<!--                <p class="text-dark  mb-0">{{ bien.description|truncatechars:100 }}</p>-->
+<!--                <div class="d-flex justify-content-between flex-lg-wrap">-->
+<!--                    <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix }} F/ jour</p>-->
+<!--                    <div class="d-flex text-center">-->
+<!--                        <a href="{% url 'detail_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill  text-center text-primary">DETAILS</a>-->
+<!--                        <a href="{% url 'do_reservation' bien.id %}" class="btn border border-secondary rounded-pill text-primary">RESERVER</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="col-md-6 col-lg-4 col-xl-3">
-        <div class="rounded position-relative fruite-item bg-white">
+    <div class="rounded position-relative fruite-item bg-white">
             <div class="fruite-img min-height-200">
                 {% if bien.image_principale %}
                 <a href="{% url 'detail_bien' bien.id %}"><img src="{{ bien.image_principale.url }}" class="img-fluid w-100 rounded-top bien-image" alt="{{ bien.nom }}" style="height: 200px; cursor: pointer;"></a>
@@ -89,7 +123,7 @@
                 <a href="{% url 'detail_bien' bien.id %}"><img src="{% static 'media/biens_photos/default_image.png' %}" class="img-fluid w-100 rounded-top bien-image" alt="Image par défaut" height="200px" style="cursor: pointer;"></a>
                 {% endif %}
             </div>
-            <div class="position-absolute" style="top: 10px; left: 10px;">
+                    <div class="position-absolute" style="top: 10px; left: 10px;">
                 <div class="text-white bg-warning px-2 py-1 rounded">{{ bien.categories }}</div>
             </div>
             <div class="position-absolute" style="top: 10px; left: 150px;">
@@ -97,21 +131,27 @@
                 <div class="text-white bg-warning px-2 py-1 rounded">{{ bien.etat }}</div>
             </div>
 
-            <div class="p-4 border-top-0 rounded-bottom">
-                <h4 class="text-warning"><a href="{% url 'detail_bien' bien.id %}" class="text-decoration-none text-reset">{{ bien.nom|truncatechars:40 }}</a></h4>
-                <!-- Afficher les 100 premiers caractères de la description -->
-                <p class="text-dark  mb-0">{{ bien.description|truncatechars:100 }}</p>
-                <div class="d-flex justify-content-between flex-lg-wrap">
-                    <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix }} Fcfa</p>
-                    <div class="d-flex">
-                        <a href="{% url 'detail_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Details</a>
-                        <a href="{% url 'do_reservation' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Réserver</a>
-                    </div>
+        <div class="p-4 border-top-0 rounded-bottom d-flex flex-column ">
+            <h4 class="text-warning text-center"><a href="{% url 'detail_bien' bien.id %}" class="text-decoration-none text-reset">{{ bien.nom|truncatechars:40 }}</a></h4>
+            <p class="text-dark mb-0">{{ bien.description|truncatechars:100 }}</p>
+            <div class="d-flex justify-content-between flex-lg-wrap w-100">
+                <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix }} F/ jour</p>
+                <div class="d-flex align-items-end">
+                    <a href="{% url 'detail_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill text-center text-primary">DETAILS</a>
+                    <a href="{% url 'do_reservation' bien.id %}" class="btn border border-secondary rounded-pill text-primary">RESERVER</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
     {% endfor %}
+    {% else %}
+        <div class="mt-5">
+        <p class="text-danger fs-5">Vous n'avez aucun bien pour le moment!</p>
+
+        </div>
+    {% endif %}
 </div>
         </div>
     </div>

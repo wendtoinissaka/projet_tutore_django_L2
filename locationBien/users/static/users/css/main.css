@@ -3,6 +3,42 @@
   background-size: cover;
   background-attachment: fixed;
 }
+
+/* base nav bar */
+/* Navbar */
+.navbar-nav .nav-link {
+    font-size: 16px;
+    padding: 0.5rem 1rem;
+    color:black;
+}
+
+@media (max-width: 992px) {
+    .navbar-nav .nav-link {
+        margin-top : 5px;
+        width: 100%;
+        background-color:black;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar-nav .nav-link {
+        font-size: 14px;
+    }
+
+    .navbar-toggler.custom-toggler {
+        background-color: #fd5e14;
+        border-color: #ffffff;
+    }
+}
+
+/* Underline on hover */
+.underline-on-hover:hover {
+    border-bottom: 5px solid Yellow;
+}
+
+
+
+
 #main-navbar{
   color: white;
   min-height: 14vh;
@@ -11,6 +47,7 @@
 #authstyle{
   border-radius: 50%;
 }
+
 #header-text{
   color: white;
   font-family: 'Open Sans', sans-serif;

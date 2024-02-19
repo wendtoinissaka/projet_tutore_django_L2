@@ -1,0 +1,11 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+  <h1>Confirmer l'annulation de la réservation</h1>
+  <p>Êtes-vous sûr de vouloir annuler la réservation de {{ reservation.bienloue }} ?</p>
+  <form method="post" action="{% url 'confirm_cancel_reservation' reservation.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirmer l'annulation</button>
+  </form>
+  <a href="{% url 'reservation_page' %}">Retour à ma page de réservation</a>
+{% endblock %}

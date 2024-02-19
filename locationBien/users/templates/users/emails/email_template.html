@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de réservation chez Capadata</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; padding: 20px;">
+
+    <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+        <h2 style="text-align: center; color: #007bff;">Confirmation de réservation chez Capadata</h2>
+        <p>Merci pour votre réservation chez nous. Veuillez trouver ci-dessous les détails de votre facture :</p>
+
+        <hr style="margin-bottom: 20px;">
+
+        <table style="width: 100%; margin-bottom: 20px;">
+            <tr>
+                <th style="text-align: left;">Nom du bien :</th>
+                <td>{{ bien.nom }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left;">Nom du locataire :</th>
+                <td>{{ reservation.locataire.username }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left;">Nom du propriétaire :</th>
+                <td>{{ bien.proprietaire }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left;">Prix pour 1 jour :</th>
+                <td>{{ bien.prix }} F</td>
+            </tr>
+            <tr>
+                <th style="text-align: left;">Nombre de jours :</th>
+                <td>{{ reservation.nombre_jours }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left;">Prix Total :</th>
+                <td>{{ total_price }} F</td>
+            </tr>
+        </table>
+
+        <p>Vous avez 24 heures pour effectuer le paiement selon les moyens de paiements mentionnés de votre choix, au cas contraire votre réservation sera annulée automatiquement!</p>
+
+        <p style="font-style: italic;">Cordialement,<br>La Team CAPADATA</p>
+    </div>
+
+</body>
+</html>

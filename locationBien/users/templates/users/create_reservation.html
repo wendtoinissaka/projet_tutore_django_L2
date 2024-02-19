@@ -1,0 +1,113 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .form-section {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    width: 45%; /* Adjusted width for better balance */
+    margin: 1rem auto; /* Ensures centering on all devices */
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .facture {
+    background-color: #343a40;;
+    border: 1px solid #ddd;
+    color:white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    width: 45%; /* Adjusted width for better balance */
+    margin: 1rem auto; /* Ensures centering on all devices */
+  }
+
+  .container {
+    display: flex;
+    justify-content: center; /* Horizontal centering with flexbox */
+  }
+</style>
+
+  <script>
+        function updateTotalPrice() {
+            var numDays = parseInt(document.getElementById('id_nombre_jours').value);
+            var unitPrice = parseFloat('{{ bien.prix|floatformat:2 }}'.replace(',', '.')); // Récupérer le prix unitaire depuis le contexte Django
+            var totalPrice = numDays * unitPrice;
+            document.getElementById('total-price').innerText =  + totalPrice.toFixed(2) + "     F"; // Mettre à jour le prix total affiché
+            document.getElementById('total-price2').innerText =  + totalPrice.toFixed(2) + "     F"; // Mettre à jour le prix total affiché
+        }
+    </script>
+
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<h1 class="mt-5 text-center my-5">Effectuer une réservation</h1>
+
+<div class="container">
+  <div class="facture">
+            <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p><label>Prix Total : </label><span class="mx-4" id="total-price">{{ bien.prix }} F</span></p>
+            <button type="submit" class="btn bg-warning" style="color: white; background-color: yellow;">CONFIRMER</button>
+        </form>
+  </div>
+
+  <div class="facture">
+    <h1 id="entete" class="text-center text-warning">Facture</h1>
+
+    <div id="client">
+      <strong>Nom du bien :</strong><span class="text-warning" style="float: right;">{{ bien.nom }}</span>
+      <br>
+    </div>
+    <div id="client">
+      <strong>Nom du locataire :</strong><span class="text-warning"  style="float: right;">{{ request.user.username }}</span>
+      <br>
+    </div>
+    <div id="vendeur">
+      <strong>Nom du propriétaire :</strong><span class="text-warning"  style="float: right;">{{ bien.proprietaire }}</span>
+      <br>
+    </div>
+    <div id="vendeur">
+      <strong>Prix pour 1 jour :</strong><span class="text-warning" style="float: right;">{{ bien.prix }} F</span>
+      <br>
+    </div>
+    <div id="vendeur">
+      <strong>Nombre de jours :</strong><span class="text-warning" style="float: right;">----</span>
+      <br>
+    </div>
+    <div id="vendeur">
+      <strong>Prix Total : </strong><span class="text-warning" id="total-price2" style="float: right;">{{ bien.prix }}</span>
+      <br>
+    </div>
+
+
+    <p class="text-warning text-center" ><strong >Conditions de paiement :</strong> 24 heures</p>
+
+</div>
+</div>
+
+   <!-- Appeler la fonction updateTotalPrice lorsque la quantité de jours change -->
+    <script>
+        document.getElementById('id_nombre_jours').addEventListener('change', updateTotalPrice);
+    </script>
+
+{% endblock %}

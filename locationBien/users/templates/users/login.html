@@ -1,43 +1,14 @@
 {% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% block title %}
+login page
+{% endblock title %}
 
 {% block content %}
-    <style>
-        /* Styles spécifiques au bloc content */
-        .content-container {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center; /* Centrer horizontalement */
-            align-items: center; /* Centrer verticalement */
-            min-height: 80vh; /* Hauteur minimale de 80% de la hauteur de la fenêtre */
-        }
 
-        /* Style du formulaire */
-        .login-form {
-            width: 100%;
-            max-width: 400px; /* Largeur maximale du formulaire */
-            padding: 20px;
-            text-align: center;
-<!--            background-color: black; /* Fond gris clair */-->
-            border-radius: 10px; /* Bord arrondi */
-        }
-
-        /* Style du bouton */
-        .btn {
-            padding: 5px 5px;
-            font-size: 1rem;
-            border: none; /* Supprimer la bordure */
-            color: #fff; /* Couleur du texte blanc */
-            border-radius: 5px; /* Bord arrondi */
-            text-decoration: none; /* Supprimer le soulignement du texte */
-        }
-
-
-    </style>
-
-    <div class="content-container ">
-        <div class="login-form bg-dark">
+    <div class="content-container_login ">
+        <div class="login-form_login bg-dark">
             <form action="" method="POST">
                 {% csrf_token %}
                 <fieldset class="form-group">
@@ -45,7 +16,7 @@
                     {{ form|crispy }}
                 </fieldset>
                 <div class="form-group mt-2 bg-warning" id="signup-button">
-                    <button class="btn ">Sign In</button>
+                    <button class="btn_login bg-warning">Sign In</button>
                 </div>
                 <div class="form-group">
                     <small class="text-muted ml-3">Don't have an account yet? <a class="text-warning" href="{% url 'register' %}">Sign Up Today</a></small>

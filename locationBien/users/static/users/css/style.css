@@ -1,3 +1,74 @@
+/* login */
+        /* Styles spécifiques au bloc content */
+.content-container_login {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center; /* Centrer verticalement */
+    min-height: 80vh; /* Hauteur minimale de 80% de la hauteur de la fenêtre */
+}
+
+
+
+
+
+/* Style du formulaire */
+.login-form_login {
+    width: 100%;
+    max-width: 400px; /* Largeur maximale du formulaire */
+    padding: 20px;
+    text-align: center;
+    background-color: #343a40; /* Fond gris foncé */
+    border-radius: 10px; /* Bord arrondi */
+}
+
+        /* Style du bouton */
+.btn_login{
+    padding: 5px 5px;
+    font-size: 1rem;
+    border: none; /* Supprimer la bordure */
+    color: #fff; /* Couleur du texte blanc */
+    border-radius: 5px; /* Bord arrondi */
+    text-decoration: none; /* Supprimer le soulignement du texte */
+}
+
+
+/* register css */
+
+
+/* Styles spécifiques au bloc content */
+
+
+
+
+/* Style du bouton */
+.btn {
+    padding: 5px 5px;
+    font-size: 1rem;
+    border: none; /* Supprimer la bordure */
+    color: #fff; /* Couleur du texte blanc */
+    border-radius: 5px; /* Bord arrondi */
+    transition: background-color 0.3s ease; /* Animation de transition */
+    text-decoration: none; /* Supprimer le soulignement du texte */
+}
+
+
+
+/* Style du lien */
+.link {
+    color: #fff; /* Couleur du texte blanc */
+}
+
+
+
+
+
+
+
+
+
+
+
 /*
 
 *//*
@@ -6,6 +77,36 @@
 /*** Spinner Start ***//*
 */
 
+/* Navbar */
+.navbar-nav .nav-link {
+    font-size: 16px;
+    padding: 0.5rem 1rem;
+    color:black;
+}
+
+@media (max-width: 992px) {
+    .navbar-nav .nav-link {
+        margin-top : 5px;
+        width: 100%;
+        background-color:black;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar-nav .nav-link {
+        font-size: 14px;
+    }
+
+    .navbar-toggler.custom-toggler {
+        background-color: #fd5e14;
+        border-color: #ffffff;
+    }
+}
+
+/* Underline on hover */
+.underline-on-hover:hover {
+    border-bottom: 5px solid Yellow;
+}
 
 #spinner {
     opacity: 0;

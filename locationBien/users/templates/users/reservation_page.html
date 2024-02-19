@@ -1,0 +1,40 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+  <h1 class="mt-5">Mes Réservations</h1>
+  {% if reservations %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Bien Loué</th>
+          <th scope="col">Nombre de Jours</th>
+          <th scope="col">Prix Total</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+          <th scope="col">Paiement</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reservation in reservations %}
+          <tr>
+            <td>{{ reservation.bienloue }}</td>
+            <td>{{ reservation.nombre_jours }}</td>
+            <td>{{ reservation.prix_total }}</td>
+            <td>{{ reservation.status }}</td>
+            <td>
+              <form method="post" action="{% url 'cancel_reservation' reservation.id %}">
+                {% csrf_token %}
+                <input type="submit" value="Annuler" class="btn btn-danger"/>
+              </form>
+            </td>
+            <td>
+              <a href="{% url 'make_payment' reservation.id %}" class="btn btn-primary">Effectuer le paiement</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Aucune réservation trouvée.</p>
+  {%endif %}
+{% endblock %}

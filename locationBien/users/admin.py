@@ -38,6 +38,6 @@ class AvisAdmin(admin.ModelAdmin):
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ('bienloue', 'locataire', 'proprietaire', 'status', 'prix', 'datereservation')
+    list_display = ('bienloue', 'locataire', 'proprietaire', 'status', 'datereservation')
     list_filter = ('status',)
     search_fields = ('bienloue__nom', 'locataire__username', 'proprietaire__username')
