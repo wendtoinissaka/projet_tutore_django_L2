@@ -43,17 +43,20 @@ class Biens(models.Model):
             return None
         return self.prix * num_days
 
+    def get_related_biens(self):
+        return Biens.objects.filter(categories=self.categories).exclude(id=self.id)[:8]
 
     CATEGORIES_CHOICES = (
-        ('immobilier', 'Immobilier'),
-        ('vehicule', 'Véhicule'),
+        ('immobiliers', 'Immobiliers'),
+        ('vehicules', 'Véhicules'),
         ('equipements', 'Équipements'),
+        ('services', 'Services'),
         ('autres', 'Autres'),
     )
 
     ETAT_CHOICES = (
         ('disponible', 'Disponible'),
-        ('non_disponible', 'Non disponible'),
+        ('deja_reserve', 'deja reserve'),
         ('en_cours', 'En cours'),
     )
 
@@ -69,6 +72,11 @@ class Biens(models.Model):
     image_facultative_2 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
     image_facultative_3 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
     etat = models.CharField(max_length=20, choices=ETAT_CHOICES, default='disponible')
+
+    def save(self, *args, **kwargs):
+        # Convertir le nom en majuscules avant l'enregistrement
+        self.nom = self.nom.upper()
+        super(Biens, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.nom
@@ -98,6 +106,7 @@ class Reservation(models.Model):
         # Définir l'heure d'expiration du paiement (30 minutes après la création de la réservation)
         if not self.date_expiration_paiement:
             self.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=30)
+            # self.date_expiration_paiement = timezone.now() + timezone.timedelta(heures=1)
 
         super().save(*args, **kwargs)
 

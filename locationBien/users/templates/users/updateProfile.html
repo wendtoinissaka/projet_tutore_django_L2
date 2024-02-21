@@ -1,9 +1,23 @@
 {% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+login page
+{% endblock title %}
+
 {% block content %}
-  <h2 class="mt-5">Votre profil</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enregistrer les modifications</button>
-  </form>
+
+    <div class="content-container_login ">
+
+        <div class="login-form_login bg-dark">
+          <h2 class="text-white">MODIFICATION</h2>
+            <form action="" method="POST">
+              {% csrf_token %}
+              {{ form.as_p }}
+                <div class="form-group mt-2 bg-warning" id="signup-button">
+                    <button type="submit" class="btn_login bg-warning text-dark">ENREGISTRER MODIFICATION</button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

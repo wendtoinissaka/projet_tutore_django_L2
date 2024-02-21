@@ -87,6 +87,7 @@
         {% if user.is_authenticated %}
             <!-- Bouton "Modifier Bien" pour les utilisateurs connectés -->
             <a href="{% url 'list_user_bien' %}" class="nav-link {% if current_page == 'modifier_bien' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">MODIFIER BIEN</a>
+
         {% else %}
             <!-- Bouton "Nous Contacter" pour les utilisateurs non connectés -->
             <a href="{% url 'home_without_filter' %}" class="nav-link {% if current_page == 'contact' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">NOUS CONTACTER</a>
@@ -102,7 +103,6 @@
     {% if user.is_authenticated %}
 <!--        <a href="{% url 'profile' %}" class="btn mx-1" style="color: white; background-color: #fd5e14;"> Profile </a>-->
         <a href="{% url 'profile' %}" class="btn" style="color: black; background-color: yellow;"> Profile </a>
-
         <button class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Se Deconnecter </button>
     {% else %}
         <a href="{% url 'register' %}" class="btn" style="color: black; background-color: yellow;"> Create Account </a>
@@ -117,7 +117,7 @@
 <div style="margin-top: calc(3.5rem + 25px);"> <!-- 3.5rem est la hauteur estimée de votre navbar, 16px est un exemple de marge que vous pouvez ajuster -->
     <!-- Contenu à décaler -->
     <div >
-    <div class="container">
+    <div class="container mt-5">
 {% if messages %}
     {% for message in messages %}
         <div class="alert text-danger alert-{{message.tags}}">{{message}}</div>

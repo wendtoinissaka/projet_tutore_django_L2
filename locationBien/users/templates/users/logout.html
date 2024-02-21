@@ -1,62 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logout Page</title>
-  <style>
-    /* Style général de la page */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #ffffff; /* Fond blanc */
-    }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      text-align: center;
-    }
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+ {% load static %}
 
-    .logout-section h1 {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #333;
-    }
+{% block content %}
 
-    .logout-section p {
-      font-size: 1.1rem;
-      color: #666;
-    }
+    <div class="content-container_login">
+        <div class="login-form_login" >
 
-    /* Style du bouton de reconnexion */
-    .btn-lg {
-      padding: 10px 20px;
-      font-size: 1.1rem;
-      background-color: #fd5e14; /* Couleur de fond orange */
-      border: none; /* Supprimer la bordure */
-      color: #fff; /* Couleur du texte blanc */
-      border-radius: 5px; /* Bord arrondi */
-      transition: background-color 0.3s ease; /* Animation de transition */
-      text-decoration: none; /* Supprimer le soulignement du texte */
-    }
 
-    /* Style au survol du bouton */
-    .btn-lg:hover {
-      background-color: #ff7f50; /* Changement de couleur au survol */
-    }
-  </style>
-</head>
-<body>
-  <div class="container logout-section">
-    <div class="text-center mb-4">
-      <h1>Logged Out Successfully!</h1>
-      <p>Click the button below to log back in.</p>
-      <a href="{% url 'login' %}" class="btn btn-lg">Login Again</a>
+
+
+
+      <h1 class="text-white">Vous êtes déconnecté(e)!</h1>
+      <p class="text-warning">Cliquez sur le bouton en bas pour vous reconnecter</p>
+          <div class="form-group mt-2 bg-warning" id="signup-button">
+            <button class="btn_login bg-warning text-dark " style=""><a href="{% url 'login' %} " style="text-decoration:none; color :black;" >SE RECONNECTER</a></button>
+          </div>
+        </div>
+
     </div>
-  </div>
-</body>
-</html>
+{% endblock %}

@@ -10,15 +10,17 @@
     display: flex;
     justify-content: center;
     align-items: center;">
-<!--    <div class="container" style="background-image: url({% static 'users/images/bg.png' %}); background-repeat: no-repeat;">-->
-    <div class="row g-0 ">
-        <div class="col-sm-6 mt-5 col-md-8">
-            <h1 class="text-white mt-5 mx-5" id="dynamic-text"></h1>
+         <div class="col-sm-6 mt-5 col-md-8">
+        <h1 class="text-white mt-5 mx-5" id="dynamic-text"></h1>
         </div>
-        <div class="col-sm-6 mt-5 col-md-4">
-<!--            <a href="{% url 'create_product' %}" class="btn mt-5" style="color: white; background-color: #fd5e14;" type="submit" id="body-link-row">Ajouter un Bien</a>-->
-            <a href="{% url 'create_product' %}" class="btn mt-5 nav-link active py-2 px-3 mx-1 text-dark underline-on-hover " style="background-color:#ffff00" type="submit" id="body-link-row">Ajouter un Bien</a>
+
+    <div class="row g-0 mt-5">
+    <form method="get" class="">
+        <div class="position-relative mx-auto mb-4">
+            <input  placeholder="Recherche bien..." name="q"  class="form-control border-2 border-white w-75 py-3 px-5 rounded-pill" type="text" >
+            <button type="submit" class="btn btn-warning border-2 border-white py-3 px-4 position-absolute rounded-pill text-dark h-100" style="top: 0; background-color :yellow; right: 5%;">Rechercher</button>
         </div>
+    </form>
     </div>
 </div>
 
@@ -83,21 +85,40 @@
                         <h4 class="text-warning"><a href="{% url 'detail_bien' bien.id %}" class="text-decoration-none text-reset">{{ bien.nom|truncatechars:40 }}</a></h4>
                         <!-- Afficher les 100 premiers caractères de la description -->
                         <p class="text-dark  mb-0">{{ bien.description|truncatechars:100 }}</p>
+                        {% if bien.moyenne_avis %}
+<!--                <p class="text-dark mb-0">{{ bien.moyenne_avis }}/5</p>-->
+                <p class="text-dark mb-0">{% for i in "⭐⭐⭐⭐⭐" %}
+                        {% if forloop.counter <= bien.moyenne_avis %}
+                            {{ i }}
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            {% else %}
+                <p class="text-dark mb-0">⭐⭐⭐⭐</p>
+            {% endif %}
+<!--                        <div class="d-flex justify-content-between flex-lg-wrap w-100">-->
+<!--                            <p class="text-dark fs-5 fw-bold ">{{ bien.prix }} F/Jr</p>-->
+<!--&lt;!&ndash;                            <div class="d-flex">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <a href="{% url 'detail_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Modifier</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <a href="{% url 'do_reservation' bien.id %}" class="btn border mx-1 border-danger rounded-pill px-3 text-danger"><i class="fa fa-shopping-bag text-primary"></i> Supprimer</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="d-flex">&ndash;&gt;-->
+<!--&lt;!&ndash;                              <a href="{% url 'edit_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-pen text-primary"></i> Modifier</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                              <a href="{% url 'delete_bien' bien.id %}" class="btn border mx-1 border-danger rounded-pill px-3 text-danger"><i class="fa fa-trash text-danger"></i> Supprimer</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                            <div class="d-flex">-->
+<!--                                <a href="{% url 'edit_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill text-center text-primary">MODIFIER</a>-->
+<!--                                <a href="{% url 'delete_bien' bien.id %}" class="btn border border-danger rounded-pill text-danger">SUPPRIMER</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
                         <div class="d-flex justify-content-between flex-lg-wrap w-100">
-                            <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix }} F/Jr</p>
-<!--                            <div class="d-flex">-->
-<!--                                <a href="{% url 'detail_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Modifier</a>-->
-<!--                                <a href="{% url 'do_reservation' bien.id %}" class="btn border mx-1 border-danger rounded-pill px-3 text-danger"><i class="fa fa-shopping-bag text-primary"></i> Supprimer</a>-->
-<!--                            </div>-->
-<!--                            <div class="d-flex">-->
-<!--                              <a href="{% url 'edit_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-pen text-primary"></i> Modifier</a>-->
-<!--                              <a href="{% url 'delete_bien' bien.id %}" class="btn border mx-1 border-danger rounded-pill px-3 text-danger"><i class="fa fa-trash text-danger"></i> Supprimer</a>-->
-<!--                            </div>-->
-                            <div class="d-flex align-items-end">
-                                <a href="{% url 'edit_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill text-center text-primary">MODIFIER</a>
-                                <a href="{% url 'delete_bien' bien.id %}" class="btn border border-danger rounded-pill text-danger">SUPPRIMER</a>
-                            </div>
-                        </div>
+                <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix }} F/ jour</p>
+                <div class="d-flex align-items-end">
+                    <a href="{% url 'edit_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill text-center text-primary">MODIFIER</a>
+                    <a href="{% url 'delete_bien' bien.id %}" class="btn border border-danger rounded-pill text-danger">SUPPRIMER</a>
+                </div>
+            </div>
                     </div>
                 </div>
             </div>

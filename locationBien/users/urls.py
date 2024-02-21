@@ -35,6 +35,7 @@ urlpatterns = [
     path('list_user_bien/', views.list_user_bien, name='list_user_bien'),
     path('<int:pk>/edit/', EditBienView.as_view(), name='edit_bien'),
     path('<int:pk>/supprimer/', DeleteBienView.as_view(), name='delete_bien'),
+    path('ajouter_avis/<int:bien_id>/', views.ajouter_avis, name='ajouter_avis'),
 
     #reservations
 

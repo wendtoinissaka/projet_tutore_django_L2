@@ -12,6 +12,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.files.base import ContentFile
 from django.core.mail import EmailMessage, EmailMultiAlternatives, send_mail
 from django.db import transaction
+from django.db.models import Avg
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
@@ -25,7 +26,7 @@ from django.views.generic import UpdateView, DeleteView, CreateView
 
 from .forms import UserRegisterForm, BiensCreationForm, UserUpdateForm, AvisForm, ReservationForm, LoginForm, \
     CustomUserForm
-from .models import Biens, Reservation, Payment, CustomUser
+from .models import Biens, Reservation, Payment, CustomUser, Avis
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import io
@@ -75,19 +76,39 @@ def create_product(request):
         form = BiensCreationForm(request=request)
 
     return render(request, 'users/create_product.html', {'form': form})
+
+
+
 def home_without_filter(request):
-#     # biens = Biens.objects.all().order_by('-date_created')
-#     produits = Biens.objects.all().order_by('-date_created')
-#     return render(request, 'users/home.html', {'biens': produits})
-    # Récupérer tous les biens
     biens = Biens.objects.all().order_by('-date_created')
 
     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
     category = request.GET.get('category')
     if category and category != 'all':
-        biens = biens.filter(categories=category).order_by('-date_created')
+        biens = biens.filter(categories=category)# def home_without_filter(request):
+#     # Récupérer tous les biens
+    # Filtrer les biens en fonction de la recherche (si spécifiée dans la requête GET)#     biens = Biens.objects.all().order_by('-date_created')# def home_without_filter(request):
+    search_query = request.GET.get('q')# # #     # biens = Biens.objects.all().order_by('-date_created')
+    if search_query:#     # Calculer la moyenne des avis pour chaque bien# #     produits = Biens.objects.all().order_by('-date_created')
+        biens = biens.filter(nom__icontains=search_query)#     for bien in biens:# #     return render(request, 'users/home.html', {'biens': produits})
+#         bien.moyenne_avis = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']#     # Récupérer tous les biens
+    return render(request, 'users/home.html', {'biens': biens, 'category': category})# #     biens = Biens.objects.all().order_by('-date_created')
+#     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)#
+#     category = request.GET.get('category')#     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
+#     if category and category != 'all':#     category = request.GET.get('category')
+#         biens = biens.filter(categories=category).order_by('-date_created')#     if category and category != 'all':
+# #         biens = biens.filter(categories=category).order_by('-date_created')
+#     return render(request, 'users/home.html', {'biens': biens, 'category': category})#
+#     return render(request, 'users/home.html', {'biens': biens, 'category': category})
 
-    return render(request, 'users/home.html', {'biens': biens, 'category': category})
+
+
+
+
+
+
+
+
 
 
 def home_with_filter(request):
@@ -102,31 +123,34 @@ def home_with_filter(request):
 #     bien = Biens.objects.get(pk=bien_id)
 #     return render(request, 'users/detail_bien.html', {'bien': bien})
 
-def detail_bien(request, bien_id):
-    bien = Biens.objects.get(pk=bien_id)
-    total_images = sum([bool(getattr(bien, attr)) for attr in [
-        'image_principale', 'image_facultative_1', 'image_facultative_2']])
-    images = []
-    for i in range(total_images):
-        attr = f"image_principale" if i == 0 else f"image_facultative_{i}"
-        if hasattr(bien, attr):
-            images.append(getattr(bien, attr))
-    return render(request, 'users/detail_bien.html', {'bien': bien, 'images': images})
-
-
 # def detail_bien(request, bien_id):
-#     bien = Biens.objects.get(id=bien_id)
-#     images = Images.objects.filter(bien=bien)
-#     context = {"bien": bien, "images": images}
-#     return render(request, "users/detail_bien.html", context)
+#     bien = Biens.objects.get(pk=bien_id)
+#     total_images = sum([bool(getattr(bien, attr)) for attr in [
+#         'image_principale', 'image_facultative_1', 'image_facultative_2']])
+#     images = []
+#     for i in range(total_images):
+#         attr = f"image_principale" if i == 0 else f"image_facultative_{i}"
+#         if hasattr(bien, attr):
+#             images.append(getattr(bien, attr))
+#     return render(request, 'users/detail_bien.html', {'bien': bien, 'images': images})
 
-# def details(request):
-#     return render(request, 'users/detail_bien.html')
+from django.db.models import Avg
 
+def detail_bien(request, bien_id):
+    bien = Biens.objects.get(pk=bien_id)# def detail_bien(request, bien_id):
+    total_images = sum([bool(getattr(bien, attr)) for attr in [#     bien = Biens.objects.get(id=bien_id)
+        'image_principale', 'image_facultative_1', 'image_facultative_2']])#     images = Images.objects.filter(bien=bien)
+    images = []#     context = {"bien": bien, "images": images}
+    for i in range(total_images):#     return render(request, "users/detail_bien.html", context)
+        attr = f"image_principale" if i == 0 else f"image_facultative_{i}"
+        if hasattr(bien, attr):# def details(request):
+            images.append(getattr(bien, attr))#     return render(request, 'users/detail_bien.html')
 
-
+    # Calculer la moyenne des avis pour le bien spécifique
+    moyenne_avis = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']
+    related_biens = bien.get_related_biens()
 # def do_reservation(request, bien_id):
-#     reservation = Biens.objects.get(pk=bien_id)
+    return render(request, 'users/detail_bien.html', {'bien': bien, 'images': images, 'moyenne_avis': moyenne_avis, 'related_biens': related_biens})#     reservation = Biens.objects.get(pk=bien_id)
 #     return render(request, 'users/do_reservation.html', {'reservation': reservation})
 
 
@@ -158,12 +182,12 @@ def profile(request):
 def updateProfile(request):
     user = request.user
     if request.method == 'POST':
-        form = CustomUserForm(request.POST, instance=user)
+        form = UserUpdateForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('updateProfile')  # Rediriger vers la page de profil après la mise à jour
+            return redirect('profile')  # Rediriger vers la page de profil après la mise à jour
     else:
-        form = CustomUserForm(instance=user)
+        form = UserUpdateForm(instance=user)
     return render(request, 'users/updateProfile.html', {'form': form})
 
 
@@ -211,19 +235,34 @@ def header(request):
 #     return render(request, 'users/list_user_bien.html', context)
 
 
-# Dans views.py
 
-@login_required()
+@login_required
 def list_user_bien(request):
     # Récupérer les biens de l'utilisateur connecté
     user_biens = Biens.objects.filter(proprietaire=request.user).order_by('-date_created')
 
+    # Filtrer les biens en fonction de la recherche (si spécifiée dans la requête GET)
+    search_query = request.GET.get('q')
+    if search_query:
+        user_biens = user_biens.filter(nom__icontains=search_query)
+
     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
     category = request.GET.get('category')
     if category and category != 'all':
-        user_biens = user_biens.filter(categories=category).order_by('-date_created')
+        user_biens = user_biens.filter(categories=category).order_by('-date_created')# Dans views.py
 
-    return render(request, 'users/list_user_bien.html', {'user_biens': user_biens, 'category': category})
+    return render(request, 'users/list_user_bien.html', {'user_biens': user_biens, 'category': category})# @login_required()
+# def list_user_bien(request):
+#     # Récupérer les biens de l'utilisateur connecté
+#     user_biens = Biens.objects.filter(proprietaire=request.user).order_by('-date_created')
+#     for bien in user_biens:
+#         bien.average_rating = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']
+#     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
+#     category = request.GET.get('category')
+#     if category and category != 'all':
+#         user_biens = user_biens.filter(categories=category).order_by('-date_created')
+#
+#     return render(request, 'users/list_user_bien.html', {'user_biens': user_biens, 'category': category})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -234,16 +273,28 @@ class ListUserBienView(View):
         return render(request, 'users/list_user_bien.html', {'user_biens': user_biens})
 
 
-
-def ajouter_avis(request):
+@login_required
+def ajouter_avis(request,bien_id):
+    bien = get_object_or_404(Biens, pk=bien_id)
+    locataire = request.user
     if request.method == 'POST':
         form = AvisForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('home_without_filter')
+            avis = form.save(commit=False)
+            avis.bien = bien
+            avis.locataire = locataire
+            avis.save()
+            return redirect('detail_bien', bien_id=bien_id)  # Redirection vers detail_bien avec bien_id
     else:
         form = AvisForm()
-    return render(request, 'users/ajouter_avis.html', {'form': form})
+            
+    return render(request, 'users/ajouter_avis.html', {'form': form, 'bien': bien})
+
+
+
+
+
+
 
 
 class EditBienView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):

@@ -66,8 +66,13 @@
             <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <p><label>Prix Total : </label><span class="mx-4" id="total-price">{{ bien.prix }} F</span></p>
-            <button type="submit" class="btn bg-warning" style="color: white; background-color: yellow;">CONFIRMER</button>
+            <p><label>Prix Total : </label><span class="mx-4 t" id="total-price">{{ bien.prix }} F</span></p>
+<!--            <button type="submit" class="btn bg-warning" style="color: dark; background-color: yellow;">CONFIRMER</button>-->
+                <div class="text-center">
+                <div class="form-group mt-2 bg-warning" id="signup-button">
+                    <button type="submit" class="btn_login bg-warning text-dark">JE CONFIRME</button>
+                </div>
+      </div>
         </form>
   </div>
 
@@ -82,6 +87,10 @@
       <strong>Nom du locataire :</strong><span class="text-warning"  style="float: right;">{{ request.user.username }}</span>
       <br>
     </div>
+    <div id="client">
+      <strong>Email du locataire :</strong><span class="text-warning"  style="float: right;">{{ request.user.email }}</span>
+      <br>
+    </div>
     <div id="vendeur">
       <strong>Nom du propriétaire :</strong><span class="text-warning"  style="float: right;">{{ bien.proprietaire }}</span>
       <br>
@@ -90,18 +99,22 @@
       <strong>Prix pour 1 jour :</strong><span class="text-warning" style="float: right;">{{ bien.prix }} F</span>
       <br>
     </div>
+<!--    <div id="vendeur">-->
+<!--      <strong>Nombre de jours :</strong><span class="text-warning" style="float: right;">&#45;&#45;&#45;&#45;</span>-->
+<!--      <br>-->
+<!--    </div>-->
     <div id="vendeur">
-      <strong>Nombre de jours :</strong><span class="text-warning" style="float: right;">----</span>
-      <br>
-    </div>
-    <div id="vendeur">
-      <strong>Prix Total : </strong><span class="text-warning" id="total-price2" style="float: right;">{{ bien.prix }}</span>
+      <strong>Prix Total : </strong><span class="text-warning" id="total-price2" style="float: right;">{{ bien.prix }} F</span>
       <br>
     </div>
 
 
     <p class="text-warning text-center" ><strong >Conditions de paiement :</strong> 24 heures</p>
-
+      <div class="text-center">
+          <div class="form-group mt-2 bg-warning" id="signup-button">
+                    <button class="btn_login bg-warning"><a href="{% url 'updateProfile' %} " class="text-dark" style="text-decoration:none" >MODIFIER MES INFOS</a></button>
+                </div>
+      </div>
 </div>
 </div>
 

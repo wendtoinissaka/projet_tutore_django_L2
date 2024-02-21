@@ -1,17 +1,30 @@
-<!DOCTYPE html>
-<html lang="fr">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <title>Ajouter un Avis</title>
-</head>
-<body>
-    <h1>Ajouter un Avis</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Ajouter Avis</button>
-    </form>
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+Ajouter un Avis
+{% endblock title %}
+ {% load static %}
 
-</body>
-</html>
+{% block content %}
+
+<div class="content-container_login">
+    <div class="login-form_login" >
+        <h1 class="text-white">Ajouter un Avis</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <style>
+                /* Redimensionner le textarea */
+                textarea {
+                    max-height: 200px; /* Hauteur maximale */
+                    height: auto; /* Taille automatique en fonction du contenu */
+                    resize: vertical; /* Permettre le redimensionnement vertical */
+                }
+            </style>
+            <div class="form-group mt-2 bg-warning" id="signup-button">
+                <button type="submit" class="btn_login bg-warning">AJOUTER AVIS</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
