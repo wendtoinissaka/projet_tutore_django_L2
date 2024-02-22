@@ -3,70 +3,27 @@
 {% load static %}
 
 {% block content %}
-    <link rel="stylesheet" href="{% static 'users/css/main.css' %}">
-    <style>
-        /* Styles spécifiques au bloc content */
-        .content-container {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center; /* Centrer horizontalement */
-            align-items: center; /* Centrer verticalement */
-            min-height: 80vh; /* Hauteur minimale de 80% de la hauteur de la fenêtre */
-        }
-
-        /* Style du formulaire */
-        .form-style {
-            width: 100%;
-            max-width: 400px; /* Largeur maximale du formulaire */
-            padding: 20px;
-            text-align: center;
-            border-radius: 10px; /* Bord arrondi */
-            background-color: #343a40; /* Fond gris foncé */
-
-        }
-
-        /* Style du bouton */
-        .btn {
-            padding: 5px 5px;
-            font-size: 1rem;
-            border: none; /* Supprimer la bordure */
-            color: #fff; /* Couleur du texte blanc */
-            border-radius: 5px; /* Bord arrondi */
-            transition: background-color 0.3s ease; /* Animation de transition */
-            text-decoration: none; /* Supprimer le soulignement du texte */
-        }
-
-        /* Style au survol du bouton */
-        .btn:hover {
-        }
-
-        /* Style du lien */
-        .link {
-            color: #fff; /* Couleur du texte blanc */
-        }
-
-        /* Style du champ obligatoire */
-        .required-field::after {
-            content: "*"; /* Ajouter un astérisque */
-            color: red; /* Couleur de l'astérisque */
-            margin-left: 5px; /* Marge à gauche de l'astérisque */
-            font-size: 12px; /* Taille de police */
-        }
-    </style>
-
-    <div class="content-container">
-        <div class="form-style" >
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <fieldset class="form-group ">
-                    <legend class="border-bottom mb-4" style="color: white;">Créer un nouveau produit</legend>
-                    {{ form|crispy }}
-                </fieldset>
-<!--                <button class="btn" type="submit">Créer le produit</button>-->
-                <div class="form-group mt-2 bg-warning" id="signup-button">
-                    <button class="btn ">Sign Up</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<style>
+  /* Appliquez le style de limited-width sur les div parents des textarea */
+  .limited-width textarea, .limited-width select {
+    /* Limitez la largeur à 80% de son parent */
+    max-width: 80%;
+    /* Centrez horizontalement les textarea et select */
+    margin: 0 auto;
+  }
+</style>
+<div class="content-container_login">
+  <div class="login-form_login">
+    <h1 class="text-white">Créer un nouveau produit</h1>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <fieldset class="form-group ">
+        {{ form|crispy }}
+      </fieldset>
+      <div class="form-group mt-2 bg-warning" id="signup-button">
+        <button class="btn ">Créer le produit</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

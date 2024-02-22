@@ -33,7 +33,7 @@
 
 /* Underline on hover */
 .underline-on-hover:hover {
-    border-bottom: 5px solid Yellow;
+    border-bottom: 5px solid underline-on-hover;
 }
 
 

@@ -1,16 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <title>Reservation Detail</title>
-</head>
-<body>
-    <h1>Reservation Detail</h1>
+{% extends 'users/base.html' %}
+ {% load static %}
+
+{% block content %}
+<div class="content-container_login">
+    <div class="login-form_login" >
+
+
+
+    <h1 class="text-white">Reservation Detail</h1>
     <!-- Afficher les détails de la réservation -->
 
     {% if not payment_expired %}
-    <p id="payment-countdown"></p>
+    <p class="text-white">Temps restant pour le paiement : </p> <p class="text-warning" id="payment-countdown"></p>
     <script>
         // Compte à rebours
         var deadline = new Date("{{ reservation.date_expiration_paiement|date:'Y-m-d H:i:s' }}").getTime();
@@ -22,7 +23,7 @@
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("payment-countdown").innerHTML = "Temps restant pour le paiement : " + hours + "h " + minutes + "m " + seconds + "s ";
+            document.getElementById("payment-countdown").innerHTML = " " + hours + "h " + minutes + "m " + seconds + "s ";
 
             if (distance < 0) {
                 clearInterval(x);
@@ -31,5 +32,25 @@
         }, 1000);
     </script>
     {% endif %}
-</body>
-</html>
+
+
+        <form method="post" action="{% url 'cancel_reservation' reservation.id %}">
+                {% csrf_token %}
+<!--                <input type="submit" value="Annuler" class="btn btn-danger"/>-->
+            <button class="btn mx-1" style="color: white; background-color: #fd5e14;"  id="header-links"> Annuler la réservation </button>
+
+        </form>
+
+<!--        <div class="form-group mt-2 bg-warning" id="signup-button">-->
+<!--            <button class="btn_login bg-warning text-dark " style=""><a href="{% url 'process_payment' reservation.id %}"  style="text-decoration:none; color :black;">Effectuer le paiement</a></button>-->
+<!--        </div>-->
+<div class="form-group mt-2 bg-warning" id="signup-button">
+    <button class="btn_login bg-warning text-dark">
+        <a href="{% url 'process_payment' reservation_id=reservation.id %}" style="text-decoration:none; color:black;">Effectuer le paiement</a>
+    </button>
+</div>
+
+
+            </div>
+</div>
+{% endblock %}

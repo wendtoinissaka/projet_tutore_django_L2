@@ -24,11 +24,15 @@
             <td>
               <form method="post" action="{% url 'cancel_reservation' reservation.id %}">
                 {% csrf_token %}
-                <input type="submit" value="Annuler" class="btn btn-danger"/>
+                <button class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> ANNULER </button>
+
+
               </form>
             </td>
             <td>
-              <a href="{% url 'make_payment' reservation.id %}" class="btn btn-primary">Effectuer le paiement</a>
+        <div class="form-group mt-2 bg-warning" id="signup-button">
+            <button class="btn_login bg-warning text-dark " style=""><a href="{% url 'process_payment' reservation.id %}"  style="text-decoration:none; color :black;">Effectuer le paiement</a></button>
+        </div>
             </td>
           </tr>
         {% endfor %}

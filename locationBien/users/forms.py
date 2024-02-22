@@ -79,3 +79,12 @@ class CustomUserForm(forms.ModelForm):
         model = CustomUser
         fields = ['nom', 'numero_tel', 'email', 'password']  # Ajoutez d'autres champs au besoin
 
+
+
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    # subject = forms.CharField(max_length=100)
+    message = forms.CharField(widget=forms.Textarea)
+

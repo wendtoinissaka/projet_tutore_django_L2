@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'users/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}Contactez-nous{% endblock %}
+
+<style>
+/* Sélectionnez le textearea avec la classe personalisée "limited-width" */
+.limited-width textarea {
+  /* Limitez la largeur à 80% de son parent */
+  max-width: 80%;
+  /* Centrez horizontalement le textearea */
+  margin: 0 auto;
+}
+</style>
+
+{% block content %}
+  <div class="content-container_login">
+    <div class="login-form_login">
+      <h1 class="text-white">Contactez-nous</h1>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group mb-4">
+          {{ form.name|as_crispy_field }}
+        </div>
+        <div class="form-group mb-4 limited-width">
+          {{ form.email|as_crispy_field }}
+        </div>
+        <div class="form-group mb-4 limited-width">
+          {{ form.message|as_crispy_field }}
+        </div>
+        <div class="form-group mt-2 bg-warning" id="signup-button">
+          <button type="submit" class="btn_login bg-warning text-dark " style="">ENVOYER</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

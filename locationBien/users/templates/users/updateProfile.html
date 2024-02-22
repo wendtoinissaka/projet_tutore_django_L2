@@ -1,23 +1,43 @@
 {% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+
 {% block title %}
 login page
 {% endblock title %}
 
+<style>
+  /* Appliquez le style de limited-width sur les div parents des textarea */
+  .limited-width textarea, .limited-width select {
+    /* Limitez la largeur à 80% de son parent */
+    max-width: 80%;
+    /* Centrez horizontalement les textarea et select */
+    margin: 0 auto;
+  }
+</style>
+
 {% block content %}
-
-    <div class="content-container_login ">
-
-        <div class="login-form_login bg-dark">
-          <h2 class="text-white">MODIFICATION</h2>
-            <form action="" method="POST">
-              {% csrf_token %}
-              {{ form.as_p }}
-                <div class="form-group mt-2 bg-warning" id="signup-button">
-                    <button type="submit" class="btn_login bg-warning text-dark">ENREGISTRER MODIFICATION</button>
-                </div>
-            </form>
+  <div class="content-container_login ">
+    <div class="login-form_login bg-dark">
+      <h2 class="text-white">MODIFICATION</h2>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group mb-4 limited-width">
+          {{ form.username|as_crispy_field }}
         </div>
+        <div class="form-group mb-4 limited-width">
+          {{ form.nom|as_crispy_field }}
+        </div>
+        <div class="form-group mb-4 limited-width">
+          {{ form.numero_tel|as_crispy_field }}
+        </div>
+        <div class="form-group mb-4 limited-width">
+          {{ form.email|as_crispy_field }}
+        </div>
+        <div class="form-group mt-2 bg-warning" id="signup-button">
+          <button type="submit" class="btn_login bg-warning text-dark">ENREGISTRER MODIFICATION</button>
+        </div>
+      </form>
     </div>
+  </div>
 {% endblock %}

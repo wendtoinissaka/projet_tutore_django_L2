@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User, AbstractUser
@@ -35,6 +36,20 @@ class Biens(models.Model):
     date_disponibilite_debut = models.DateTimeField(null=True, blank=True)
     date_disponibilite_fin = models.DateTimeField(null=True, blank=True)
 
+    def update_state(self):
+        reservations = self.reservation_set.filter(status='validee', paiement_effectue=True)
+        now = timezone.now()
+
+        # Update bien state based on reservations
+        for reservation in reservations:
+            if reservation.date_expiration_paiement > now:
+                # Reservation payment not expired, bien is 'en_cours'
+                self.etat = 'en_cours'
+            else:
+                # Reservation payment expired, bien is 'disponible'
+                self.etat = 'disponible'
+
+        self.save()
     def is_available(self):
         return self.date_disponibilite_debut is None or self.date_disponibilite_fin is None
 
@@ -88,7 +103,14 @@ class Biens(models.Model):
             return time_difference
         return None
 
-
+    def get_time_until_available(self):
+        if self.etat == 'deja_reserve':
+            # Calculer le temps restant jusqu'à ce que le bien soit disponible
+            now = timezone.now()
+            if self.date_disponibilite_fin and now < self.date_disponibilite_fin:
+                time_difference = self.date_disponibilite_fin - now
+                return time_difference
+        return None
 
 class Reservation(models.Model):
     nombre_jours = models.PositiveIntegerField(default=1)
@@ -145,12 +167,21 @@ class Avis(models.Model):
     def __str__(self):
         return f'{self.note}/5 par {self.locataire} sur {self.bien}'
 
+
+User = get_user_model()
+
 class Payment(models.Model):
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    reference = models.CharField(max_length=255)
-    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name='payments')
-    paid_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='payments')
-    created_at = models.DateTimeField(auto_now_add=True)
+    STATUT_CHOICES = (
+        ('en_attente', 'En attente'),
+        ('validee', 'Validée'),
+        ('annulee', 'Annulée'),
+    )
+
+    bien = models.ForeignKey(Biens, on_delete=models.CASCADE)
+    locataire = models.ForeignKey(User, on_delete=models.CASCADE)
+    montant = models.DecimalField(max_digits=10, decimal_places=2)
+    date_paiement = models.DateTimeField(auto_now_add=True)
+    statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='en_attente')
 
     def __str__(self):
-        return f'{self.paid_by.username}: ${self.amount} ({self.reservation})'
+        return f"Paiement de {self.montant} pour {self.bien.nom} par {self.locataire.username}, statut: {self.statut}"

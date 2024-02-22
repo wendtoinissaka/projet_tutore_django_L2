@@ -168,3 +168,35 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST =  config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', 587)
 EMAIL_USE_TLS = True
+
+
+# PAYPAL_CONFIG = {
+#     "mode": "sandbox",
+#     "client_id": "sb-a5rrc29637788@personal.example.com",
+#     "client_secret": "sb-wg7h329637786@business.example.com",
+# }
+#
+# PAYPAL_MODE = "sandbox"
+# PAYPAL_REDIRECT_URI = "http://localhost:8000/execute_payment/"
+# PAYPAL_CANNEL_URI = "http://localhost:8000/cancel_payment/"
+# # Add this line after your other settings :
+# NOTIFY_URL = "http://localhost:8000/ipn/"
+# # Add this line after your other settings :
+# EXPERIENCE_PROFILE_ID = ""
+#
+# if PAYPAL_MODE == "sandbox":
+#     PAYPAL_CLIENT_ID = "sb-a5rrc29637788@personal.example.com"
+#     PAYPAL_SECRET = "sb-wg7h329637786@business.example.com"
+# else:
+#     PAYPAL_CLIENT_ID = "sb-a5rrc29637788@personal.example.com"
+#     PAYPAL_SECRET = "sb-wg7h329637786@business.example.com"
+#
+
+PAYPAL_CLIENT_ID = "AcUb_UCmYGIN5ivl6Y9IArqmdprh8bB2dFnPDo1OXI9-LxTgRJpA9gwNxSFg39H9MT4kjO3QooMHqy4l"
+PAYPAL_CLIENT_SECRET = "EMFGnxVn2GbRGADQ-XNaplbt1HITpdb6TERzuJrDFasjH8U0TMd2lgo9jhX929WT2QB2PZz6ua4cLijw"
+PAYPAL_MODE = "sandbox"  # "sandbox" or "live"
+# URL de retour après le paiement
+PAYPAL_RETURN_URL = "execute_payment"
+
+# URL d'annulation du paiement
+PAYPAL_CANCEL_URL = "cancel_payment"

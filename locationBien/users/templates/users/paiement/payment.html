@@ -1,0 +1,17 @@
+<!-- Dans payment.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Processus de paiement</title>
+</head>
+<body>
+    <h1>Processus de paiement</h1>
+    <form action="{% url 'process_payment' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Payer avec PayPal</button>
+    </form>
+</body>
+</html>

@@ -169,5 +169,5 @@ button {
         }
         /* Style pour ajouter une ligne en bas lors du survol */
 .underline-on-hover:hover {
-    border-bottom: 5px solid Yellow; /* Couleur et épaisseur de la ligne */
+    border-bottom: 5px solid underline-on-hover; /* Couleur et épaisseur de la ligne */
 }

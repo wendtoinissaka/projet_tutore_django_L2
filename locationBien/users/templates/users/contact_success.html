@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+
+{% extends 'users/base.html' %}
+ {% load static %}
+{% block title %}Message envoyé{% endblock %}
+
+{% block content %}
+
+    <div class="content-container_login">
+      <div class="login-form_login" >
+        <h1 class="text-white">Merci ! Votre message a bien été envoyé.</h1>
+        <p class="text-warning">Nous reviendrons vers vous dans les plus brefs délais.</p>
+        <div class="form-group mt-2 bg-warning" id="signup-button">
+            <button class="btn_login bg-warning text-dark " style=""><a href="{% url 'home_without_filter' %} " style="text-decoration:none; color :black;" >ACCUEIL</a></button>
+        </div>
+        </div>
+
+    </div>
+{% endblock %}
