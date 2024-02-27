@@ -114,6 +114,8 @@ class Biens(models.Model):
 
 class Reservation(models.Model):
     nombre_jours = models.PositiveIntegerField(default=1)
+    debut_reservation = models.DateField()
+    fin_reservation = models.DateField()
     prix_total = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], null=True)
     paiement_effectue = models.BooleanField(default=False)
     date_expiration_paiement = models.DateTimeField(null=True, blank=True)

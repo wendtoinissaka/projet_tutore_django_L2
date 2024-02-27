@@ -1,5 +1,6 @@
 amqp==5.2.0
-asgiref==3.7.2
+asgiref==3.6.0
+async-timeout==4.0.3
 beautifulsoup4==4.12.3
 billiard==4.2.0
 Brotli==1.1.0
@@ -16,17 +17,21 @@ crispy-bootstrap5==2023.10
 crispy-forms-materialize==0.2
 cryptography==42.0.3
 cssselect2==0.7.0
+dj-database-url==1.2.0
 Django==5.0.1
 django-anymail==10.2
 django-bootstrap4==24.1
 django-crispy-forms==2.1
+django-environ==0.11.2
 django-jquery==3.1.0
 django-paypal==2.0
 django-widget-tweaks==1.5.0
 fonttools==4.49.0
+gunicorn==21.2.0
 html5lib==1.1
 idna==3.6
 kombu==5.3.5
+packaging==23.2
 paypal-checkout-serversdk==1.0.3
 paypalhttp==1.0.1
 paypalrestsdk==1.13.3
@@ -40,6 +45,7 @@ pyphen==0.14.0
 python-dateutil==2.8.2
 python-decouple==3.8
 pytz==2024.1
+redis==5.0.1
 requests==2.31.0
 six==1.16.0
 soupsieve==2.5

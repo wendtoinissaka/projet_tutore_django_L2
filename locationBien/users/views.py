@@ -14,7 +14,7 @@ from django.core.files.base import ContentFile
 from django.core.mail import EmailMessage, EmailMultiAlternatives, send_mail
 from django.db import transaction
 from django.db.models import Avg
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.template.loader import render_to_string
@@ -58,20 +58,6 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'users/login.html', {'form': form})
 
-# def user_login(request):
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data['username']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, username=username, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 return redirect('profile')  # Rediriger vers la page de profil ou toute autre page après la connexion réussie
-#     else:
-#         form = LoginForm()
-#     return render(request, 'users/login.html', {'form': form})
-#
 
 @login_required()
 def create_product(request):
@@ -101,19 +87,6 @@ def home_without_filter(request):
         biens = biens.filter(nom__icontains=search_query)#     for bien in biens:# #     return render(request, 'users/home.html', {'biens': produits})
 #         bien.moyenne_avis = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']#     # Récupérer tous les biens
     return render(request, 'users/home.html', {'biens': biens, 'category': category})# #     biens = Biens.objects.all().order_by('-date_created')
-#     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)#
-#     category = request.GET.get('category')#     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
-#     if category and category != 'all':#     category = request.GET.get('category')
-#         biens = biens.filter(categories=category).order_by('-date_created')#     if category and category != 'all':
-# #         biens = biens.filter(categories=category).order_by('-date_created')
-#     return render(request, 'users/home.html', {'biens': biens, 'category': category})#
-#     return render(request, 'users/home.html', {'biens': biens, 'category': category})
-
-
-
-
-
-
 
 
 
@@ -127,20 +100,7 @@ def home_with_filter(request):
         biens = Biens.objects.filter(categories=category).order_by('-date_created')
     return render(request, 'users/filter_page.html', {'biens_a_filtrer': biens, 'category': category})
 
-# def detail_bien(request, bien_id):
-#     bien = Biens.objects.get(pk=bien_id)
-#     return render(request, 'users/detail_bien.html', {'bien': bien})
 
-# def detail_bien(request, bien_id):
-#     bien = Biens.objects.get(pk=bien_id)
-#     total_images = sum([bool(getattr(bien, attr)) for attr in [
-#         'image_principale', 'image_facultative_1', 'image_facultative_2']])
-#     images = []
-#     for i in range(total_images):
-#         attr = f"image_principale" if i == 0 else f"image_facultative_{i}"
-#         if hasattr(bien, attr):
-#             images.append(getattr(bien, attr))
-#     return render(request, 'users/detail_bien.html', {'bien': bien, 'images': images})
 
 from django.db.models import Avg
 
@@ -159,13 +119,6 @@ def detail_bien(request, bien_id):
     related_biens = bien.get_related_biens()
 # def do_reservation(request, bien_id):
     return render(request, 'users/detail_bien.html', {'bien': bien, 'images': images, 'moyenne_avis': moyenne_avis, 'related_biens': related_biens})#     reservation = Biens.objects.get(pk=bien_id)
-#     return render(request, 'users/do_reservation.html', {'reservation': reservation})
-
-
-# def custom_logout(request):
-#     logout(request)
-#     # Ajoutez ici le code pour personnaliser la redirection après la déconnexion
-#     return redirect('logout')
 
 def register(request):
     if request.method == "POST":
@@ -201,10 +154,6 @@ def updateProfile(request):
 
 
 
-
-
-
-
 def user_update(request):
     if request.method == 'POST':
         form = UserUpdateForm(request.POST, instance=request.user)
@@ -235,13 +184,6 @@ def error_404_view(request, exeception):
 def header(request):
     return render(request, 'users/header.html')
 
-# @login_required
-# def list_user_bien(request):
-#     user = request.user
-#     biens = Biens.objects.filter(proprietaire=user)
-#     context = {'biens': biens}
-#     return render(request, 'users/list_user_bien.html', context)
-
 
 
 @login_required
@@ -260,17 +202,6 @@ def list_user_bien(request):
         user_biens = user_biens.filter(categories=category).order_by('-date_created')# Dans views.py
 
     return render(request, 'users/list_user_bien.html', {'user_biens': user_biens, 'category': category})# @login_required()
-# def list_user_bien(request):
-#     # Récupérer les biens de l'utilisateur connecté
-#     user_biens = Biens.objects.filter(proprietaire=request.user).order_by('-date_created')
-#     for bien in user_biens:
-#         bien.average_rating = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']
-#     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
-#     category = request.GET.get('category')
-#     if category and category != 'all':
-#         user_biens = user_biens.filter(categories=category).order_by('-date_created')
-#
-#     return render(request, 'users/list_user_bien.html', {'user_biens': user_biens, 'category': category})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -297,10 +228,6 @@ def ajouter_avis(request,bien_id):
         form = AvisForm()
             
     return render(request, 'users/ajouter_avis.html', {'form': form, 'bien': bien})
-
-
-
-
 
 
 
@@ -334,58 +261,9 @@ class DeleteBienView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
-@login_required
-def reservation_detail(request, reservation_id):
-    reservation = get_object_or_404(Reservation, pk=reservation_id)
-    payment_expired = reservation.is_payment_expired()
-    return render(request, 'users/reservation_detail.html', {'reservation': reservation, 'payment_expired': payment_expired})
-
-@login_required
-def reservation_page(request):
-    # Récupérer les réservations de l'utilisateur connecté
-    reservations = Reservation.objects.filter(locataire=request.user, status='en_attente')
-    return render(request, 'users/reservation_page.html', {'reservations': reservations})
+# reservation et paiement
 
 
-
-@login_required
-def do_reservation(request, bien_id):
-    bien = get_object_or_404(Biens, pk=bien_id)
-    if bien.etat != 'disponible':
-        messages.error(request, "Le bien n'est pas disponible pour le moment.")
-        return redirect('detail_bien', bien_id=bien.id)
-
-    if request.method == 'POST':
-        form = ReservationForm(request.POST)
-        if form.is_valid():
-            reservation = form.save(commit=False)
-            reservation.bienloue = bien
-            reservation.locataire = request.user
-            reservation.proprietaire = bien.proprietaire
-            reservation.prix_total = bien.prix * reservation.nombre_jours
-            reservation.save()
-
-            # Mettre à jour l'état du bien en "en_cours"
-            bien.etat = 'en_cours'
-            bien.save()
-
-            # Définir la date d'expiration du paiement à 15 minutes à partir de maintenant
-            reservation.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=15)
-            reservation.save()
-
-            # Envoyer l'e-mail personnalisé
-            subject = "Confirmation de réservation chez Capadata"
-            message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation, 'total_price': reservation.prix_total})
-            html_message = render_to_string('users/emails/email_template.html', {'bien': bien, 'reservation': reservation,  'total_price': reservation.prix_total})
-            plain_message = strip_tags(html_message)  # Version texte brut du HTML
-
-            send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
-
-            return redirect('reservation_detail', reservation_id=reservation.id)
-    else:
-        form = ReservationForm()
-
-    return render(request, 'users/create_reservation.html', {'form': form, 'bien': bien})
 
 
 
@@ -403,17 +281,23 @@ def do_reservation(request, bien_id):
 #             reservation.bienloue = bien
 #             reservation.locataire = request.user
 #             reservation.proprietaire = bien.proprietaire
-#             reservation.prix_total = bien.prix * reservation.nombre_jours
+#
+#             # Calcul du nombre de jours de réservation
+#             debut_reservation = form.cleaned_data['debut_reservation']
+#             fin_reservation = form.cleaned_data['fin_reservation']
+#             nombre_jours = (fin_reservation - debut_reservation).days + 1
+#             reservation.nombre_jours = nombre_jours
+#
+#             # Calcul du prix total en fonction du nombre de jours de réservation
+#             reservation.prix_total = bien.prix * nombre_jours
 #             reservation.save()
 #
-#             # Mettre à jour l'état du bien en réservation_en_cours et la date d'expiration du paiement
+#             # Mettre à jour l'état du bien en "en_cours"
 #             bien.etat = 'en_cours'
-#             bien.date_disponibilite_debut = None
-#             bien.date_disponibilite_fin = None
 #             bien.save()
 #
-#             # Définir la date d'expiration du paiement à 24 heures à partir de maintenant
-#             reservation.date_expiration_paiement = timezone.now() + timezone.timedelta(hours=24)
+#             # Définir la date d'expiration du paiement à 15 minutes à partir de maintenant
+#             reservation.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=15)
 #             reservation.save()
 #
 #             # Envoyer l'e-mail personnalisé
@@ -429,6 +313,258 @@ def do_reservation(request, bien_id):
 #         form = ReservationForm()
 #
 #     return render(request, 'users/create_reservation.html', {'form': form, 'bien': bien})
+
+
+@login_required
+def do_reservation(request, bien_id):
+    bien = get_object_or_404(Biens, pk=bien_id)
+    if bien.etat != 'disponible':
+        messages.error(request, "Le bien n'est pas disponible pour le moment.")
+        return redirect('detail_bien', bien_id=bien.id)
+
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            reservation = form.save(commit=False)
+            reservation.bienloue = bien
+            reservation.locataire = request.user
+            reservation.proprietaire = bien.proprietaire
+
+            # Calcul du nombre de jours de réservation
+            debut_reservation = form.cleaned_data['debut_reservation']
+            fin_reservation = form.cleaned_data['fin_reservation']
+            nombre_jours = (fin_reservation - debut_reservation).days + 1
+            reservation.nombre_jours = nombre_jours
+
+            # Calcul du prix total en fonction du nombre de jours de réservation
+            reservation.prix_total = bien.prix * nombre_jours
+            reservation.save()
+
+            # Créer une instance de Reservation avec l'état initial et la date d'expiration du paiement
+            reservation.status = 'en_attente'
+            reservation.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=15)
+            reservation.save()
+
+            # Planifier la mise à jour de l'état du bien après la durée de la réservation
+            update_bien_state.apply_async((bien.id,), countdown=nombre_jours * 24 * 60 * 60)
+
+            # Envoyer l'e-mail personnalisé
+            subject = "Confirmation de réservation chez Capadata"
+            message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation,
+                                                                          'total_price': reservation.prix_total})
+            html_message = render_to_string('users/emails/email_template.html',
+                                            {'bien': bien, 'reservation': reservation,
+                                             'total_price': reservation.prix_total})
+            plain_message = strip_tags(html_message)  # Version texte brut du HTML
+
+            send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
+
+        return redirect('reservation_detail', reservation_id=reservation.id)
+    else:
+        form = ReservationForm()
+
+    return render(request, 'users/create_reservation.html', {'form': form, 'bien': bien})
+
+
+
+
+
+
+
+# @login_required
+# def do_reservation(request, bien_id):
+#     bien = get_object_or_404(Biens, pk=bien_id)
+#     if bien.etat != 'disponible':
+#         messages.error(request, "Le bien n'est pas disponible pour le moment.")
+#         return redirect('detail_bien', bien_id=bien.id)
+#
+#     if request.method == 'POST':
+#         form = ReservationForm(request.POST)
+#         if form.is_valid():
+#             reservation = form.save(commit=False)
+#             reservation.bienloue = bien
+#             reservation.locataire = request.user
+#             reservation.proprietaire = bien.proprietaire
+#
+#             # Calculer le nombre de jours entre la date de début et la date de fin
+#             date_debut = form.cleaned_data['debut_reservation']
+#             date_fin = form.cleaned_data['fin_reservation']
+#             nombre_jours = (date_fin - date_debut).days + 1  # Ajouter 1 car le jour de début est inclus
+#             reservation.nombre_jours = nombre_jours
+#
+#             reservation.prix_total = bien.prix * nombre_jours
+#             reservation.save()
+#
+#             # Mettre à jour l'état du bien en "en_cours"
+#             bien.etat = 'en_cours'
+#             bien.save()
+#
+#             # Définir la date d'expiration du paiement à 15 minutes à partir de maintenant
+#             reservation.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=15)
+#             reservation.save()
+#
+#             # Envoyer l'e-mail personnalisé
+#             subject = "Confirmation de réservation chez Capadata"
+#             message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation, 'total_price': reservation.prix_total})
+#             html_message = render_to_string('users/emails/email_template.html', {'bien': bien, 'reservation': reservation,  'total_price': reservation.prix_total})
+#             plain_message = strip_tags(html_message)  # Version texte brut du HTML
+#
+#             send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
+#
+#             return redirect('reservation_detail', reservation_id=reservation.id)
+#     else:
+#         form = ReservationForm()
+#
+#     return render(request, 'users/create_reservation.html', {'form': form, 'bien': bien})
+#
+
+
+
+# @login_required
+# def process_payment(request, reservation_id):
+#     reservation = Reservation.objects.get(id=reservation_id)
+#     montant_initial = reservation.prix_total
+#     montant_augmente = montant_initial * Decimal(1.20)
+#     montant_reservation = "{:.2f}".format(montant_augmente)
+#
+#     configure({
+#         "mode": "sandbox",
+#         "client_id": settings.PAYPAL_CLIENT_ID,
+#         "client_secret": settings.PAYPAL_CLIENT_SECRET
+#     })
+#
+#     payment = Payment({
+#         "intent": "sale",
+#         "payer": {
+#             "payment_method": "paypal"
+#         },
+#         "redirect_urls": {
+#             "return_url": request.build_absolute_uri(reverse('execute_payment') + '?reservation_id=' + str(reservation_id)),
+#             "cancel_url": request.build_absolute_uri(reverse('cancel_payment') + '?reservation_id=' + str(reservation_id))
+#         },
+#         "transactions": [{
+#             "amount": {
+#                 "total": montant_reservation,
+#                 "currency": "USD"
+#             },
+#             "description": "Paiement de réservation"
+#         }]
+#     })
+#
+#     if payment.create():
+#         for link in payment.links:
+#             if link.rel == "approval_url":
+#                 # Mettre à jour l'état du bien en "en_cours" et définir la date d'expiration du paiement à 15 minutes à partir de maintenant
+#                 bien = reservation.bienloue
+#                 bien.etat = 'en_cours'
+#                 bien.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=15)
+#                 bien.save()
+#                 return redirect(link.href)
+#     else:
+#         return render(request, 'users/paiement/payment_cancel.html')
+
+@login_required
+def process_payment(request, reservation_id):
+    reservation = Reservation.objects.get(id=reservation_id)
+
+    if reservation.is_payment_expired():
+        # Paiement expiré, remettre l'état du bien à disponible
+        reservation.bienloue.etat = 'disponible'
+        reservation.bienloue.save()
+        return render(request, 'payment_expired.html')
+
+    montant_initial = reservation.prix_total
+    montant_augmente = montant_initial * Decimal(1.20)
+    montant_reservation = "{:.2f}".format(montant_augmente)
+
+    configure({
+        "mode": "sandbox",
+        "client_id": settings.PAYPAL_CLIENT_ID,
+        "client_secret": settings.PAYPAL_CLIENT_SECRET
+    })
+
+    payment = Payment({
+        "intent": "sale",
+        "payer": {
+            "payment_method": "paypal"
+        },
+        "redirect_urls": {
+            "return_url": request.build_absolute_uri(reverse('execute_payment') + '?reservation_id=' + str(reservation_id)),
+            "cancel_url": request.build_absolute_uri(reverse('cancel_payment') + '?reservation_id=' + str(reservation_id))
+        },
+        "transactions": [{
+            "amount": {
+                "total": montant_reservation,
+                "currency": "USD"
+            },
+            "description": "Paiement de réservation"
+        }]
+    })
+
+    if payment.create():
+        for link in payment.links:
+            if link.rel == "approval_url":
+                # Mettre à jour l'état du bien en "en_cours" et définir la date d'expiration du paiement à 15 minutes à partir de maintenant
+                bien = reservation.bienloue
+                bien.etat = 'en_cours'
+                bien.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=15)
+                bien.save()
+                return redirect(link.href)
+    else:
+        # Paiement échoué, remettre l'état du bien à disponible
+        reservation.bienloue.etat = 'disponible'
+        reservation.bienloue.save()
+        return render(request, 'users/paiement/payment_cancel.html')
+
+
+@login_required
+def execute_payment(request):
+    reservation_id = request.GET.get('reservation_id')
+
+    if not reservation_id:
+        return HttpResponseNotFound("ID de réservation manquant dans la requête.")
+
+    try:
+        reservation = Reservation.objects.get(id=reservation_id)
+    except Reservation.DoesNotExist:
+        return HttpResponseNotFound("La réservation avec l'ID spécifié n'existe pas.")
+
+    # Vérifiez ici si le paiement a été effectué avec succès et mettez à jour l'état du bien en conséquence
+
+    return redirect('payment_success')  # Redirection vers une page par défaut
+
+
+@login_required
+def cancel_payment(request):
+    reservation_id = request.GET.get('reservation_id')
+    try:
+        reservation = Reservation.objects.get(id=reservation_id)
+    except Reservation.DoesNotExist:
+        return HttpResponse("La réservation n'existe pas.", status=404)
+
+    bien = reservation.bienloue
+    bien.etat = 'disponible'
+    bien.save()
+
+    return render(request, 'users/paiement/payment_cancel.html')
+
+def payment_success(request):
+    return render(request, 'users/paiement/payment_success.html')
+
+@login_required
+def reservation_detail(request, reservation_id):
+    reservation = get_object_or_404(Reservation, pk=reservation_id)
+    payment_expired = reservation.is_payment_expired()
+    return render(request, 'users/reservation_detail.html', {'reservation': reservation, 'payment_expired': payment_expired})
+
+
+
+
+@login_required
+def reservation_page(request):
+    # Récupérer les réservations de l'utilisateur connecté
+    reservations = Reservation.objects.filter(locataire=request.user, status='en_attente')
+    return render(request, 'users/reservation_page.html', {'reservations': reservations})
 
 
 
@@ -459,29 +595,6 @@ def validate_reservation(request, reservation_id):
     return redirect('reservation_detail', reservation_id=reservation.id)
 
 
-# @login_required
-# def validate_reservation(request, reservation_id):
-#     reservation = get_object_or_404(Reservation, pk=reservation_id)
-#
-#     # Vérifier si la date d'expiration du paiement est passée
-#     if reservation.date_expiration_paiement < timezone.now():
-#         # Si la date d'expiration est passée, annuler la réservation et remettre le bien à "disponible"
-#         reservation.bienloue.etat = 'disponible'
-#         reservation.bienloue.save()
-#         reservation.delete()
-#         return render(request, 'users/reservation_expired.html')
-#
-#     # Si la date d'expiration n'est pas passée, marquer la réservation comme validée
-#     reservation.status = 'validee'
-#     reservation.save()
-#
-#     # Mettre à jour l'état du bien en "en_cours"
-#     reservation.bienloue.etat = 'en_cours'
-#     reservation.bienloue.save()
-#
-#     return redirect('reservation_detail', reservation_id=reservation.id)
-#
-
 @login_required
 @transaction.atomic
 def cancel_reservation(request, reservation_id):
@@ -511,134 +624,13 @@ def confirm_cancel_reservation(request, reservation_id):
     return render(request, 'users/confirm_cancel_reservation.html', {'reservation': reservation})
 
 
-
-
-
-
-
-
-
-
 # Dans views.py
 
 # Vue pour le processus de paiement
 
 
-
-@login_required
-def process_payment(request, reservation_id):
-    reservation = Reservation.objects.get(id=reservation_id)
-    montant_initial = reservation.prix_total
-    montant_augmente = montant_initial * Decimal(1.20)
-    montant_reservation = "{:.2f}".format(montant_augmente)
-
-    configure({
-        "mode": "sandbox",
-        "client_id": settings.PAYPAL_CLIENT_ID,
-        "client_secret": settings.PAYPAL_CLIENT_SECRET
-    })
-
-    payment = Payment({
-        "intent": "sale",
-        "payer": {
-            "payment_method": "paypal"
-        },
-        "redirect_urls": {
-            # "return_url": request.build_absolute_uri(reverse('execute_payment')),
-            "return_url": request.build_absolute_uri(reverse('execute_payment') + '?reservation_id=' + str(reservation_id)),
-            "cancel_url": request.build_absolute_uri(reverse('cancel_payment') + '?reservation_id=' + str(reservation_id))
-        },
-        "transactions": [{
-            "amount": {
-                "total": montant_reservation,
-                "currency": "USD"
-            },
-            "description": "Paiement de réservation"
-        }]
-    })
-
-    if payment.create():
-        for link in payment.links:
-            if link.rel == "approval_url":
-                # Mettre à jour l'état du bien en "en_cours" et définir la date d'expiration du paiement à 15 minutes à partir de maintenant
-                bien = reservation.bienloue
-                bien.etat = 'en_cours'
-                bien.date_expiration_paiement = datetime.now() + timedelta(minutes=15)
-                bien.save()
-                return redirect(link.href)
-    else:
-        return render(request, 'users/paiement/payment_cancel.html')
-
-
-from django.http import HttpResponse, HttpResponseNotFound
-
-
-
-@login_required
-def execute_payment(request):
-    reservation_id = request.GET.get('reservation_id')
-
-    if not reservation_id:
-        return HttpResponseNotFound("ID de réservation manquant dans la requête.")
-
-    try:
-        reservation = Reservation.objects.get(id=reservation_id)
-    except Reservation.DoesNotExist:
-        return HttpResponseNotFound("La réservation avec l'ID spécifié n'existe pas.")
-
-    # Check if payment was successful
-    payment_success = request.GET.get('success') == 'true'
-
-    # Update bien state based on payment success
-    bien = reservation.bienloue
-    if payment_success:
-        # Payment successful, update bien state and schedule task to make it available after reservation duration
-        bien.etat = 'deja_reserve'
-        bien.save()
-        update_bien_state.apply_async((bien.id,), countdown=reservation.nombre_jours * 24 * 60 * 60)
-    else:
-        # Payment failed or not completed within 15 minutes, set bien state to 'disponible'
-        bien.etat = 'disponible'
-        bien.save()
-
-    return redirect('home_without_filter')  # Redirection vers une page par défaut
-
-
-
 # @login_required
-# def execute_payment(request):
-#     reservation_id = request.GET.get('reservation_id')
-#
-#     # Vérifier que reservation_id est passé dans la requête GET
-#     if not reservation_id:
-#         return HttpResponseNotFound("ID de réservation manquant dans la requête.")
-#
-#     try:
-#         reservation = Reservation.objects.get(id=reservation_id)
-#     except Reservation.DoesNotExist:
-#         # Gérer le cas où la réservation n'existe pas
-#         return HttpResponseNotFound("La réservation avec l'ID spécifié n'existe pas.")
-#
-#         # Check if payment was successful
-#         payment_success = request.GET.get('success') == 'true'
-#
-#         # Update bien state based on payment success
-#         bien = reservation.bienloue
-#         if payment_success:
-#             # Payment successful, update bien state and schedule task to make it available after reservation duration
-#             bien.etat = 'deja_reserve'
-#             bien.save()
-#             update_bien_state.apply_async((bien.id,), countdown=reservation.nombre_jours * 24 * 60 * 60)
-#         else:
-#             # Payment failed or not completed within 15 minutes, set bien state to 'disponible'
-#             bien.etat = 'disponible'
-#             bien.save()
-#
-#         return render(request, 'users/paiement/payment_success.html')
-
-
-# @login_required
-# def execute_payment(request):
+# def cancel_payment(request):
 #     reservation_id = request.GET.get('reservation_id')
 #     try:
 #         reservation = Reservation.objects.get(id=reservation_id)
@@ -646,45 +638,12 @@ def execute_payment(request):
 #         # Gérer le cas où la réservation n'existe pas
 #         return HttpResponse("La réservation n'existe pas.", status=404)
 #
-#     reservation.paiement_effectue = True
-#     reservation.save()
-#
 #     bien = reservation.bienloue
-#     bien.etat = 'deja_reserve'
+#     bien.etat = 'disponible'
 #     bien.save()
 #
-#     update_bien_state.apply_async((bien.id,), countdown=reservation.nombre_jours * 24 * 60 * 60)
+#     return render(request, 'users/paiement/payment_cancel.html')
 #
-#     return render(request, 'users/paiement/payment_success.html')
-
-@login_required
-def cancel_payment(request):
-    reservation_id = request.GET.get('reservation_id')
-    try:
-        reservation = Reservation.objects.get(id=reservation_id)
-    except Reservation.DoesNotExist:
-        # Gérer le cas où la réservation n'existe pas
-        return HttpResponse("La réservation n'existe pas.", status=404)
-
-    bien = reservation.bienloue
-    bien.etat = 'disponible'
-    bien.save()
-
-    return render(request, 'users/paiement/payment_cancel.html')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

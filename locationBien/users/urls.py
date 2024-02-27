@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_view
 from django.conf.urls import handler404
@@ -58,6 +58,13 @@ urlpatterns = [
                   path('process/<int:reservation_id>/', views.process_payment, name='process_payment'),
                   path('execute/', execute_payment, name='execute_payment'),
                   path('cancel/', cancel_payment, name='cancel_payment'),
+                  path('reservation/payment/success/', views.payment_success, name='payment_success')
     # Autres itinéraires…
+    # ##encore test paiement
+    # path('encorePai/', views.encoreHome, name='encoreHome'),
+    # path('encoresuccessful/', views.encoreSuccess, name='encoreSuccess'),
+    # path('encorecancelled/', views.encoreCancel, name='encoreCancel'),
+    # path('encorePaypal/', include('paypal_standard.ipn.urls')),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

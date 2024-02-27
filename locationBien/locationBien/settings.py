@@ -200,3 +200,7 @@ PAYPAL_RETURN_URL = "execute_payment"
 
 # URL d'annulation du paiement
 PAYPAL_CANCEL_URL = "cancel_payment"
+# settings.py
+
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'amqp://localhost'

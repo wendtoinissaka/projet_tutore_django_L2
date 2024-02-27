@@ -40,16 +40,18 @@
   }
 </style>
 
-  <script>
-        function updateTotalPrice() {
-            var numDays = parseInt(document.getElementById('id_nombre_jours').value);
-            var unitPrice = parseFloat('{{ bien.prix|floatformat:2 }}'.replace(',', '.')); // Récupérer le prix unitaire depuis le contexte Django
-            var totalPrice = numDays * unitPrice;
-            document.getElementById('total-price').innerText =  + totalPrice.toFixed(2) + "     F"; // Mettre à jour le prix total affiché
-            document.getElementById('total-price2').innerText =  + totalPrice.toFixed(2) + "     F"; // Mettre à jour le prix total affiché
-        }
-    </script>
-
+<script>
+    function updateTotalPriceAndDays() {
+        var startDate = new Date(document.getElementById('id_debut_reservation').value);
+        var endDate = new Date(document.getElementById('id_fin_reservation').value);
+        var numDays = (endDate - startDate) / (1000 * 60 * 60 * 24); // Calcul du nombre de jours entre les dates
+        var unitPrice = parseFloat('{{ bien.prix|floatformat:2 }}'.replace(',', '.')); // Récupérer le prix unitaire depuis le contexte Django
+        var totalPrice = numDays * unitPrice;
+        document.getElementById('total-price').innerText = totalPrice.toFixed(2) + " F"; // Mettre à jour le prix total affiché
+        document.getElementById('total-price2').innerText = totalPrice.toFixed(2) + " F"; // Mettre à jour le prix total affiché
+        document.getElementById('num-days').innerText = numDays; // Mettre à jour le nombre de jours affiché
+    }
+</script>
 
 {% if messages %}
 <ul class="messages">
@@ -63,17 +65,17 @@
 
 <div class="container">
   <div class="facture">
-            <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <p><label>Prix Total : </label><span class="mx-4 t" id="total-price">{{ bien.prix }} F</span></p>
-<!--            <button type="submit" class="btn bg-warning" style="color: dark; background-color: yellow;">CONFIRMER</button>-->
-                <div class="text-center">
-                <div class="form-group mt-2 bg-warning" id="signup-button">
-                    <button type="submit" class="btn_login bg-warning text-dark">JE CONFIRME</button>
-                </div>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <p><label>Prix Total : </label><span class="mx-4 t" id="total-price">{{ bien.prix }} F</span></p>
+      <!-- <button type="submit" class="btn bg-warning" style="color: dark; background-color: yellow;">CONFIRMER</button> -->
+      <div class="text-center">
+        <div class="form-group mt-2 bg-warning" id="signup-button">
+          <button type="submit" class="btn_login bg-warning text-dark">JE CONFIRME</button>
+        </div>
       </div>
-        </form>
+    </form>
   </div>
 
   <div class="facture">
@@ -99,28 +101,56 @@
       <strong>Prix pour 1 jour :</strong><span class="text-warning" style="float: right;">{{ bien.prix }} F</span>
       <br>
     </div>
-<!--    <div id="vendeur">-->
-<!--      <strong>Nombre de jours :</strong><span class="text-warning" style="float: right;">&#45;&#45;&#45;&#45;</span>-->
-<!--      <br>-->
-<!--    </div>-->
+    <div id="vendeur">
+      <strong>Nombre de jours :</strong><span class="text-warning" id="num-days" style="float: right;">1</span>
+      <br>
+    </div>
     <div id="vendeur">
       <strong>Prix Total : </strong><span class="text-warning" id="total-price2" style="float: right;">{{ bien.prix }} F</span>
       <br>
     </div>
 
-
     <p class="text-warning text-center" ><strong >Conditions de paiement :</strong> 24 heures</p>
-      <div class="text-center">
-          <div class="form-group mt-2 bg-warning" id="signup-button">
-                    <button class="btn_login bg-warning"><a href="{% url 'updateProfile' %} " class="text-dark" style="text-decoration:none" >MODIFIER MES INFOS</a></button>
-                </div>
+    <div class="text-center">
+      <div class="form-group mt-2 bg-warning" id="signup-button">
+        <button class="btn_login bg-warning"><a href="{% url 'updateProfile' %} " class="text-dark" style="text-decoration:none" >MODIFIER MES INFOS</a></button>
       </div>
-</div>
+    </div>
+  </div>
 </div>
 
-   <!-- Appeler la fonction updateTotalPrice lorsque la quantité de jours change -->
-    <script>
-        document.getElementById('id_nombre_jours').addEventListener('change', updateTotalPrice);
-    </script>
+<!-- Appeler la fonction updateTotalPriceAndDays lorsque les dates de début ou de fin changent -->
+<script>
+    document.getElementById('id_debut_reservation').addEventListener('change', updateTotalPriceAndDays);
+    document.getElementById('id_fin_reservation').addEventListener('change', updateTotalPriceAndDays);
+    // Fonction pour obtenir la date d'aujourd'hui au format YYYY-MM-DD
+    function getCurrentDate() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // janvier est 0!
+        var yyyy = today.getFullYear();
+
+        return yyyy + '-' + mm + '-' + dd;
+    }
+
+    // Fonction pour obtenir la date suivante au format YYYY-MM-DD
+    function getNextDate() {
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        var dd = String(tomorrow.getDate()).padStart(2, '0');
+        var mm = String(tomorrow.getMonth() + 1).padStart(2, '0'); // janvier est 0!
+        var yyyy = tomorrow.getFullYear();
+
+        return yyyy + '-' + mm + '-' + dd;
+    }
+
+    // Assigner la date d'aujourd'hui par défaut au champ de début de réservation
+    document.getElementById('id_debut_reservation').value = getCurrentDate();
+
+    // Assigner la date suivante par défaut au champ de fin de réservation
+    document.getElementById('id_fin_reservation').value = getNextDate();
+
+</script>
 
 {% endblock %}

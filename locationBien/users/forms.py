@@ -68,11 +68,19 @@ class AvisForm(forms.ModelForm):
 
 
 class ReservationForm(forms.ModelForm):
-    nombre_jours = forms.NumberInput(attrs={'id': 'quantity', 'min': 1, 'max': ''})
-
+    # class Meta:
+    #     model = Reservation
+    #     fields = ['debut_reservation', 'date_fin']  # Ajoutez les champs de date de début et de fin
     class Meta:
         model = Reservation
-        fields = ('nombre_jours',)
+        fields = ['debut_reservation', 'fin_reservation']
+        widgets = {
+            'debut_reservation': forms.DateInput(attrs={'type': 'date'}),
+            'fin_reservation': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+
+
 
 class CustomUserForm(forms.ModelForm):
     class Meta:
