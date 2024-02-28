@@ -1,0 +1,10 @@
+{% autoescape off %}
+Bonjour {{ user.username }},
+
+Veuillez cliquer sur le lien ci-dessous pour activer votre compte CHEZ CAPADATA :
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Cordialement, CAPADATA
+Vivez l'aventure, on s'occupe du reste.
+{% endautoescape %}

@@ -29,6 +29,7 @@
 
 <!-- Fruits Shop Start-->
 <div class="container-fluid fruite py-5">
+
     <div class="container py-5">
         <div class="tab-class text-center">
             <div class="row g-4">
@@ -62,6 +63,17 @@
             </div>
 <!-- templates/users/detail_bien.html -->
     <div class="row g-4 mx-2">
+        <form action="#" method="get">
+    <label for="etat" class="text-dark mx-4">Filtrer par état :</label>
+    <select name="etat" id="etat" class="p-2  rounded border-2" style="background-color:yellow;" onchange="this.form.submit()">
+        <option value="all" {% if etat == 'all' %}selected{% endif %}>Tous les états</option>
+        <option value="disponible" {% if etat == 'disponible' %}selected{% endif %}>Disponible</option>
+        <option value="deja_reserve" {% if etat == 'deja_reserve' %}selected{% endif %}>Déjà réservé</option>
+        <option value="en_cours" {% if etat == 'en_cours' %}selected{% endif %}>En cours</option>
+        <!-- Ajoutez d'autres options d'état selon vos besoins -->
+    </select>
+</form>
+
         {% if user_biens %}
         {% for bien in user_biens %}
             <div class="col-md-6 col-lg-4 col-xl-3">

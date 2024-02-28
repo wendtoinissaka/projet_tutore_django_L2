@@ -2,10 +2,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from . import views
+
+# from .views import register, activate
 from django.contrib.auth import views as auth_view
 from django.conf.urls import handler404
 from .views import error_404_view, create_product, user_update, EditBienView, DeleteBienView,  \
-    process_payment, execute_payment, cancel_payment
+    process_payment, execute_payment, cancel_payment, activate
 
 # handler404 = error_404_view
 handler404 = 'users.views.error_404_view'
@@ -18,6 +20,7 @@ urlpatterns = [
 
 
     path('register/', views.register, name='register'),
+    path('activate/<uidb64>/<token>/', activate, name='activate'),
     path('profile/', views.profile, name='profile'),
     path('updateProfile/', views.updateProfile, name='updateProfile'),
     path('login/', auth_view.LoginView.as_view(template_name='users/login.html'), name="login"),

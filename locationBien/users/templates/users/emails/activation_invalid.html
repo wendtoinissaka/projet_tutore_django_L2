@@ -1,0 +1,49 @@
+
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+ {% load static %}
+
+{% block content %}
+
+    <div class="content-container_login">
+        <div class="login-form_login" >
+
+
+
+
+
+      <h1 class="text-white">Activation compte!</h1>
+            <h3 class="text-warning">Un problème s'est survecue lors de l'activtion de votre compte!</h3>
+            <p class="text-warning">Le lien d'activation de votre compte est invalide ou a expiré. Veuillez contacter le support si vous avez besoin d'aide.</p>
+          <div class="form-group mt-2 bg-warning" id="signup-button">
+            <button class="btn_login bg-warning text-dark " style="">
+                <a href="{% url 'contactUs' %} " style="text-decoration:none; color :black;" >Contacter le support</a></button>
+          </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+{% extends 'users/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{ title }}</div>
+                    <div class="card-body">
+                        <p>Le lien d'activation de votre compte est invalide ou a expiré. Veuillez contacter le support si vous avez besoin d'aide.</p>
+                        <a href="{% url 'contact_support' %}" class="btn btn-primary">Contacter le support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+ {% load static %}
+
+{% block content %}
+
+    <div class="content-container_login">
+        <div class="login-form_login" >
+
+
+
+
+
+      <h1 class="text-white">Activation compte!</h1>
+            <h3 class="text-warning">Votre compte a été activé avec succès!</h3>
+      <p class="text-white">Vous pouvez maintenant vous connecter et commencer à utiliser notre plateforme.</p>
+
+          <div class="form-group mt-2 bg-warning" id="signup-button">
+            <button class="btn_login bg-warning text-dark " style=""><a href="{% url 'login' %} " style="text-decoration:none; color :black;" >Se connecter</a></button>
+          </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+

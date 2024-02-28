@@ -1,0 +1,19 @@
+
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+ {% load static %}
+
+{% block content %}
+
+    <div class="content-container_login">
+        <div class="login-form_login" >
+
+
+      <h1 class="text-white">Paiement expiré!</h1>
+          <div class="form-group mt-2 bg-warning" id="signup-button">
+            <button class="btn_login bg-warning text-dark " style=""><a href="{% url 'home_without_filter' %} " style="text-decoration:none; color :black;" >Accueil</a></button>
+          </div>
+        </div>
+
+    </div>
+{% endblock %}

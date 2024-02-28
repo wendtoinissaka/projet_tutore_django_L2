@@ -38,7 +38,7 @@ class UserUpdateForm(forms.ModelForm):
 class BiensCreationForm(forms.ModelForm):
     class Meta:
         model = Biens
-        exclude = ('proprietaire','date_disponibilite_debut', 'date_disponibilite_fin')
+        exclude = ('proprietaire','date_disponibilite_debut', 'date_disponibilite_fin', 'etat')
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+    <h1>Checkout</h1>
+
+    <!-- Affichage des détails de la réservation -->
+    <h2>Details de la réservation:</h2>
+    <p>Article: {{ product.name }}</p>
+    <p>Prix: {{ product.price }}</p>
+
+    <!-- Formulaire de paiement PayPal -->
+    <h2>Payment</h2>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        {% csrf_token %}
+        {{ paypal.render }}
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online">
+    </form>
+</body>
+</html>

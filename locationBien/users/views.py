@@ -44,6 +44,26 @@ from django.http import HttpResponse
 
 from .tasks import update_bien_state
 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .forms import UserRegisterForm
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.urls import reverse
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from .models import CustomUser
+
+
+
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
@@ -53,7 +73,8 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('profile')  # Rediriger vers la page de profil ou toute autre page après la connexion réussie
+                return redirect(
+                    'profile')  # Rediriger vers la page de profil ou toute autre page après la connexion réussie
     else:
         form = LoginForm()
     return render(request, 'users/login.html', {'form': form})
@@ -72,6 +93,22 @@ def create_product(request):
     return render(request, 'users/create_product.html', {'form': form})
 
 
+# def home_without_filter(request):
+#     biens = Biens.objects.all().order_by('-date_created')
+#
+#     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
+#     category = request.GET.get('category')
+#     if category and category != 'all':
+#         biens = biens.filter(categories=category)  # def home_without_filter(request):
+#     #     # Récupérer tous les biens
+#     # Filtrer les biens en fonction de la recherche (si spécifiée dans la requête GET)#     biens = Biens.objects.all().order_by('-date_created')# def home_without_filter(request):
+#     search_query = request.GET.get('q')  # # #     # biens = Biens.objects.all().order_by('-date_created')
+#     if search_query:  # # Calculer la moyenne des avis pour chaque bien# #     produits = Biens.objects.all().order_by('-date_created')
+#         biens = biens.filter(
+#             nom__icontains=search_query)  # for bien in biens:# #     return render(request, 'users/home.html', {'biens': produits})
+#     #         bien.moyenne_avis = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']#     # Récupérer tous les biens
+#     return render(request, 'users/home.html',
+#                   {'biens': biens, 'category': category})  # #     biens = Biens.objects.all().order_by('-date_created')
 
 def home_without_filter(request):
     biens = Biens.objects.all().order_by('-date_created')
@@ -79,16 +116,19 @@ def home_without_filter(request):
     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
     category = request.GET.get('category')
     if category and category != 'all':
-        biens = biens.filter(categories=category)# def home_without_filter(request):
-#     # Récupérer tous les biens
-    # Filtrer les biens en fonction de la recherche (si spécifiée dans la requête GET)#     biens = Biens.objects.all().order_by('-date_created')# def home_without_filter(request):
-    search_query = request.GET.get('q')# # #     # biens = Biens.objects.all().order_by('-date_created')
-    if search_query:#     # Calculer la moyenne des avis pour chaque bien# #     produits = Biens.objects.all().order_by('-date_created')
-        biens = biens.filter(nom__icontains=search_query)#     for bien in biens:# #     return render(request, 'users/home.html', {'biens': produits})
-#         bien.moyenne_avis = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']#     # Récupérer tous les biens
-    return render(request, 'users/home.html', {'biens': biens, 'category': category})# #     biens = Biens.objects.all().order_by('-date_created')
+        biens = biens.filter(categories=category)
 
+    # Filtrer les biens en fonction de l'état du bien (si spécifié dans la requête GET)
+    etat = request.GET.get('etat')
+    if etat and etat != 'all':
+        biens = biens.filter(etat=etat)
 
+    # Filtrer les biens en fonction de la recherche (si spécifiée dans la requête GET)
+    search_query = request.GET.get('q')
+    if search_query:
+        biens = biens.filter(nom__icontains=search_query)
+
+    return render(request, 'users/home.html', {'biens': biens, 'category': category, 'etat': etat})
 
 
 
@@ -101,32 +141,61 @@ def home_with_filter(request):
     return render(request, 'users/filter_page.html', {'biens_a_filtrer': biens, 'category': category})
 
 
-
 from django.db.models import Avg
 
+
 def detail_bien(request, bien_id):
-    bien = Biens.objects.get(pk=bien_id)# def detail_bien(request, bien_id):
-    total_images = sum([bool(getattr(bien, attr)) for attr in [#     bien = Biens.objects.get(id=bien_id)
-        'image_principale', 'image_facultative_1', 'image_facultative_2']])#     images = Images.objects.filter(bien=bien)
-    images = []#     context = {"bien": bien, "images": images}
-    for i in range(total_images):#     return render(request, "users/detail_bien.html", context)
+    bien = Biens.objects.get(pk=bien_id)  # def detail_bien(request, bien_id):
+    total_images = sum([bool(getattr(bien, attr)) for attr in [  # bien = Biens.objects.get(id=bien_id)
+        'image_principale', 'image_facultative_1', 'image_facultative_2']])  # images = Images.objects.filter(bien=bien)
+    images = []  # context = {"bien": bien, "images": images}
+    for i in range(total_images):  # return render(request, "users/detail_bien.html", context)
         attr = f"image_principale" if i == 0 else f"image_facultative_{i}"
-        if hasattr(bien, attr):# def details(request):
-            images.append(getattr(bien, attr))#     return render(request, 'users/detail_bien.html')
+        if hasattr(bien, attr):  # def details(request):
+            images.append(getattr(bien, attr))  # return render(request, 'users/detail_bien.html')
 
     # Calculer la moyenne des avis pour le bien spécifique
     moyenne_avis = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']
     related_biens = bien.get_related_biens()
-# def do_reservation(request, bien_id):
-    return render(request, 'users/detail_bien.html', {'bien': bien, 'images': images, 'moyenne_avis': moyenne_avis, 'related_biens': related_biens})#     reservation = Biens.objects.get(pk=bien_id)
+    # def do_reservation(request, bien_id):
+    return render(request, 'users/detail_bien.html', {'bien': bien, 'images': images, 'moyenne_avis': moyenne_avis,
+                                                      'related_biens': related_biens})  # reservation = Biens.objects.get(pk=bien_id)
+
+#
+# def register(request):
+#     if request.method == "POST":
+#         form = UserRegisterForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             username = form.cleaned_data.get('username')
+#             messages.success(request, f'Hi {username}, your account was created successfully')
+#             return redirect('home_without_filter')
+#     else:
+#         form = UserRegisterForm()
+#
+#     return render(request, 'users/register.html', {'form': form})
+
 
 def register(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Hi {username}, your account was created successfully')
+            user = form.save(commit=False)
+            user.is_active = False  # Compte inactif jusqu'à confirmation par e-mail
+            user.save()
+
+            # Envoi de l'e-mail de confirmation
+            current_site = get_current_site(request)
+            subject = 'Activation de compte chez CAPADATA'
+            message = render_to_string('users/activation_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
+
+            messages.success(request, f'Bienvenue! {user.username}, Verifiez votre email pour valider votre compte svp!')
             return redirect('home_without_filter')
     else:
         form = UserRegisterForm()
@@ -135,9 +204,26 @@ def register(request):
 
 
 
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return render(request, 'users/emails/activation_done.html')
+    else:
+        return render(request, 'users/emails/activation_invalid.html')
+
+
 @login_required()
 def profile(request):
     return render(request, 'users/profile.html')
+
 
 @login_required
 def updateProfile(request):
@@ -150,8 +236,6 @@ def updateProfile(request):
     else:
         form = UserUpdateForm(instance=user)
     return render(request, 'users/updateProfile.html', {'form': form})
-
-
 
 
 def user_update(request):
@@ -169,8 +253,6 @@ def erreur(request):
     return render(request, 'users/404.html')
 
 
-
-
 def error_404_view(request, exeception):
     """
     Vue pour afficher une page d'erreur 404 personnalisée.
@@ -185,23 +267,49 @@ def header(request):
     return render(request, 'users/header.html')
 
 
+# @login_required
+# def list_user_bien(request):
+#     # Récupérer les biens de l'utilisateur connecté
+#     user_biens = Biens.objects.filter(proprietaire=request.user).order_by('-date_created')
+#
+#     # Filtrer les biens en fonction de la recherche (si spécifiée dans la requête GET)
+#     search_query = request.GET.get('q')
+#     if search_query:
+#         user_biens = user_biens.filter(nom__icontains=search_query)
+#
+#     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
+#     category = request.GET.get('category')
+#     if category and category != 'all':
+#         user_biens = user_biens.filter(categories=category).order_by('-date_created')  # Dans views.py
+#
+#     return render(request, 'users/list_user_bien.html',
+#                   {'user_biens': user_biens, 'category': category})  # @login_required()
+
+from django.shortcuts import render
+from .models import Biens
 
 @login_required
 def list_user_bien(request):
     # Récupérer les biens de l'utilisateur connecté
-    user_biens = Biens.objects.filter(proprietaire=request.user).order_by('-date_created')
+    user_biens = Biens.objects.filter(proprietaire=request.user)
 
     # Filtrer les biens en fonction de la recherche (si spécifiée dans la requête GET)
     search_query = request.GET.get('q')
     if search_query:
         user_biens = user_biens.filter(nom__icontains=search_query)
 
+
     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
     category = request.GET.get('category')
     if category and category != 'all':
-        user_biens = user_biens.filter(categories=category).order_by('-date_created')# Dans views.py
+        user_biens = user_biens.filter(categories=category).order_by('-date_created')  # Dans views.py
 
-    return render(request, 'users/list_user_bien.html', {'user_biens': user_biens, 'category': category})# @login_required()
+    # Filtrer les biens en fonction de l'état (si spécifié dans la requête GET)
+    etat = request.GET.get('etat')
+    if etat and etat != 'all':
+        user_biens = user_biens.filter(etat=etat)
+
+    return render(request, 'users/list_user_bien.html', {'user_biens': user_biens, 'category': category})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -213,7 +321,7 @@ class ListUserBienView(View):
 
 
 @login_required
-def ajouter_avis(request,bien_id):
+def ajouter_avis(request, bien_id):
     bien = get_object_or_404(Biens, pk=bien_id)
     locataire = request.user
     if request.method == 'POST':
@@ -226,15 +334,15 @@ def ajouter_avis(request,bien_id):
             return redirect('detail_bien', bien_id=bien_id)  # Redirection vers detail_bien avec bien_id
     else:
         form = AvisForm()
-            
+
     return render(request, 'users/ajouter_avis.html', {'form': form, 'bien': bien})
-
-
 
 
 class EditBienView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Biens
-    fields = ['nom', 'etat', 'categories', 'localisation', 'description', 'prix', 'image_principale', 'image_facultative_1', 'image_facultative_2', 'image_facultative_3' ]  # Liste des champs que vous souhaitez modifier
+    fields = ['nom', 'etat', 'categories', 'localisation', 'description', 'prix', 'image_principale',
+              'image_facultative_1', 'image_facultative_2',
+              'image_facultative_3']  # Liste des champs que vous souhaitez modifier
     template_name = 'users/edit_bien.html'
     success_message = _("Le bien a été modifié avec succès.")
 
@@ -262,9 +370,6 @@ class DeleteBienView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
 
 # reservation et paiement
-
-
-
 
 
 # @login_required
@@ -366,11 +471,6 @@ def do_reservation(request, bien_id):
     return render(request, 'users/create_reservation.html', {'form': form, 'bien': bien})
 
 
-
-
-
-
-
 # @login_required
 # def do_reservation(request, bien_id):
 #     bien = get_object_or_404(Biens, pk=bien_id)
@@ -417,7 +517,6 @@ def do_reservation(request, bien_id):
 #
 #     return render(request, 'users/create_reservation.html', {'form': form, 'bien': bien})
 #
-
 
 
 # @login_required
@@ -471,7 +570,7 @@ def process_payment(request, reservation_id):
         # Paiement expiré, remettre l'état du bien à disponible
         reservation.bienloue.etat = 'disponible'
         reservation.bienloue.save()
-        return render(request, 'payment_expired.html')
+        return render(request, 'users/payment_expired.html')
 
     montant_initial = reservation.prix_total
     montant_augmente = montant_initial * Decimal(1.20)
@@ -489,8 +588,10 @@ def process_payment(request, reservation_id):
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": request.build_absolute_uri(reverse('execute_payment') + '?reservation_id=' + str(reservation_id)),
-            "cancel_url": request.build_absolute_uri(reverse('cancel_payment') + '?reservation_id=' + str(reservation_id))
+            "return_url": request.build_absolute_uri(
+                reverse('execute_payment') + '?reservation_id=' + str(reservation_id)),
+            "cancel_url": request.build_absolute_uri(
+                reverse('cancel_payment') + '?reservation_id=' + str(reservation_id))
         },
         "transactions": [{
             "amount": {
@@ -517,6 +618,59 @@ def process_payment(request, reservation_id):
         return render(request, 'users/paiement/payment_cancel.html')
 
 
+# @login_required
+# def execute_payment(request):
+#     reservation_id = request.GET.get('reservation_id')
+#
+#     if not reservation_id:
+#         return HttpResponseNotFound("ID de réservation manquant dans la requête.")
+#
+#     try:
+#         reservation = Reservation.objects.get(id=reservation_id)
+#     except Reservation.DoesNotExist:
+#         return HttpResponseNotFound("La réservation avec l'ID spécifié n'existe pas.")
+#
+#     # Vérifiez ici si le paiement a été effectué avec succès et mettez à jour l'état du bien en conséquence
+#
+#     return redirect('payment_success')  # Redirection vers une page par défaut
+#
+
+
+# @login_required
+# def execute_payment(request):
+#     reservation_id = request.GET.get('reservation_id')
+#
+#     if not reservation_id:
+#         return HttpResponseNotFound("ID de réservation manquant dans la requête.")
+#
+#     try:
+#         reservation = Reservation.objects.get(id=reservation_id)
+#     except Reservation.DoesNotExist:
+#         return HttpResponseNotFound("La réservation avec l'ID spécifié n'existe pas.")
+#
+#     # Vérifiez ici si le paiement a été effectué avec succès et mettez à jour l'état du bien en conséquence
+#     # Supposez que vous avez une variable `payment_success` qui indique si le paiement a réussi ou non
+#     payment_success = True  # Mettez ici votre logique pour vérifier si le paiement a réussi ou non
+#
+#     if payment_success:
+#         # Mettre à jour l'état du bien en 'deja_reserve' si le paiement a été effectué avec succès
+#         reservation.bienloue.etat = 'deja_reserve'
+#         reservation.bienloue.save()
+#         # Mettre à jour le statut de la réservation en 'validee' si le paiement a été effectué avec succès
+#         reservation.status = 'validee'
+#         reservation.save()
+#     else:
+#         # Mettre à jour l'état du bien en 'disponible' si le paiement a échoué ou a été annulé
+#         reservation.bienloue.etat = 'disponible'
+#         reservation.bienloue.save()
+#         # Mettre à jour le statut de la réservation en 'annulee' si le paiement a été effectué avec succès
+#         reservation.status = 'annulee'
+#         reservation.save()
+#
+#     return redirect('payment_success')  # Redirection vers une page par défaut
+#
+
+
 @login_required
 def execute_payment(request):
     reservation_id = request.GET.get('reservation_id')
@@ -530,8 +684,25 @@ def execute_payment(request):
         return HttpResponseNotFound("La réservation avec l'ID spécifié n'existe pas.")
 
     # Vérifiez ici si le paiement a été effectué avec succès et mettez à jour l'état du bien en conséquence
+    payment_success = True  # Supposons que le paiement a réussi pour l'instant
+
+    if payment_success:
+        # Mettre à jour l'état du bien en 'deja_reserve' si le paiement a été effectué avec succès
+        reservation.bienloue.etat = 'deja_reserve'
+        reservation.bienloue.save()
+        # Mettre à jour le statut de la réservation en 'validee' si le paiement a été effectué avec succès
+        reservation.status = 'validee'
+    else:
+        # Mettre à jour l'état du bien en 'disponible' si le paiement a échoué ou a été annulé
+        reservation.bienloue.etat = 'disponible'
+        reservation.bienloue.save()
+        # Mettre à jour le statut de la réservation en 'annulee' si le paiement a échoué ou a été annulé
+        reservation.status = 'annulee'
+
+    reservation.save()
 
     return redirect('payment_success')  # Redirection vers une page par défaut
+
 
 
 @login_required
@@ -546,18 +717,20 @@ def cancel_payment(request):
     bien.etat = 'disponible'
     bien.save()
 
+
     return render(request, 'users/paiement/payment_cancel.html')
+
 
 def payment_success(request):
     return render(request, 'users/paiement/payment_success.html')
+
 
 @login_required
 def reservation_detail(request, reservation_id):
     reservation = get_object_or_404(Reservation, pk=reservation_id)
     payment_expired = reservation.is_payment_expired()
-    return render(request, 'users/reservation_detail.html', {'reservation': reservation, 'payment_expired': payment_expired})
-
-
+    return render(request, 'users/reservation_detail.html',
+                  {'reservation': reservation, 'payment_expired': payment_expired})
 
 
 @login_required
@@ -565,8 +738,6 @@ def reservation_page(request):
     # Récupérer les réservations de l'utilisateur connecté
     reservations = Reservation.objects.filter(locataire=request.user, status='en_attente')
     return render(request, 'users/reservation_page.html', {'reservations': reservations})
-
-
 
 
 @login_required
@@ -646,7 +817,6 @@ def confirm_cancel_reservation(request, reservation_id):
 #
 
 
-
 def contactUs(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -658,7 +828,7 @@ def contactUs(request):
                 'CAPAB : Location de bien',
                 message,
                 email,
-                ['lacapacitee@gmail.com',settings.EMAIL_HOST_USER],
+                ['lacapacitee@gmail.com', settings.EMAIL_HOST_USER],
                 fail_silently=False,
             )
             return render(request, 'users/contact_success.html')

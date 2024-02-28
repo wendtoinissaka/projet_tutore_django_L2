@@ -1,13 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
 
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <title>Reservation Expired</title>
-</head>
-<body>
-    <h1>Reservation Expired</h1>
-    <p>Sorry, the reservation has expired.</p>
-</body>
-</html>
+{% extends 'users/base.html' %}
+
+ {% load static %}
+
+{% block content %}
+
+    <div class="content-container_login">
+        <div class="login-form_login" >
+
+
+      <h1 class="text-white">Reservation expirée!</h1>
+          <div class="form-group mt-2 bg-warning" id="signup-button">
+            <button class="btn_login bg-warning text-dark " style=""><a href="{% url 'home_without_filter' %} " style="text-decoration:none; color :black;" >Accueil</a></button>
+          </div>
+        </div>
+
+    </div>
+{% endblock %}

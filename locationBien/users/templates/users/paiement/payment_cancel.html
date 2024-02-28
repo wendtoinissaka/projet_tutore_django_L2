@@ -1,15 +1,21 @@
-<!-- payment_cancel.html -->
 
-<!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paiement annulé</title>
-</head>
-<body>
-    <h1>Paiement annulé</h1>
-    <p>Votre paiement a été annulé.</p>
-</body>
-</html>
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+ {% load static %}
+
+{% block content %}
+
+    <div class="content-container_login">
+        <div class="login-form_login" >
+
+
+    <h1 class="text-white">Paiement annulé</h1>
+    <p class="text-warning">Votre paiement a été annulé.</p>
+          <div class="form-group mt-2 bg-warning" id="signup-button">
+            <button class="btn_login bg-warning text-dark " style=""><a href="{% url 'home_without_filter' %} " style="text-decoration:none; color :black;" >Accueil</a></button>
+          </div>
+        </div>
+
+    </div>
+{% endblock %}
+
