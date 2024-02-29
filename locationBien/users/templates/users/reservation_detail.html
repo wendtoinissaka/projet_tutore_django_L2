@@ -46,10 +46,19 @@
 <!--        </div>-->
 <div class="form-group mt-2 bg-warning" id="signup-button">
     <button class="btn_login bg-warning text-dark">
-        <a href="{% url 'process_payment' reservation_id=reservation.id %}" style="text-decoration:none; color:black;">Effectuer le paiement</a>
+        <a href="{% url 'process_payment' reservation_id=reservation.id %}" style="text-decoration:none; color:black;">Payer avec Paypal</a>
     </button>
-</div>
 
+</div>
+<form action="{% url 'stripe_checkout' %}?reservation_id={{ reservation.id }}" method="POST">
+<!--<form action="{% url 'stripe_checkout' %}" method="POST">-->
+        {% csrf_token %}
+    <div class="form-group mt-2 bg-warning" id="signup-button">
+    <button class="btn_login bg-warning text-dark">Payer avec Stripe</button>
+
+</div>
+<!--        <button type="submit" id="checkout-button"></button>-->
+      </form>
 
             </div>
 </div>

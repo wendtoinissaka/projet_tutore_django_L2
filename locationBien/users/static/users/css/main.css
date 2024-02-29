@@ -12,13 +12,13 @@
     color:black;
 }
 
-@media (max-width: 992px) {
+/*@media (max-width: 992px) {
     .navbar-nav .nav-link {
         margin-top : 5px;
         width: 100%;
-        background-color:black;
+        background-color:red;
     }
-}
+}*/
 
 @media (max-width: 992px) {
     .navbar-nav .nav-link {
@@ -26,7 +26,7 @@
     }
 
     .navbar-toggler.custom-toggler {
-        background-color: #fd5e14;
+        background-color: yellow;
         border-color: #ffffff;
     }
 }

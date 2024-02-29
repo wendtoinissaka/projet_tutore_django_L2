@@ -188,3 +188,4 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Paiement de {self.montant} pour {self.bien.nom} par {self.locataire.username}, statut: {self.statut}"
+

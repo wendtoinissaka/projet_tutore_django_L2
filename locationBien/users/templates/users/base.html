@@ -23,39 +23,39 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-W2gwaIkF2h/nQ84Kyi3RbYNTQEZ3OBvo+qr8eGQW4eDz9t8i9VzRkmSgfiE28f3IdtzoWYqZaO6/oM6vOxq0gA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 
-    <style>
-        .navbar-nav .nav-link {
-            font-size: 16px; /* Taille de police pour les liens de la navbar */
-            padding: 0.5rem 1rem; /* Espacement des liens de la navbar */
-        color:black;
+<!--    <style>-->
+<!--        .navbar-nav .nav-link {-->
+<!--            font-size: 16px; /* Taille de police pour les liens de la navbar */-->
+<!--            padding: 0.5rem 1rem; /* Espacement des liens de la navbar */-->
+<!--        color:black;-->
 
-        }
-        @media (max-width: 992px) {
-    .navbar-nav .nav-link {
-        margin-top : 5px;
-        width: 100%;
-        background-color:black;
+<!--        }-->
+<!--        @media (max-width: 992px) {-->
+<!--    .navbar-nav .nav-link {-->
+<!--        margin-top : 5px;-->
+<!--        width: 100%;-->
+<!--        background-color:black;-->
 
-    }
-}
+<!--    }-->
+<!--}-->
 
 
-        @media (max-width: 992px) {
-            .navbar-nav .nav-link {
-                font-size: 14px; /* Réduire la taille de police sur les petits écrans */
-            }
+<!--        @media (max-width: 992px) {-->
+<!--            .navbar-nav .nav-link {-->
+<!--                font-size: 14px; /* Réduire la taille de police sur les petits écrans */-->
+<!--            }-->
 
-            .navbar-toggler.custom-toggler {
-                background-color: #fd5e14; /* Couleur du bouton du menu sur les petits écrans */
-                border-color: #ffffff; /* Bordure du bouton du menu sur les petits écrans */
-            }
-        }
-        /* Style pour ajouter une ligne en bas lors du survol */
-.underline-on-hover:hover {
-    border-bottom: 5px solid Yellow; /* Couleur et épaisseur de la ligne */
-}
+<!--            .navbar-toggler.custom-toggler {-->
+<!--                background-color: #fd5e14; /* Couleur du bouton du menu sur les petits écrans */-->
+<!--                border-color: #ffffff; /* Bordure du bouton du menu sur les petits écrans */-->
+<!--            }-->
+<!--        }-->
+<!--        /* Style pour ajouter une ligne en bas lors du survol */-->
+<!--.underline-on-hover:hover {-->
+<!--    border-bottom: 5px solid Yellow; /* Couleur et épaisseur de la ligne */-->
+<!--}-->
 
-    </style>
+<!--    </style>-->
 </head>
 
 <!--<body id="bg" style="background-image: url({% static 'users/images/4bg.png' %});">-->
@@ -68,17 +68,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-<!--<div class="collapse navbar-collapse" id="navbarNavAltMarkup">-->
-<!--    <div class="navbar-nav">-->
-<!--        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover"> Accueil </a>-->
-<!--&lt;!&ndash;        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover"> Accueil </a>&ndash;&gt;-->
-<!--&lt;!&ndash;        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover"> Reservation </a>&ndash;&gt;-->
 
-<!--        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover">Reservation</a>-->
-<!--        <a href="{% url 'create_product' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover">Ajouter un bien</a>-->
-<!--        <a href="{% url 'home_without_filter' %}" class="nav-link active py-2 px-3 mx-1 text-white underline-on-hover">Nous contacter</a>-->
-<!--    </div>-->
-<!--</div>-->
 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
         <a href="{% url 'home_without_filter' %}" class="nav-link {% if current_page == 'home' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover"> ACCUEIL </a>
@@ -122,17 +112,29 @@
 <div style="margin-top: calc(3.5rem + 25px);"> <!-- 3.5rem est la hauteur estimée de votre navbar, 16px est un exemple de marge que vous pouvez ajuster -->
     <!-- Contenu à décaler -->
     <div >
-    <div class="container mt-5">
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert text-danger alert-{{message.tags}}">{{message}}</div>
-    {% endfor %}
-{% endif %}
-</div>
+<!--    <div class="container mt-5">-->
+<!--{% if messages %}-->
+<!--    {% for message in messages %}-->
+<!--        <div class="alert text-danger alert-{{message.tags}}">{{message}}</div>-->
+<!--    {% endfor %}-->
+<!--{% endif %}-->
+<!--</div>-->
 
-<main role="main" class="container-fluid mb-5">
-        {% block content %}{% endblock %}
-    </main>
+<!--<main role="main" class="container-fluid mb-5">-->
+
+<!--</main>-->
+
+        <main role="main" class="container-fluid mb-5">
+    <div class="container mt-5">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert text-danger alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    {% block content %}{% endblock %}
+</main>
+
 </div>
 
 

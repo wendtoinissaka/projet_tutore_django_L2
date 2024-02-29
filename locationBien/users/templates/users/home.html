@@ -28,7 +28,7 @@
 
 
 
-<!-- Fruits Shop Start-->
+<!-- Debut Affichage Bien-->
 <div class="container-fluid fruite py-5">
     <div class="container py-5">
         <div class="tab-class text-center">
@@ -39,25 +39,7 @@
                 </div>
 
                 <div class="col-lg-8 text-end">
-<!--    <ul class="nav nav-pills d-inline-flex text-center mb-5">-->
-<!--        <li class="nav-item">-->
-<!--            <a href="filter/?category=all" class="nav-link {% if category == 'all' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="color: black; background-color: yellow;">Tous les produits</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--            <a href="filter/?category=immobilier" class="nav-link {% if category == 'immobilier' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: yellow">Immobilier</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--            <a href="/filter/?category=vehicule" class="nav-link {% if category == 'vehicule' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: yellow;">Vehicule</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--            <a href="filter/?category=equipements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: yellow">Équipements</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--            <a href="filter/?category=autres" class="nav-link {% if category == 'autres' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: yellow">Autres</a>-->
-<!--        </li>-->
-<!--    </ul>-->
 
-                    <!-- Dans home.html -->
 
 <ul class="nav nav-pills d-inline-flex text-center mb-3">
     <li class="nav-item">
@@ -78,41 +60,6 @@
 
 
 </ul>
-<!--<ul class="nav nav-pills d-inline-flex text-center mb-1">-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=all" class="nav-link {% if category == 'all' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="color: black; background-color: yellow;">Disponible</a>-->
-<!--    </li>-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=immobilier" class="nav-link {% if category == 'immobilier' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: yellow">En_cours</a>-->
-<!--    </li>-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=vehicule" class="nav-link {% if category == 'vehicule' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: yellow;">Déjà_Reserve</a>-->
-<!--    </li>-->
-
-
-<!--</ul>-->
-
-<!--<form method="get">-->
-<!--    <select name="etat">-->
-<!--        <option value="all">Tous les états</option>-->
-<!--        <option value="disponible" {% if etat == 'disponible' %}selected{% endif %}>Disponible</option>-->
-<!--        <option value="deja_reserve" {% if etat == 'deja_reserve' %}selected{% endif %}>Déjà réservé</option>-->
-<!--        <option value="en_cours" {% if etat == 'en_cours' %}selected{% endif %}>En_cours</option>-->
-<!--        &lt;!&ndash; Ajoutez d'autres options d'état selon vos besoins &ndash;&gt;-->
-<!--    </select>-->
-<!--    <button type="submit">Filtrer par état</button>-->
-<!--</form>-->
-<!--<div class="parent-container text-center">-->
-<!--    <div class="btn-group " role="group ">-->
-<!--        <button type="button" class="btn btn-warning mx-1 {% if etat == 'all' %}active{% endif %}" onclick="window.location.href='?etat=all'">Tous les états</button>-->
-<!--        <button type="button" class="btn btn-warning mx-1 {% if etat == 'disponible' %}active{% endif %}" onclick="window.location.href='?etat=disponible'">Disponible</button>-->
-<!--        <button type="button" class="btn btn-warning mx-1 {% if etat == 'deja_reserve' %}active{% endif %}" onclick="window.location.href='?etat=deja_reserve'">Déjà réservé</button>-->
-<!--        <button type="button" class="btn btn-warning mx-1 {% if etat == 'en_cours' %}active{% endif %}" onclick="window.location.href='?etat=en_cours'">En cours</button>-->
-<!--        &lt;!&ndash; Ajoutez d'autres boutons d'état selon vos besoins &ndash;&gt;-->
-<!--    </div>-->
-<!--</div>-->
-
-
 
 
 </div>
@@ -193,7 +140,7 @@
     {% endfor %}
     {% else %}
         <div class="mt-5">
-        <p class="text-danger fs-5">Vous n'avez aucun bien pour le moment!</p>
+        <p class="text-danger fs-5">Aucun bien trouvé pour le moment!</p>
 
         </div>
     {% endif %}
@@ -201,76 +148,10 @@
         </div>
     </div>
 </div>
-<!-- Fruits Shop End-->
+<!-- Fin Affichage Bien-->
 
 
 
-<script>
-  // Fonction pour écrire et effacer le texte
-function writeAndEraseText() {
-    var textElement = document.getElementById("dynamic-text");
-    var text = "Louez sans stress, avec CAPADATA.";
-<!--    var text = "Vivez l'aventure, on s'occupe du reste.";-->
-<!--    var text = "Donnez vie à vos rêves, louez !";-->
-    var speed = 100; // Vitesse d'écriture en millisecondes
-    var eraseSpeed = 50; // Vitesse d'effacement en millisecondes
-    var isWriting = false;
-
-    // Écrire le texte
-    function writeText() {
-        isWriting = true;
-        for (var i = 0; i < text.length; i++) {
-            (function(i) {
-                setTimeout(function() {
-                    textElement.innerHTML += text.charAt(i);
-                }, i * speed);
-            })(i);
-        }
-        isWriting = false;
-        setTimeout(function() {
-            eraseText();
-        }, text.length * speed); // Temps avant d'effacer le texte
-    }
-
-    // Effacer le texte
-    function eraseText() {
-        if (!isWriting) {
-            var timer2 = setInterval(function() {
-                var currentText = textElement.innerHTML;
-                textElement.innerHTML = currentText.slice(0, -1);
-                if (currentText.length === 0) {
-                    clearInterval(timer2);
-                    setTimeout(function() {
-                        writeText(); // Répéter le processus
-                    }, 1000); // Temps avant de réécrire le texte
-                }
-            }, eraseSpeed);
-        }
-    }
-
-    // Débuter l'écriture du texte
-    writeText();
-}
-
-// Appeler la fonction au chargement de la page
-window.onload = function() {
-    writeAndEraseText();
-};
-
-    // Appeler la fonction au chargement de la page
-    window.onload = function() {
-        writeAndEraseText();
-    };
-
-
-
-
-
-
-
-
-
-</script>
     <script src="{% static 'users/js/script.js' %}"></script>
 
 

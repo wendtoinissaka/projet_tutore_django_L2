@@ -84,13 +84,28 @@
     color:black;
 }
 
-@media (max-width: 992px) {
+/*@media (max-width: 992px) {
     .navbar-nav .nav-link {
-        margin-top : 5px;
+        margin-top : 1px;
+        width: 200px;
+        color:black;
+        background-color:yellow ;
+    }
+}*/
+@media (max-width: 992px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 100%; /* Ou la hauteur de votre barre de navigation */
+        left: 0;
+        z-index: 1000; /* Assurez-vous que le menu déroulant est au-dessus de tout autre contenu */
         width: 100%;
-        background-color:black;
+        background-color: #343a40; /* Couleur de fond du menu déroulant */
+        padding: 1rem; /* Ajoutez un espacement interne pour une meilleure apparence */
     }
 }
+
+
+
 
 @media (max-width: 992px) {
     .navbar-nav .nav-link {
@@ -98,7 +113,8 @@
     }
 
     .navbar-toggler.custom-toggler {
-        background-color: #fd5e14;
+        margin-bottom : 7px;
+        background-color: #ffc107 ;
         border-color: #ffffff;
     }
 }

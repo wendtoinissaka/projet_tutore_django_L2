@@ -27,7 +27,7 @@
 
 
 
-<!-- Fruits Shop Start-->
+<!-- Debut Affichage Bien -->
 <div class="container-fluid fruite py-5">
 
     <div class="container py-5">
@@ -61,7 +61,6 @@
 
 
             </div>
-<!-- templates/users/detail_bien.html -->
     <div class="row g-4 mx-2">
         <form action="#" method="get">
     <label for="etat" class="text-dark mx-4">Filtrer par état :</label>
@@ -108,21 +107,6 @@
             {% else %}
                 <p class="text-dark mb-0">⭐⭐⭐⭐</p>
             {% endif %}
-<!--                        <div class="d-flex justify-content-between flex-lg-wrap w-100">-->
-<!--                            <p class="text-dark fs-5 fw-bold ">{{ bien.prix }} F/Jr</p>-->
-<!--&lt;!&ndash;                            <div class="d-flex">&ndash;&gt;-->
-<!--&lt;!&ndash;                                <a href="{% url 'detail_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag text-primary"></i> Modifier</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <a href="{% url 'do_reservation' bien.id %}" class="btn border mx-1 border-danger rounded-pill px-3 text-danger"><i class="fa fa-shopping-bag text-primary"></i> Supprimer</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <div class="d-flex">&ndash;&gt;-->
-<!--&lt;!&ndash;                              <a href="{% url 'edit_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill px-3 text-primary"><i class="fa fa-pen text-primary"></i> Modifier</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <a href="{% url 'delete_bien' bien.id %}" class="btn border mx-1 border-danger rounded-pill px-3 text-danger"><i class="fa fa-trash text-danger"></i> Supprimer</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
-<!--                            <div class="d-flex">-->
-<!--                                <a href="{% url 'edit_bien' bien.id %}" class="btn border mx-1 border-secondary rounded-pill text-center text-primary">MODIFIER</a>-->
-<!--                                <a href="{% url 'delete_bien' bien.id %}" class="btn border border-danger rounded-pill text-danger">SUPPRIMER</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
 
                         <div class="d-flex justify-content-between flex-lg-wrap w-100">
                 <p class="text-dark fs-5 fw-bold mb-0">{{ bien.prix }} F/ jour</p>
@@ -147,74 +131,9 @@
         </div>
     </div>
 </div>
-<!-- Fruits Shop End-->
+<!--Fin Affichage Bien -->
 
 
-
-<script>
-  // Fonction pour écrire et effacer le texte
-function writeAndEraseText() {
-    var textElement = document.getElementById("dynamic-text");
-    var text = "Louez sans stress, avec CAPADATA.";
-    var speed = 100; // Vitesse d'écriture en millisecondes
-    var eraseSpeed = 50; // Vitesse d'effacement en millisecondes
-    var isWriting = false;
-
-    // Écrire le texte
-    function writeText() {
-        isWriting = true;
-        for (var i = 0; i < text.length; i++) {
-            (function(i) {
-                setTimeout(function() {
-                    textElement.innerHTML += text.charAt(i);
-                }, i * speed);
-            })(i);
-        }
-        isWriting = false;
-        setTimeout(function() {
-            eraseText();
-        }, text.length * speed); // Temps avant d'effacer le texte
-    }
-
-    // Effacer le texte
-    function eraseText() {
-        if (!isWriting) {
-            var timer2 = setInterval(function() {
-                var currentText = textElement.innerHTML;
-                textElement.innerHTML = currentText.slice(0, -1);
-                if (currentText.length === 0) {
-                    clearInterval(timer2);
-                    setTimeout(function() {
-                        writeText(); // Répéter le processus
-                    }, 1000); // Temps avant de réécrire le texte
-                }
-            }, eraseSpeed);
-        }
-    }
-
-    // Débuter l'écriture du texte
-    writeText();
-}
-
-// Appeler la fonction au chargement de la page
-window.onload = function() {
-    writeAndEraseText();
-};
-
-    // Appeler la fonction au chargement de la page
-    window.onload = function() {
-        writeAndEraseText();
-    };
-
-
-
-
-
-
-
-
-
-</script>
     <script src="{% static 'users/js/script.js' %}"></script>
 
 

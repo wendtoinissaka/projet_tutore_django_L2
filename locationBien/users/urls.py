@@ -21,6 +21,7 @@ urlpatterns = [
 
     path('register/', views.register, name='register'),
     path('activate/<uidb64>/<token>/', activate, name='activate'),
+    path('registration_confirmation/', views.registration_confirmation, name='registration_confirmation'),
     path('profile/', views.profile, name='profile'),
     path('updateProfile/', views.updateProfile, name='updateProfile'),
     path('login/', auth_view.LoginView.as_view(template_name='users/login.html'), name="login"),
@@ -61,13 +62,18 @@ urlpatterns = [
                   path('process/<int:reservation_id>/', views.process_payment, name='process_payment'),
                   path('execute/', execute_payment, name='execute_payment'),
                   path('cancel/', cancel_payment, name='cancel_payment'),
-                  path('reservation/payment/success/', views.payment_success, name='payment_success')
+                  path('reservation/payment/success/', views.payment_success, name='payment_success'),
     # Autres itinéraires…
     # ##encore test paiement
     # path('encorePai/', views.encoreHome, name='encoreHome'),
     # path('encoresuccessful/', views.encoreSuccess, name='encoreSuccess'),
     # path('encorecancelled/', views.encoreCancel, name='encoreCancel'),
     # path('encorePaypal/', include('paypal_standard.ipn.urls')),
+
+    # stripe integration
+    path('stripe/', views.stripeHome ,name="stripe_home"),
+                  path('stripe-confirm-payment/', views.stripe_confirm_payment, name='stripe_confirm_payment'),
+    path('stripe-checkout/', views.checkout ,name="stripe_checkout"),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

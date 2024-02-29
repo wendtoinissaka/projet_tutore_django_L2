@@ -185,8 +185,9 @@ EMAIL_USE_TLS = True
 
 # PAYPAL_CLIENT_ID = "AcUb_UCmYGIN5ivl6Y9IArqmdprh8bB2dFnPDo1OXI9-LxTgRJpA9gwNxSFg39H9MT4kjO3QooMHqy4l"
 # PAYPAL_CLIENT_SECRET = "EMFGnxVn2GbRGADQ-XNaplbt1HITpdb6TERzuJrDFasjH8U0TMd2lgo9jhX929WT2QB2PZz6ua4cLijw"
-PAYPAL_CLIENT_ID = "AcUb_UCmYGIN5ivl6Y9IArqmdprh8bB2dFnPDo1OXI9-LxTgRJpA9gwNxSFg39H9MT4kjO3QooMHqy4l"
-PAYPAL_CLIENT_SECRET = "EMFGnxVn2GbRGADQ-XNaplbt1HITpdb6TERzuJrDFasjH8U0TMd2lgo9jhX929WT2QB2PZz6ua4cLijw"
+PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
+
 PAYPAL_MODE = "sandbox"  # "sandbox" or "live"
 # URL de retour après le paiement
 PAYPAL_RETURN_URL = "execute_payment"
@@ -194,6 +195,13 @@ PAYPAL_RETURN_URL = "execute_payment"
 # URL d'annulation du paiement
 PAYPAL_CANCEL_URL = "cancel_payment"
 # settings.py
+
+###
+#stripe paiement
+###
+STRIPE_PUBLIC_KEY=config('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
+
 
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_BROKER_URL = 'amqp://localhost'
