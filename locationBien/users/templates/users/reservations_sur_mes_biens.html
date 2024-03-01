@@ -1,0 +1,131 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+
+<h1 class="mt-5 text-center">Les Réservations sur mes biens</h1>
+
+<!-- Section pour les réservations en attente -->
+<h2 class="bg-warning py-2 px-2">Réservations en attente</h2>
+{% if reservations_en_attente %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Bien Loué</th>
+                <th scope="col">Nombre de Jours</th>
+                <th scope="col">Prix Total (F)</th>
+                <th scope="col">Status</th>
+                <th scope="col">Annulation</th>
+                <th scope="col">Paiement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations_en_attente %}
+            <tr>
+                <td>{{ reservation.bienloue }}</td>
+                <td>{{ reservation.nombre_jours }}</td>
+                <td>{{ reservation.prix_total }}</td>
+                <td>{{ reservation.status }}</td>
+                <td>
+                    <form method="post" action="{% url 'cancel_reservation' reservation.id %}">
+                        {% csrf_token %}
+                        <button class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> ANNULER </button>
+                    </form>
+                </td>
+                <td>
+                    <div class="form-group mt-2 bg-warning" id="signup-button">
+                        <button class="btn_login bg-warning text-dark "><a href="{% url 'reservation_detail' reservation.id %}" style="text-decoration:none; color :black;">Payer</a></button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="text-center">Aucune réservation en attente.</p>
+{% endif %}
+
+<!--&lt;!&ndash; Section pour les réservations triées &ndash;&gt;-->
+<h2 class="bg-warning py-2 px-2">Filtrer les Réservations</h2>
+
+
+<!-- Section pour les réservations triées -->
+<!-- Section pour les réservations triées -->
+<!--<h2 class="bg-warning py-2 px-2">Filtrer mes Réservations</h2>-->
+<form action="#" method="get">
+    <label for="etat" class="text-dark mx-4">Filtrer par status :</label>
+    <select name="etat" id="etat" class="p-2 rounded border-2" style="background-color: #ffc107 ;" onchange="this.form.submit()">
+        <option value="all" {% if etat == 'all' %}selected{% endif %}>Tous les états</option>
+        <option value="en_attente" {% if etat == 'en_attente' %}selected{% endif %}>En attente</option>
+        <option value="validee" {% if etat == 'validee' %}selected{% endif %}>Validée</option>
+        <option value="annulee" {% if etat == 'annulee' %}selected{% endif %}>Annulée</option>
+        <!-- Ajoutez d'autres options d'état selon vos besoins -->
+    </select>
+</form>
+{% if reservations_triees_paginated %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Locataire</th>
+                <th scope="col">Bien</th>
+                <th scope="col">Nombre de Jours</th>
+                <th scope="col">Date de Debut</th>
+                <th scope="col">Prix Total (F)</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations_triees_paginated %}
+                <tr>
+                    <td>{{ reservation.locataire }}</td>
+                    <td>{{ reservation.bienloue }}</td>
+                    <td>{{ reservation.nombre_jours }}</td>
+                    <td>{{ reservation.debut_reservation }}</td>
+                    <td>{{ reservation.prix_total }}</td>
+                    <td>{{ reservation.status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table><!--
+    &lt;!&ndash; Ajouter la pagination &ndash;&gt;
+    <div class="pagination">
+        <span class="step-links">
+            {% if reservations_triees_paginated.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ reservations_triees_paginated.previous_page_number }}">Précédent</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ reservations_triees_paginated.number }} sur {{ reservations_triees_paginated.paginator.num_pages }}.
+            </span>
+
+            {% if reservations_triees_paginated.has_next %}
+                <a href="?page={{ reservations_triees_paginated.next_page_number }}">Suivant</a>
+                <a href="?page={{ reservations_triees_paginated.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>-->
+<!-- Ajouter la pagination -->
+<div class="pagination justify-content-between">
+    <div>
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="pagination-link">&laquo; Première</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">Précédent</a>
+        {% endif %}
+    </div>
+    <div class="text-right"> <!-- Utilisez la classe text-right pour aligner le contenu à droite -->
+        <span class="current">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span>
+    </div>
+    <div>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Suivante</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">Dernière &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+
+{% else %}
+    <p>Aucune réservation trouvée pour l'état sélectionné.</p>
+{% endif %}
+
+{% endblock %}

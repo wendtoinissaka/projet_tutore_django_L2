@@ -1,0 +1,57 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<canvas id="chart" width="400" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('chart').getContext('2d');
+fetch('/mes-reservations/statistiques/')
+    .then(response => response.json())
+    .then(data => {
+        let labels = [];
+        let values = [];
+        for (let entry of data) {
+            labels.push(entry[0]);
+            values.push(entry[1]['field2']);
+        }
+
+        const chartData = {
+            labels: labels,
+            datasets: [{
+                label: 'Nombre de réservations',
+                data: values,
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56'
+                ],
+                hoverBackgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56'
+                ]
+            }]
+        };
+
+        const config = {
+            type: 'pie',
+            data: chartData,
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'top'
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Statistiques des réservations'
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    })
+</script>
+{% endblock %}

@@ -145,6 +145,23 @@
         </div>
     {% endif %}
 </div>
+            <div class="pagination mt-5">
+    <span class="step-links">
+        {% if biens.has_previous %}
+            <a href="?page=1">&laquo; Première</a>
+            <a href="?page={{ biens.previous_page_number }}">Précédente</a>
+        {% endif %}
+
+        <span class="current">
+             {{ biens.number }} / {{ biens.paginator.num_pages }}
+        </span>
+
+        {% if biens.has_next %}
+            <a href="?page={{ biens.next_page_number }}">Suivante</a>
+            <a href="?page={{ biens.paginator.num_pages }}">Dernière &raquo;</a>
+        {% endif %}
+    </span>
+</div>
         </div>
     </div>
 </div>

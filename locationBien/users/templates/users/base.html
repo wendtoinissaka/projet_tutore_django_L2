@@ -22,6 +22,7 @@
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-W2gwaIkF2h/nQ84Kyi3RbYNTQEZ3OBvo+qr8eGQW4eDz9t8i9VzRkmSgfiE28f3IdtzoWYqZaO6/oM6vOxq0gA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 <!--    <style>-->
 <!--        .navbar-nav .nav-link {-->
@@ -72,11 +73,31 @@
 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
         <a href="{% url 'home_without_filter' %}" class="nav-link {% if current_page == 'home' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover"> ACCUEIL </a>
-        <a href="{% url 'reservation_page' %}" class="nav-link {% if current_page == 'reservation' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">RESERVATION</a>
+         <!-- Utilisation d'un dropdown pour les options de réservation -->
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle {% if current_page == 'reservation' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                RESERVATION
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li ><a class="dropdown-item " href="{% url 'reservation_page' %}">MES RESERVATIONS</a></li>
+                <li><a class="dropdown-item" href="{% url 'reservations_sur_mes_biens' %}">RESERVATION SUR MES BIENS</a></li>
+            </ul>
+        </div>
         <a href="{% url 'create_product' %}" class="nav-link {% if current_page == 'create_product' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">AJOUTER UN BIEN</a>
         {% if user.is_authenticated %}
             <!-- Bouton "Modifier Bien" pour les utilisateurs connectés -->
-            <a href="{% url 'list_user_bien' %}" class="nav-link {% if current_page == 'modifier_bien' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">MODIFIER BIEN</a>
+<!--            <a href="{% url 'list_user_bien' %}" class="nav-link {% if current_page == 'modifier_bien' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">MODIFIER BIEN</a>-->
+
+        <!-- Utilisation d'un dropdown pour les options de réservation -->
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle {% if current_page == 'reservation' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                MES BIENS
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li ><a class="dropdown-item " href="{% url 'list_user_bien1' %}">VOIR MES BIENS</a></li>
+                <li><a class="dropdown-item" href="{% url 'list_user_bien' %}">MODIFIER MES BIENS</a></li>
+            </ul>
+        </div>
 
         {% else %}
             <!-- Bouton "Nous Contacter" pour les utilisateurs non connectés -->
@@ -94,14 +115,26 @@
 <!--        <a href="{% url 'profile' %}" class="btn mx-1" style="color: white; background-color: #fd5e14;"> Profile </a>-->
 <!--        <a href="{% url 'profile' %}" class="btn" style="color: black; background-color: yellow;"> Profile </a>-->
     <div class="form-group  bg-warning" id="signup-button">
-        <button class="btn_login bg-warning text-dark " style="">
         <a href="{% url 'profile' %}"  class="text-decoration-none text-dark" > Profile </a>
-        </button>
+
     </div>
         <button class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Se Deconnecter </button>
     {% else %}
-        <a href="{% url 'register' %}" class="btn" style="color: black; background-color: yellow;"> Creer un compte </a>
-        <a href="{% url 'login' %}" class="btn" style="color: black; background-color: yellow; margin-left: 10px;"> Se Connecter </a>
+    <div class="form-group  bg-warning mx-2" id="signup-button">
+        <a href="{% url 'register' %}"  class="text-decoration-none text-dark" > Creer un compte </a>
+
+    </div>
+    <div class="form-group  bg-warning" id="signup-button">
+        <a href="{% url 'login' %}"  class="text-decoration-none text-dark" > Se Connecter </a>
+
+    </div>
+
+
+<!--    <button class="btn_login bg-warning text-dark " style="">-->
+<!--        <a href="{% url 'login' %}"  class="text-decoration-none text-dark" > Se Connecter </a>-->
+<!--        </button>-->
+<!--        <a href="{% url 'register' %}" class="btn" style="color: black; background-color: yellow;"> Creer un compte </a>-->
+<!--        <a href="{% url 'login' %}" class="btn" style="color: black; background-color: yellow; margin-left: 10px;"> Se Connecter </a>-->
     {% endif %}
 </form>
 
@@ -145,7 +178,7 @@
 </div>
 
 <!-- Back to Top -->
-<a href="#" class="btn btn-warning border-3 border-warning py-2 text-dark px-1 rounded-circle back-to-top">TOP<i class="fa fa-arrow-up"></i></a>
+<a href="#" class="btn btn-warning border-3 border-warning py-2 text-dark px-1 rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
 </div>
 

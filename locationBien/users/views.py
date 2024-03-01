@@ -1,56 +1,32 @@
-import json
-from datetime import datetime, timedelta
 from decimal import Decimal
-from importlib.resources import _
-from io import BytesIO
-
+# from importlib.resources import _
 import stripe
-from celery import shared_task
-from bs4.builder import HTML
-from bs4.css import CSS
 from django.conf import settings
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
-from django.core.files.base import ContentFile
-from django.core.mail import EmailMessage, EmailMultiAlternatives, send_mail
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.db.models import Avg
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm
-from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views import View
-from django.views.generic import UpdateView, DeleteView, CreateView
-from pip._internal.configuration import Configuration
+from django.views.generic import UpdateView, DeleteView
+from matplotlib import pyplot as plt
 
 from .forms import UserRegisterForm, BiensCreationForm, UserUpdateForm, AvisForm, ReservationForm, LoginForm, \
     CustomUserForm, ContactForm
 from .models import Biens, Reservation, Payment, CustomUser, Avis
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-import io
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
-
-# Add these lines to import necessary components from WeasyPrint
-from weasyprint import HTML, CSS
-from django.shortcuts import render, redirect
 from paypalrestsdk import Payment, configure
-from django.urls import reverse
-from django.http import HttpResponse
-
 from .tasks import update_bien_state
-
 from django.contrib import messages
-from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import UserRegisterForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
@@ -58,16 +34,11 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from .models import CustomUser
 
-from django.shortcuts import render
-from .models import Biens
-
+#stripe intégration
+stripe.api_key=settings.STRIPE_SECRET_KEY
 
 def user_login(request):
     if request.method == 'POST':
@@ -116,38 +87,110 @@ def home_without_filter(request):
     if search_query:
         biens = biens.filter(nom__icontains=search_query)
 
+    paginator = Paginator(biens, 20)  # Nombre de biens par page
+
+    page_number = request.GET.get('page')
+    try:
+        biens = paginator.page(page_number)
+    except PageNotAnInteger:
+        biens = paginator.page(1)
+    except EmptyPage:
+        biens = paginator.page(paginator.num_pages)
+
     return render(request, 'users/home.html', {'biens': biens, 'category': category, 'etat': etat})
 
 
 
-def home_with_filter(request):
-    category = request.GET.get('category', 'all')  # Récupérer la valeur de la catégorie depuis l'URL
-    if category == 'all':
-        biens = Biens.objects.all().order_by('-date_created')  # Ordre décroissant par date de création
-    else:
-        biens = Biens.objects.filter(categories=category).order_by('-date_created')
-    return render(request, 'users/filter_page.html', {'biens_a_filtrer': biens, 'category': category})
+# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+# def home_without_filter(request):
+#     biens_list = Biens.objects.all().order_by('-date_created')
+#     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
+#     category = request.GET.get('category')
+#     if category and category != 'all':
+#         biens = biens_list.filter(categories=category)
+#
+#     # Filtrer les biens en fonction de l'état du bien (si spécifié dans la requête GET)
+#     etat = request.GET.get('etat')
+#     if etat and etat != 'all':
+#         biens = biens.filter(etat=etat)
+#
+#     # Filtrer les biens en fonction de la recherche (si spécifiée dans la requête GET)
+#     search_query = request.GET.get('q')
+#     if search_query:
+#         biens = biens.filter(nom__icontains=search_query)
+#     #
+#
+#     paginator = Paginator(biens_list, 20)  # Nombre de biens par page
+#
+#     page_number = request.GET.get('page')
+#     try:
+#         biens = paginator.page(page_number)
+#     except PageNotAnInteger:
+#         biens = paginator.page(1)
+#     except EmptyPage:
+#         biens = paginator.page(paginator.num_pages)
+#
+#
+#
+#
+#     return render(request, 'users/home.html', {'biens': biens, 'category': category, 'etat': etat})
 
 
-from django.db.models import Avg
+
+
+
+# def home_with_filter(request):
+#     category = request.GET.get('category', 'all')  # Récupérer la valeur de la catégorie depuis l'URL
+#     if category == 'all':
+#         biens = Biens.objects.all().order_by('-date_created')  # Ordre décroissant par date de création
+#     else:
+#         biens = Biens.objects.filter(categories=category).order_by('-date_created')
+#     return render(request, 'users/filter_page.html', {'biens_a_filtrer': biens, 'category': category})
+
+
+# def detail_bien(request, bien_id):
+#     bien = Biens.objects.get(pk=bien_id)  # def detail_bien(request, bien_id):
+#     total_images = sum([bool(getattr(bien, attr)) for attr in [  # bien = Biens.objects.get(id=bien_id)
+#         'image_principale', 'image_facultative_1', 'image_facultative_2']])  # images = Images.objects.filter(bien=bien)
+#     images = []  # context = {"bien": bien, "images": images}
+#     for i in range(total_images):  # return render(request, "users/detail_bien.html", context)
+#         attr = f"image_principale" if i == 0 else f"image_facultative_{i}"
+#         if hasattr(bien, attr):  # def details(request):
+#             images.append(getattr(bien, attr))  # return render(request, 'users/detail_bien.html')
+#
+#     # Calculer la moyenne des avis pour le bien spécifique
+#     moyenne_avis = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']
+#     related_biens = bien.get_related_biens()
+#     # def do_reservation(request, bien_id):
+#     return render(request, 'users/detail_bien.html', {'bien': bien, 'images': images, 'moyenne_avis': moyenne_avis,
+#                                                       'related_biens': related_biens})  # reservation = Biens.objects.get(pk=bien_id)
+
 
 
 def detail_bien(request, bien_id):
-    bien = Biens.objects.get(pk=bien_id)  # def detail_bien(request, bien_id):
-    total_images = sum([bool(getattr(bien, attr)) for attr in [  # bien = Biens.objects.get(id=bien_id)
-        'image_principale', 'image_facultative_1', 'image_facultative_2']])  # images = Images.objects.filter(bien=bien)
-    images = []  # context = {"bien": bien, "images": images}
-    for i in range(total_images):  # return render(request, "users/detail_bien.html", context)
+    bien = Biens.objects.get(pk=bien_id)
+    total_images = sum([bool(getattr(bien, attr)) for attr in ['image_principale', 'image_facultative_1', 'image_facultative_2']])
+    images = []
+    for i in range(total_images):
         attr = f"image_principale" if i == 0 else f"image_facultative_{i}"
-        if hasattr(bien, attr):  # def details(request):
-            images.append(getattr(bien, attr))  # return render(request, 'users/detail_bien.html')
+        if hasattr(bien, attr):
+            images.append(getattr(bien, attr))
 
-    # Calculer la moyenne des avis pour le bien spécifique
+    # Récupérer tous les avis pour le bien spécifique
+    avis_list = bien.avis.all()
+
+    # Paginer les avis avec 5 avis par page
+    paginator = Paginator(avis_list, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     moyenne_avis = Avis.objects.filter(bien=bien).aggregate(Avg('note'))['note__avg']
     related_biens = bien.get_related_biens()
-    # def do_reservation(request, bien_id):
+
     return render(request, 'users/detail_bien.html', {'bien': bien, 'images': images, 'moyenne_avis': moyenne_avis,
-                                                      'related_biens': related_biens})  # reservation = Biens.objects.get(pk=bien_id)
+                                                      'related_biens': related_biens, 'page_obj': page_obj})
+
 
 
 def register(request):
@@ -271,6 +314,31 @@ def list_user_bien(request):
     return render(request, 'users/list_user_bien.html', {'user_biens': user_biens, 'category': category})
 
 
+@login_required
+def list_user_bien1(request):
+    # Récupérer les biens de l'utilisateur connecté
+    user_biens = Biens.objects.filter(proprietaire=request.user)
+
+    # Filtrer les biens en fonction de la recherche (si spécifiée dans la requête GET)
+    search_query = request.GET.get('q')
+    if search_query:
+        user_biens = user_biens.filter(nom__icontains=search_query)
+
+
+    # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
+    category = request.GET.get('category')
+    if category and category != 'all':
+        user_biens = user_biens.filter(categories=category).order_by('-date_created')  # Dans views.py
+
+    # Filtrer les biens en fonction de l'état (si spécifié dans la requête GET)
+    etat = request.GET.get('etat')
+    if etat and etat != 'all':
+        user_biens = user_biens.filter(etat=etat)
+
+    return render(request, 'users/list_user_bien1.html', {'user_biens': user_biens, 'category': category})
+
+
+
 @method_decorator(login_required, name='dispatch')
 class ListUserBienView(View):
     def get(self, request, *args, **kwargs):
@@ -303,7 +371,7 @@ class EditBienView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
               'image_facultative_1', 'image_facultative_2',
               'image_facultative_3']  # Liste des champs que vous souhaitez modifier
     template_name = 'users/edit_bien.html'
-    success_message = _("Le bien a été modifié avec succès.")
+    success_message = ("Le bien a été modifié avec succès.")
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -318,7 +386,7 @@ class EditBienView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 class DeleteBienView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Biens
     template_name = 'users/confirm_delete_bien.html'
-    success_message = _("Le bien a été supprimé avec succès.")
+    success_message = ("Le bien a été supprimé avec succès.")
     success_url = reverse_lazy('list_user_bien')
 
     def dispatch(self, request, *args, **kwargs):
@@ -329,14 +397,6 @@ class DeleteBienView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
 
 # reservation et paiement
-
-
-
-
-
-
-
-
 
 
 @login_required
@@ -353,7 +413,6 @@ def cancel_payment(request):
 
 
     return render(request, 'users/paiement/payment_cancel.html')
-
 
 
 def payment_success(request):
@@ -402,11 +461,94 @@ def reservation_page(request):
     if etat and etat != 'all':
         reservations_triees = reservations_triees.filter(status=etat)
 
+    # Initialiser la variable reservations_triees_paginated avec une valeur par défaut
+    reservations_triees_paginated = None
+
+    # Pagination des réservations triées
+    if reservations_triees:
+        paginator = Paginator(reservations_triees, 10)  # 10 réservations par page
+        page_number = request.GET.get('page')
+        reservations_triees_paginated = paginator.get_page(page_number)
+
     return render(request, 'users/reservation_page.html', {
         'reservations_en_attente': reservations_en_attente,
-        'reservations_triees': reservations_triees,
+        'reservations_triees_paginated': reservations_triees_paginated,  # Passer la variable paginée au template
         'etat': etat
     })
+
+from .models import Reservation, Biens
+
+@login_required
+def reservations_sur_mes_biens(request):
+    # Récupérer le paramètre d'état de la requête GET
+    etat = request.GET.get('etat')
+
+    # Filtrer les réservations en attente sur les biens de l'utilisateur connecté
+    reservations_en_attente = Reservation.objects.filter(bienloue__proprietaire=request.user, status='en_attente')
+
+    # Filtrer les autres réservations sur les biens de l'utilisateur connecté
+    reservations_triees = Reservation.objects.filter(bienloue__proprietaire=request.user)
+    if etat and etat != 'all':
+        reservations_triees = reservations_triees.filter(status=etat)
+
+    # Initialiser la variable reservations_triees_paginated avec une valeur par défaut
+    reservations_triees_paginated = None
+
+    # Pagination des réservations triées
+    if reservations_triees:
+        paginator = Paginator(reservations_triees, 5)  # 10 réservations par page
+        page_number = request.GET.get('page')
+        reservations_triees_paginated = paginator.get_page(page_number)
+
+    return render(request, 'users/reservations_sur_mes_biens.html', {
+        'reservations_en_attente': reservations_en_attente,
+        'reservations_triees_paginated': reservations_triees_paginated,  # Passer la variable paginée au template
+        'etat': etat
+    })
+
+# Dans votre fichier views.py
+
+
+def reservation_status_chart(request):
+    # Récupérer toutes les réservations
+    reservations = Reservation.objects.all()
+
+    # Fonction pour générer le graphique
+    def generate_chart(reservations):
+        status_counts = {'en_attente': 0, 'validee': 0, 'annulee': 0}
+
+        # Compter le nombre de réservations pour chaque statut
+        for reservation in reservations:
+            status_counts[reservation.status] += 1
+
+        # Créer le graphique à barres
+        plt.bar(status_counts.keys(), status_counts.values())
+        plt.xlabel('Statut')
+        plt.ylabel('Nombre de réservations')
+        plt.title('Répartition des réservations par statut')
+
+        # # Enregistrer le graphique comme fichier image temporaire
+        image_path = "biens_photos/reservation_status_chart.png"  # Chemin d'accès où vous souhaitez enregistrer l'image
+        plt.savefig(image_path)
+
+        return image_path
+        # Utiliser os.path.join pour construire le chemin d'accès complet
+        # image_filename = "reservation_status_chart.png"  # Nom du fichier image
+        # image_path = os.path.join('biens_photos', image_filename)  # Modifier selon l'emplacement souhaité
+        #
+        # # Enregistrer le graphique comme fichier image temporaire
+        # plt.savefig(image_path)
+
+        return image_path
+
+    # Générer le graphique
+    chart_image_path = generate_chart(reservations)
+
+    # Passer le chemin de l'image au modèle
+    return render(request, 'users/reservation_status_chart.html', {'chart_image_path': chart_image_path})
+
+
+
 
 
 @login_required
@@ -491,8 +633,6 @@ def stripeHome(request):
     return render(request, 'users/paiement/stripe_home.html')
 
 
-#stripe intégration
-stripe.api_key=settings.STRIPE_SECRET_KEY
 
 def checkout(request):
     reservation_id = request.GET.get('reservation_id')
@@ -705,6 +845,20 @@ def execute_payment(request):
         reservation.bienloue.save()
         # Mettre à jour le statut de la réservation en 'validee' si le paiement a été effectué avec succès
         reservation.status = 'validee'
+
+        # Envoyer l'e-mail personnalisé
+        bien = reservation.bienloue
+
+        subject = "Confirmation de paiement chez Capadata"
+        message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation,
+                                                                      'total_price': reservation.prix_total})
+        html_message = render_to_string('users/emails/paiement_template.html',
+                                        {'bien': bien, 'reservation': reservation,
+                                         'total_price': reservation.prix_total})
+        plain_message = strip_tags(html_message)  # Version texte brut du HTML
+
+        send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
+
     else:
         # Mettre à jour l'état du bien en 'disponible' si le paiement a échoué ou a été annulé
         reservation.bienloue.etat = 'disponible'
