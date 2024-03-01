@@ -14,8 +14,9 @@
   <p class="text-warning">{% blocktrans %}Êtes-vous sûr de vouloir supprimer ce bien ? Cette opération est irréversible.{% endblocktrans %}</p>
   <form method="post">
     {% csrf_token %}
-    <div class="form-group mt-2 bg-warning" id="signup-button">
-    <button class="btn_login bg-warning text-white" type="submit">{% trans "Oui, supprimer ce bien" %}</button>
+    <div class="form-group mt-2" id="signup-button">
+<!--    <button class="btn_login bg-warning text-white" type="submit">{% trans "Oui, supprimer ce bien" %}</button>-->
+        <button class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links">{% trans "Oui, supprimer ce bien" %}</button>
 
 <!--      <button class="btn_login bg-"><a href="{% url 'updateProfile' %} " class="text-white" style="text-decoration:none" >MODIFIER</a></button>-->
     </div>

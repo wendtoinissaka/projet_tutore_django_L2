@@ -57,7 +57,10 @@ urlpatterns = [
     # path('process/', process_payment, name='process_payment'),
     path('process/<int:reservation_id>/', views.process_payment, name='process_payment'),
     path('execute/', execute_payment, name='execute_payment'),
+    path('execute-stripe/<int:reservation_id>/', views.execute_payment1, name='execute_payment1'),
     path('cancel/', cancel_payment, name='cancel_payment'),
+    # path('cancel-payment-stripe/<int:reservation_id>/', views.cancel_payment_stripe, name='cancel_payment_stripe'),
+    path('cancel-payment/<int:reservation_id>/', views.cancel_payment, name='cancel_payment1'),
     path('reservation/payment/success/', views.payment_success, name='payment_success'),
 
     # stripe integration

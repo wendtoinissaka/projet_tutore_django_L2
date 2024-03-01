@@ -399,20 +399,48 @@ class DeleteBienView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 # reservation et paiement
 
 
-@login_required
+# @login_required
+# def cancel_payment(request):
+#     reservation_id = request.GET.get('reservation_id')
+#     try:
+#         reservation = Reservation.objects.get(id=reservation_id)
+#     except Reservation.DoesNotExist:
+#         return HttpResponse("La réservation n'existe pas.", status=404)
+#
+#     bien = reservation.bienloue
+#     bien.etat = 'disponible'
+#     bien.date_disponibilite_debut = timezone.now()
+#     bien.save()
+#
+#     reservation.status = 'annulee'
+#     reservation.save()
+#
+#
+#     return render(request, 'users/paiement/payment_cancel.html')
+#
+
 def cancel_payment(request):
-    reservation_id = request.GET.get('reservation_id')
+    reservation_id = request.GET.get('reservation_id')  # Récupérer l'identifiant de réservation depuis la requête GET
+    if not reservation_id:
+        return JsonResponse({'error': "L'identifiant de réservation est manquant dans la requête."}, status=400)
+
     try:
         reservation = Reservation.objects.get(id=reservation_id)
     except Reservation.DoesNotExist:
-        return HttpResponse("La réservation n'existe pas.", status=404)
+        return JsonResponse({'error': "La réservation associée à cet identifiant n'existe pas."}, status=404)
 
+    # Mettez ici votre logique d'annulation de réservation en cas d'annulation de paiement Stripe
     bien = reservation.bienloue
     bien.etat = 'disponible'
+    bien.date_disponibilite_debut = timezone.now()
     bien.save()
 
+    reservation.status = 'annulee'
+    reservation.save()
 
     return render(request, 'users/paiement/payment_cancel.html')
+
+
 
 
 def payment_success(request):
@@ -605,6 +633,7 @@ def cancel_reservation(request, reservation_id):
 @login_required
 def confirm_cancel_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id, locataire=request.user)
+
     return render(request, 'users/confirm_cancel_reservation.html', {'reservation': reservation})
 
 
@@ -634,26 +663,135 @@ def stripeHome(request):
 
 
 
+# def checkout(request):
+#     reservation_id = request.GET.get('reservation_id')
+#     if not reservation_id:
+#         # return JsonResponse({'error': 'Reservation ID is missing'}, status=400)
+#         return JsonResponse({'error': "La réservation avec l'ID spécifié n'existe pas."}, status=400)
+#
+#     try:
+#         reservation = Reservation.objects.get(id=reservation_id)
+#     except Reservation.DoesNotExist:
+#         return JsonResponse({'error': "La réservation n'existe pas."}, status=404)
+#
+#     montant_reservation = reservation.prix_total  # Obtenez le montant du prix depuis votre modèle de réservation
+#
+#     # Créez une session de paiement Stripe avec le montant du prix
+#     checkout_session_stripe = stripe.checkout.Session.create(
+#         payment_method_types=['card'],
+#         line_items=[{
+#             'price_data': {
+#                 'currency': 'usd',
+#                 'unit_amount': int(montant_reservation * 100),  # Convertissez le montant en cents pour Stripe
+#                 'product_data': {
+#                     'name': 'Réservation',
+#                 },
+#             },
+#             'quantity': 1,
+#         }],
+#         mode='payment',
+#         success_url='http://localhost:8000/reservation/payment/success/',
+#         cancel_url='http://localhost:8000/cancel_payment/',
+#     )
+#
+#     # Redirigez l'utilisateur vers la page de paiement Stripe
+#     return redirect(checkout_session_stripe.url, code=303)
+
+
+# def checkout(request):
+#     reservation_id = request.GET.get('reservation_id')
+#     if not reservation_id:
+#         return JsonResponse({'error': "La réservation avec l'ID spécifié n'existe pas."}, status=400)
+#
+#     try:
+#         reservation = Reservation.objects.get(id=reservation_id)
+#     except Reservation.DoesNotExist:
+#         return JsonResponse({'error': "La réservation n'existe pas."}, status=404)
+#
+#     montant_reservation = reservation.prix_total  # Obtenez le montant du prix depuis votre modèle de réservation
+#
+#     # Convertir le montant en cents pour Stripe (en FCFA)
+#     montant_cents = int(montant_reservation)
+#
+#     # Créer une session de paiement Stripe avec le montant du prix et la devise FCFA
+#     checkout_session_stripe = stripe.checkout.Session.create(
+#         payment_method_types=['card'],
+#         line_items=[{
+#             'price_data': {
+#                 'currency': 'XOF',  # Code de devise pour FCFA (XOF)
+#                 'unit_amount': montant_cents,
+#                 'product_data': {
+#                     'name': 'Réservation',
+#                 },
+#             },
+#             'quantity': 1,
+#         }],
+#         mode='payment',
+#         success_url='http://localhost:8000/reservation/payment/success/',
+#         cancel_url='http://localhost:8000/cancel/',
+#     )
+#
+#     # Rediriger l'utilisateur vers la page de paiement Stripe
+#     return redirect(checkout_session_stripe.url, code=303)
+
+
+
 def checkout(request):
     reservation_id = request.GET.get('reservation_id')
     if not reservation_id:
-        # return JsonResponse({'error': 'Reservation ID is missing'}, status=400)
         return JsonResponse({'error': "La réservation avec l'ID spécifié n'existe pas."}, status=400)
 
     try:
         reservation = Reservation.objects.get(id=reservation_id)
     except Reservation.DoesNotExist:
-        return JsonResponse({'error': "La réservation n'existe pas."}, status=404)
+        # Gérer le cas où la réservation n'existe pas
+        return HttpResponse("La réservation n'existe pas.", status=404)
 
-    montant_reservation = reservation.prix_total  # Obtenez le montant du prix depuis votre modèle de réservation
 
-    # Créez une session de paiement Stripe avec le montant du prix
+    if reservation.is_payment_expired():
+        # Paiement expiré, remettre l'état du bien à disponible
+        reservation.bienloue.etat = 'disponible'
+        reservation.bienloue.save()
+        reservation.status = 'annulee'
+        reservation.save()
+        return render(request, 'users/payment_expired.html')
+
+    # reservation_id = request.GET.get('reservation_id')
+    # reservation_id = Reservation.objects.get(id=reservation_id)
+    # if reservation_id.is_payment_expired():
+    #     # Paiement expiré, remettre l'état du bien à disponible
+    #     reservation_id.bienloue.etat = 'disponible'
+    #     reservation_id.bienloue.save()
+    #     reservation_id.status = 'annulee'
+    #     reservation_id.save()
+    #     return render(request, 'users/payment_expired.html')
+
+
+
+
+    montant_initial = reservation.prix_total
+    montant_augmente = montant_initial * Decimal(1.20)
+    # montant_reservation = "{:.2f}".format(montant_augmente)
+    # montant_reservation = reservation.prix_total  # Obtenez le montant du prix depuis votre modèle de réservation
+
+    # Convertir le montant en cents pour Stripe (en FCFA)
+    montant_cents = int(montant_augmente)
+
+    # URL de la vue cancel_payment
+    # cancel_url = 'http://localhost:8000/cancel_payment/?reservation_id={}'.format(reservation.id)
+    # Construisez l'URL de la vue cancel_payment avec l'identifiant de réservation en tant que paramètre
+
+    # cancel_url = request.build_absolute_uri(reverse('cancel_payment', kwargs={'reservation_id': reservation_id}))
+
+    # cancel_url = request.build_absolute_uri(reverse('cancel_payment'))
+
+    # Créer une session de paiement Stripe avec le montant du prix et la devise FCFA
     checkout_session_stripe = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=[{
             'price_data': {
-                'currency': 'usd',
-                'unit_amount': int(montant_reservation * 100),  # Convertissez le montant en cents pour Stripe
+                'currency': 'XOF',  # Code de devise pour FCFA (XOF)
+                'unit_amount': montant_cents,
                 'product_data': {
                     'name': 'Réservation',
                 },
@@ -661,12 +799,42 @@ def checkout(request):
             'quantity': 1,
         }],
         mode='payment',
-        success_url='http://localhost:8000/reservation/payment/success/',
-        cancel_url='http://localhost:8000/cancel/',
+        # success_url='http://localhost:8000/execute/',
+        success_url=request.build_absolute_uri(reverse('execute_payment1', args=[reservation_id])),
+        cancel_url=request.build_absolute_uri(reverse('cancel_payment1', args=[reservation_id]))
+        # cancel_url = 'http://localhost:8000/cancel-payment/?reservation_id={}'.format(reservation.id)
+        # Utilisez l'URL de la vue cancel_payment
     )
 
-    # Redirigez l'utilisateur vers la page de paiement Stripe
+    # Rediriger l'utilisateur vers la page de paiement Stripe
     return redirect(checkout_session_stripe.url, code=303)
+
+# def cancel_payment(request, reservation_id):
+#     # Votre logique pour annuler le paiement et gérer la réservation
+#
+#     return
+
+def cancel_payment(request, reservation_id):
+    # reservation_id = request.GET.get('reservation_id')  # Récupérer l'identifiant de réservation depuis la requête GET
+    if not reservation_id:
+        return JsonResponse({'error': "L'identifiant de réservation est manquant dans la requête."}, status=400)
+
+    try:
+        reservation = Reservation.objects.get(id=reservation_id)
+    except Reservation.DoesNotExist:
+        return JsonResponse({'error': "La réservation associée à cet identifiant n'existe pas."}, status=404)
+
+    # Mettez ici votre logique d'annulation de réservation en cas d'annulation de paiement Stripe
+    bien = reservation.bienloue
+    bien.etat = 'disponible'
+    bien.date_disponibilite_debut = timezone.now()
+    bien.save()
+
+    reservation.status = 'annulee'
+    reservation.save()
+
+    return render(request, 'users/paiement/payment_cancel.html')
+
 
 def stripe_confirm_payment(request):
     if request.method == 'POST':
@@ -849,7 +1017,51 @@ def execute_payment(request):
         # Envoyer l'e-mail personnalisé
         bien = reservation.bienloue
 
-        subject = "Confirmation de paiement chez Capadata"
+        subject = "Confirmation de paiement PAYPAL chez Capadata"
+        message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation,
+                                                                      'total_price': reservation.prix_total})
+        html_message = render_to_string('users/emails/paiement_template.html',
+                                        {'bien': bien, 'reservation': reservation,
+                                         'total_price': reservation.prix_total})
+        plain_message = strip_tags(html_message)  # Version texte brut du HTML
+
+        send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
+
+    else:
+        # Mettre à jour l'état du bien en 'disponible' si le paiement a échoué ou a été annulé
+        reservation.bienloue.etat = 'disponible'
+        reservation.bienloue.save()
+        # Mettre à jour le statut de la réservation en 'annulee' si le paiement a échoué ou a été annulé
+        reservation.status = 'annulee'
+
+    reservation.save()
+
+    return redirect('payment_success')  # Redirection vers une page par défaut
+def execute_payment1(request, reservation_id):
+    # reservation_id = request.GET.get('reservation_id')
+
+    if not reservation_id:
+        return HttpResponseNotFound("ID de réservation manquant dans la requête.")
+
+    try:
+        reservation = Reservation.objects.get(id=reservation_id)
+    except Reservation.DoesNotExist:
+        return HttpResponseNotFound("La réservation avec l'ID spécifié n'existe pas.")
+
+    # Vérifiez ici si le paiement a été effectué avec succès et mettez à jour l'état du bien en conséquence
+    payment_success = True  # Supposons que le paiement a réussi pour l'instant
+
+    if payment_success:
+        # Mettre à jour l'état du bien en 'deja_reserve' si le paiement a été effectué avec succès
+        reservation.bienloue.etat = 'deja_reserve'
+        reservation.bienloue.save()
+        # Mettre à jour le statut de la réservation en 'validee' si le paiement a été effectué avec succès
+        reservation.status = 'validee'
+
+        # Envoyer l'e-mail personnalisé
+        bien = reservation.bienloue
+
+        subject = "Confirmation de paiement STRIPE chez Capadata"
         message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation,
                                                                       'total_price': reservation.prix_total})
         html_message = render_to_string('users/emails/paiement_template.html',
