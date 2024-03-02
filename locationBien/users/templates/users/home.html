@@ -89,7 +89,7 @@
                 {% if bien.image_principale %}
                 <a href="{% url 'detail_bien' bien.id %}"><img src="{{ bien.image_principale.url }}" class="img-fluid w-100 rounded-top bien-image" alt="{{ bien.nom }}" style="height: 200px; cursor: pointer;"></a>
                 {% else %}
-                <a href="{% url 'detail_bien' bien.id %}"><img src="{% static 'media/biens_photos/default_image.png' %}" class="img-fluid w-100 rounded-top bien-image" alt="Image par défaut" height="200px" style="cursor: pointer;"></a>
+                <a href="{% url 'detail_bien' bien.id %}"><img src="{% static 'users/images/bg44.jpg' %}" class="img-fluid w-100 rounded-top bien-image" alt="Image par défaut" height="200px" style="cursor: pointer;"></a>
                 {% endif %}
             </div>
                     <div class="position-absolute" style="top: 10px; left: 10px;">

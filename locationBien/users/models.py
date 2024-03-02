@@ -84,6 +84,7 @@ class Biens(models.Model):
     description = models.TextField()
     prix = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     image_principale = models.ImageField(upload_to='biens_photos/')
+    # image_principale = models.ImageField(upload_to='biens_photos/', default='users/images/bg44.jpg')
     image_facultative_1 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
     image_facultative_2 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
     image_facultative_3 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)

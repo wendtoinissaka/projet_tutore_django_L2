@@ -1,0 +1,7 @@
+Password=gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD
+
+Internal Database URL=postgres://projet_tutore_user:gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD@dpg-cnfdkfq1hbls738uqpgg-a/projet_tutore
+
+External Database URL=postgres://projet_tutore_user:gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD@dpg-cnfdkfq1hbls738uqpgg-a.oregon-postgres.render.com/projet_tutore
+
+PSQL Command=PGPASSWORD=gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD psql -h dpg-cnfdkfq1hbls738uqpgg-a.oregon-postgres.render.com -U projet_tutore_user projet_tutore

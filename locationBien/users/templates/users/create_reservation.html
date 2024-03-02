@@ -2,44 +2,49 @@
 
 {% block content %}
 
+<!--<style>-->
+<!--  body {-->
+<!--    font-family: Arial, Helvetica, sans-serif;-->
+<!--  }-->
+
+<!--  .form-section {-->
+<!--    background-color: #f2f2f2;-->
+<!--    border: 1px solid #ddd;-->
+<!--    padding: 1.5rem;-->
+<!--    border-radius: 0.5rem;-->
+<!--    width: 45%; /* Adjusted width for better balance */-->
+<!--    margin: 1rem auto; /* Ensures centering on all devices */-->
+<!--  }-->
+
+<!--  label {-->
+<!--    font-weight: bold;-->
+<!--  }-->
+
+<!--  button {-->
+<!--    width: 100%;-->
+<!--  }-->
+
+<!--  .facture {-->
+<!--    background-color: #343a40;;-->
+<!--    border: 1px solid #ddd;-->
+<!--    color:white;-->
+<!--    padding: 1.5rem;-->
+<!--    border-radius: 0.5rem;-->
+<!--    width: 45%; /* Adjusted width for better balance */-->
+<!--    margin: 1rem auto; /* Ensures centering on all devices */-->
+<!--  }-->
+
+<!--  .container {-->
+<!--    display: flex;-->
+<!--    justify-content: center; /* Horizontal centering with flexbox */-->
+<!--  }-->
+<!--</style>-->
 <style>
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-  }
-
-  .form-section {
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    width: 45%; /* Adjusted width for better balance */
-    margin: 1rem auto; /* Ensures centering on all devices */
-  }
-
-  label {
-    font-weight: bold;
-  }
-
-  button {
-    width: 100%;
-  }
-
-  .facture {
-    background-color: #343a40;;
-    border: 1px solid #ddd;
-    color:white;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    width: 45%; /* Adjusted width for better balance */
-    margin: 1rem auto; /* Ensures centering on all devices */
-  }
-
-  .container {
-    display: flex;
-    justify-content: center; /* Horizontal centering with flexbox */
+  .list-group-item{
+  background-color : #212529;
+  color:white;
   }
 </style>
-
 <script>
     function updateTotalPriceAndDays() {
         var startDate = new Date(document.getElementById('id_debut_reservation').value);
@@ -61,10 +66,11 @@
 </ul>
 {% endif %}
 
-<h1 class="mt-5 text-center my-5">Effectuer une réservation</h1>
+<h1 class="mt-5 text-center text-white bg-warning">Validation de la réservation</h1>
 
-<div class="container">
-  <div class="facture">
+    <div class="content-container_login  my-0">
+        <div class="login-form_login bg-dark">
+  <div class="facture my-0">
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
@@ -77,47 +83,39 @@
       </div>
     </form>
   </div>
+          <hr class="text-white bg-white py-1 text-decoration-underline" style="color:white;"/>
+<div class="container">
+  <div class="facture row">
+    <h1 id="entete" class="text-center text-warning col-sm-12">Facture</h1>
 
-  <div class="facture">
-    <h1 id="entete" class="text-center text-warning">Facture</h1>
+    <ul class="list-group list-group-flush bg-light text-dark">
+      <li class="list-group-item"><strong >Nom du bien :</strong><span class="text-warning"> {{ bien.nom|truncatechars:15 }}</span> </li>
+      <li class="list-group-item"><strong>Nom du locataire :</strong><span class="text-warning">  {{ request.user.username }}</span></li>
+      <li class="list-group-item"><strong>Email du locataire :</strong><span class="text-warning">  {{ request.user.email }}</span></li>
+      <li class="list-group-item"><strong>Nom du propriétaire :</strong><span class="text-warning">  {{ bien.proprietaire }}</span></li>
+      <li class="list-group-item"><strong>Prix pour 1 jour :</strong><span class="text-warning">  {{ bien.prix }} F</span></li>
+      <li class="list-group-item"><strong>Nombre de jours :</strong> <span class="text-warning" id="num-days">1</span></li>
+      <li class="list-group-item"><strong>Prix Total :</strong> <span class="text-warning" id="total-price2">{{ bien.prix }} F</span></li>
+    </ul>
 
-    <div id="client">
-      <strong>Nom du bien :</strong><span class="text-warning" style="float: right;">{{ bien.nom }}</span>
-      <br>
-    </div>
-    <div id="client">
-      <strong>Nom du locataire :</strong><span class="text-warning"  style="float: right;">{{ request.user.username }}</span>
-      <br>
-    </div>
-    <div id="client">
-      <strong>Email du locataire :</strong><span class="text-warning"  style="float: right;">{{ request.user.email }}</span>
-      <br>
-    </div>
-    <div id="vendeur">
-      <strong>Nom du propriétaire :</strong><span class="text-warning"  style="float: right;">{{ bien.proprietaire }}</span>
-      <br>
-    </div>
-    <div id="vendeur">
-      <strong>Prix pour 1 jour :</strong><span class="text-warning" style="float: right;">{{ bien.prix }} F</span>
-      <br>
-    </div>
-    <div id="vendeur">
-      <strong>Nombre de jours :</strong><span class="text-warning" id="num-days" style="float: right;">1</span>
-      <br>
-    </div>
-    <div id="vendeur">
-      <strong>Prix Total : </strong><span class="text-warning" id="total-price2" style="float: right;">{{ bien.prix }} F</span>
-      <br>
-    </div>
+    <p class="text-warning text-center col-sm-12"><strong>Conditions de paiement :</strong> 24 heures</p>
 
-    <p class="text-warning text-center" ><strong >Conditions de paiement :</strong> 24 heures</p>
-    <div class="text-center">
-      <div class="form-group mt-2 bg-warning" id="signup-button">
-        <button class="btn_login bg-warning"><a href="{% url 'updateProfile' %} " class="text-dark" style="text-decoration:none" >MODIFIER MES INFOS</a></button>
+    <div class="col-sm-12 text-center mt-2">
+      <div class="form-group bg-warning" id="signup-button">
+        <button class="btn_login bg-warning">
+          <a href="{% url 'updateProfile' %} " class="text-dark" style="text-decoration:none">Modifier mes infos</a>
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+
+
+
+                  </div>
+    </div>
+
 
 <!-- Appeler la fonction updateTotalPriceAndDays lorsque les dates de début ou de fin changent -->
 <script>
