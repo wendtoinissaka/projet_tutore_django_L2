@@ -85,21 +85,21 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 #
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         'NAME': config('DB_NAME'),
-#         'USER': config('DB_USER'),
-#         'PASSWORD': config('DB_PASSWORD'),
-#         'HOST': config('DB_HOST'),
-#         'PORT': 5432,
-#     }
-#     # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
-# }
 DATABASES = {
-    "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': 5432,
+    }
     # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
+# DATABASES = {
+#     "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+#     # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+# }
 # DATABASE_URL = config('DATABASE_URL')
 
 
@@ -232,5 +232,5 @@ STATIC_URL='static/'
 STATIC_ROOT = BASE_DIR/"static"
 # STATICFILES_DIRS = [ "static",
 # ]
-MEDIA_URL = 'media/biens_photos'
+MEDIA_URL = 'media/biens_photos/'
 MEDIA_ROOT = BASE_DIR/'media'
