@@ -12,11 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
-import  os
+import os
 import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -29,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #own
+    # own
     'crispy_forms',
     # 'crispy_bootstrap5',
     'crispy_bootstrap4',
@@ -81,25 +80,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'locationBien.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 #
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         'NAME': config('DB_NAME'),
-#         'USER': config('DB_USER'),
-#         'PASSWORD': config('DB_PASSWORD'),
-#         'HOST': config('DB_HOST'),
-#         'PORT': 5432,
-#     }
-    # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
-# }
 DATABASES = {
-    "default": dj_database_url.parse('postgres://projet_tutore_user:gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD@dpg-cnfdkfq1hbls738uqpgg-a.oregon-postgres.render.com/projet_tutore')
-    # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': 5432,
+    }
+# "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
+# DATABASES = {
+#     "default": dj_database_url.parse(
+#         'postgres://projet_tutore_user:gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD@dpg-cnfdkfq1hbls738uqpgg-a.oregon-postgres.render.com/projet_tutore')
+#     # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+# }
 # DATABASE_URL = config('DATABASE_URL')
 
 
@@ -122,8 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 ]
 
-
-
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
@@ -139,7 +136,6 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-
 # STATIC_URL = 'static/'
 
 # Default primary key field type
@@ -152,7 +148,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'users/medias/users/')
 
 
-
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 LOGIN_REDIRECT_URL = 'home_without_filter'
@@ -162,10 +157,9 @@ LOGIN_URL = 'login'
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST =  config('EMAIL_HOST')
+EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', 587)
 EMAIL_USE_TLS = True
-
 
 # PAYPAL_CONFIG = {
 #     "mode": "sandbox",
@@ -203,23 +197,19 @@ PAYPAL_CANCEL_URL = "cancel_payment"
 # settings.py
 
 ###
-#stripe paiement
+# stripe paiement
 ###
-STRIPE_PUBLIC_KEY=config('STRIPE_PUBLIC_KEY')
-STRIPE_SECRET_KEY=config('STRIPE_SECRET_KEY')
-
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_BROKER_URL = 'amqp://localhost'
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 # confirmation avant creation de compte
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-
-
 
 # MEDIA_URL = 'media/'
 # # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -228,7 +218,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 #     os.path.join(BASE_DIR, 'staticfiles'),
 # ]
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'users/medias/users/')
-STATIC_URL='static/'
+STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
 # STATICFILES_DIRS = [ "static",
 # ]
