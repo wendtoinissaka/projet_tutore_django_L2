@@ -68,5 +68,7 @@ urlpatterns = [
     path('stripe-confirm-payment/', views.stripe_confirm_payment, name='stripe_confirm_payment'),
     path('stripe-checkout/', views.checkout ,name="stripe_checkout"),
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+]
+# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
