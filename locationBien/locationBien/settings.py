@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'locationBien.urls'
@@ -92,9 +93,8 @@ DATABASES = {
         'HOST': config('DB_HOST'),
         'PORT': 5432,
     }
-# "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
-
 
 DATABASES = {
     "default": dj_database_url.parse(
@@ -220,9 +220,23 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 #     os.path.join(BASE_DIR, 'staticfiles'),
 # ]
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'users/medias/users/')
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "static"
-# STATICFILES_DIRS = [ "static",
-# ]
-MEDIA_URL = 'media/biens_photos/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
+## configuration local
+
+# STATIC_URL = "static/"
+# STATIC_ROOT = BASE_DIR / "static"
+# # STATICFILES_DIRS = [ "static",
+# # ]
+# MEDIA_URL = 'media/'
+# MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# configuration deploiement render
+
+STATIC_URL = '/static/'
+
+if not DEBUG:  # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+    # and renames the files with unique names for each version to support long-term caching
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
