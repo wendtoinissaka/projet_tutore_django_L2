@@ -229,8 +229,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # ]
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'users/medias/users/')
 STATIC_URL='static/'
-STATIC_ROOT = BASE_DIR/"static"
+STATIC_ROOT = BASE_DIR / "static"
 # STATICFILES_DIRS = [ "static",
 # ]
 MEDIA_URL = 'media/biens_photos/'
-MEDIA_ROOT = BASE_DIR/'media'
+MEDIA_ROOT = BASE_DIR / 'media'
