@@ -16,15 +16,24 @@
 <div class="content-container_login">
   <div class="login-form_login">
     <h1 class="text-white">{% trans "Editer le bien" %}</h1>
-    <form method="post">
-      {% csrf_token %}
-      <fieldset class="form-group ">
-        {{ form|crispy }}
-      </fieldset>
+<!--    <form method="post">-->
+<!--      {% csrf_token %}-->
+<!--      <fieldset class="form-group ">-->
+<!--        {{ form|crispy }}-->
+<!--      </fieldset>-->
+<!--      <div class="form-group mt-2 bg-warning" id="signup-button">-->
+<!--        <button class="btn ">{% trans "Enregistrer les modifications" %}</button>-->
+<!--      </div>-->
+<!--    </form>-->
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
       <div class="form-group mt-2 bg-warning" id="signup-button">
-        <button class="btn ">{% trans "Enregistrer les modifications" %}</button>
+        <button class="btn" type="submit">Enregistrer</button>
+<!--        <button class="btn ">{% trans "Enregistrer les modifications" %}</button>-->
       </div>
-    </form>
+</form>
+
   </div>
 </div>
 {% endblock %}

@@ -475,13 +475,30 @@ def ajouter_avis(request, bien_id):
     return render(request, 'users/ajouter_avis.html', {'form': form, 'bien': bien})
 
 
+# class EditBienView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+#     model = Biens
+#     fields = ['nom', 'etat', 'categories', 'localisation', 'description', 'prix', 'image_principale',
+#               'image_facultative_1', 'image_facultative_2',
+#               'image_facultative_3']  # Liste des champs que vous souhaitez modifier
+#     template_name = 'users/edit_bien.html'
+#     success_message = ("Le bien a été modifié avec succès.")
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         if self.object.proprietaire != request.user:
+#             raise PermissionDenied
+#         return super().dispatch(request, *args, **kwargs)
+#
+#     def get_success_url(self):
+#         return reverse_lazy('detail_bien', args=[self.object.id])
+
+
 class EditBienView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Biens
     fields = ['nom', 'etat', 'categories', 'localisation', 'description', 'prix', 'image_principale',
-              'image_facultative_1', 'image_facultative_2',
-              'image_facultative_3']  # Liste des champs que vous souhaitez modifier
+              'image_facultative_1', 'image_facultative_2', 'image_facultative_3']
     template_name = 'users/edit_bien.html'
-    success_message = ("Le bien a été modifié avec succès.")
+    success_message = "Le bien a été modifié avec succès."
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -489,8 +506,18 @@ class EditBienView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
 
+    def form_valid(self, form):
+        # Traitement des fichiers d'image
+        for field_name in ['image_principale', 'image_facultative_1', 'image_facultative_2', 'image_facultative_3']:
+            file = self.request.FILES.get(field_name)
+            if file:
+                setattr(self.object, field_name, file)
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy('detail_bien', args=[self.object.id])
+
+
 
 
 class DeleteBienView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
