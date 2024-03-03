@@ -3,6 +3,9 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User, AbstractUser
 from django.utils import timezone
+from django.contrib.auth.tokens import default_token_generator
+
+
 class CustomUser(AbstractUser):
     TYPES_USERS = (
         ('locataire', 'Locataire'),
@@ -13,7 +16,7 @@ class CustomUser(AbstractUser):
     nom = models.CharField(max_length=100)
     numero_tel = models.CharField(max_length=15)
     email = models.EmailField(unique=True)  # Ajout du champ emails
-    type = models.CharField(max_length=20,choices=TYPES_USERS, default='locataire')  # Par défaut, type = 'locataire'
+    type = models.CharField(max_length=20, choices=TYPES_USERS, default='locataire')  # Par défaut, type = 'locataire'
     # Ajout des related_names pour résoudre les conflits
     groups = models.ManyToManyField(
         'auth.Group',
@@ -30,8 +33,19 @@ class CustomUser(AbstractUser):
         help_text='Specific permissions for this user.',
     )
 
+    def generate_activation_token(self):
+        """
+        Génère un nouveau token d'activation pour l'utilisateur.
+        """
+        return default_token_generator.make_token(self)
+
     def __str__(self):
         return self.username
+
+
+
+
+
 
 class Biens(models.Model):
     date_disponibilite_debut = models.DateTimeField(null=True, blank=True)
@@ -51,6 +65,7 @@ class Biens(models.Model):
                 self.etat = 'disponible'
 
         self.save()
+
     def is_available(self):
         return self.date_disponibilite_debut is None or self.date_disponibilite_fin is None
 
@@ -116,6 +131,7 @@ class Biens(models.Model):
                 return time_difference
         return None
 
+
 class Reservation(models.Model):
     nombre_jours = models.PositiveIntegerField(default=1)
     debut_reservation = models.DateField()
@@ -123,6 +139,7 @@ class Reservation(models.Model):
     prix_total = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], null=True)
     paiement_effectue = models.BooleanField(default=False)
     date_expiration_paiement = models.DateTimeField(null=True, blank=True)
+
     def save(self, *args, **kwargs):
         bien = self.bienloue
         prix_reservation = bien.get_reservation_price(self.nombre_jours)
@@ -158,12 +175,8 @@ class Reservation(models.Model):
         return f"Réservation de {self.bienloue.nom} par {self.locataire.username}, statut: {self.status}"
 
 
-
-
-
-
 class Avis(models.Model):
-    NOTE_CHOICES = [(i, f'{"⭐"*i}') for i in range(1, 6)]
+    NOTE_CHOICES = [(i, f'{"⭐" * i}') for i in range(1, 6)]
 
     bien = models.ForeignKey(Biens, related_name='avis', on_delete=models.CASCADE)
     locataire = models.ForeignKey(CustomUser, related_name='avis', on_delete=models.CASCADE)
@@ -176,6 +189,7 @@ class Avis(models.Model):
 
 
 User = get_user_model()
+
 
 class Payment(models.Model):
     STATUT_CHOICES = (
@@ -192,4 +206,3 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Paiement de {self.montant} pour {self.bien.nom} par {self.locataire.username}, statut: {self.statut}"
-

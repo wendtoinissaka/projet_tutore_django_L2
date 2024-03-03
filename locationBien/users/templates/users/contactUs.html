@@ -19,8 +19,10 @@
 {% block content %}
   <div class="content-container_login mt-5">
     <div class="login-form_login">
-      <h1 class="text-white">Contactez-nous</h1>
+      <h1 class="border-bottom mb-4" style="color: white;">Contactez-nous</h1>
       <form method="post">
+<!--                    <legend class="border-bottom mb-4" style="color: white;">Nous Contactez</legend>-->
+
         {% csrf_token %}
         <div class="form-group mb-4">
           {{ form.name|as_crispy_field }}

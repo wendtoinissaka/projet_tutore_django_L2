@@ -6,6 +6,7 @@ login page
 {% endblock title %}
 
 {% block content %}
+
     <div class="content-container_login ">
         <div class="login-form_login bg-dark">
             <form action="" method="POST">
@@ -19,9 +20,6 @@ login page
                 </div>
                 <div class="form-group">
                     <small class="text-muted ml-3">Pas encore de compte? <a class="text-warning" href="{% url 'register' %}"> Inscrivez vous!</a></small>
-                </div>
-                <div class="form-group">
-                    <small class="text-muted ml-3">Mot de passe oublié? <a class="text-warning" href="{% url 'demande_nouveau_token' %}"> Demandez un nouveau token</a></small>
                 </div>
             </form>
         </div>

@@ -1,0 +1,25 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+demande de nouveau token
+{% endblock title %}
+
+{% block content %}
+    <div class="content-container_login ">
+        <div class="login-form_login bg-dark">
+ <form method="post">
+                    <legend class="border-bottom mb-4" style="color: white;">Demande de nouveau token</legend>
+
+        {% csrf_token %}
+        {{ form.as_p }}
+      <div class="form-group mt-2 bg-warning" id="signup-button">
+                    <button class="btn_login bg-warning text-dark">Envoyer nouveau token</button>
+                </div>
+    </form>
+
+
+
+        </div>
+    </div>
+{% endblock %}

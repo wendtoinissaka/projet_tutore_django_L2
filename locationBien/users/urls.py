@@ -19,6 +19,9 @@ urlpatterns = [
     path('reservation_status_chart/', views.reservation_status_chart, name='reservation_status_chart'),
     path('register/', views.register, name='register'),
     path('activate/<uidb64>/<token>/', activate, name='activate'),
+    path('request_new_token/', views.request_new_token, name='demande_nouveau_token'),
+
+
     path('registration_confirmation/', views.registration_confirmation, name='registration_confirmation'),
     path('profile/', views.profile, name='profile'),
     path('updateProfile/', views.updateProfile, name='updateProfile'),

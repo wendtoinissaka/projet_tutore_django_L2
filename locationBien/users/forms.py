@@ -5,6 +5,8 @@ from .models import Biens, Avis
 from .models import CustomUser
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Reservation
+
+
 #
 # class UserRegisterForm(UserCreationForm):
 #     emails = forms.EmailField()
@@ -15,8 +17,10 @@ from .models import Reservation
 
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label="Username", max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Username'}))
-    password = forms.CharField(label="Password", max_length=30, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    username = forms.CharField(label="Username", max_length=30,
+                               widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    password = forms.CharField(label="Password", max_length=30,
+                               widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
 class UserRegisterForm(UserCreationForm):
@@ -29,6 +33,10 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'nom', 'numero_tel', 'email', 'password1', 'password2']
 
 
+class RequestNewTokenForm(forms.Form):
+    email = forms.EmailField(label='Adresse e-mail')
+
+
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
@@ -38,7 +46,7 @@ class UserUpdateForm(forms.ModelForm):
 class BiensCreationForm(forms.ModelForm):
     class Meta:
         model = Biens
-        exclude = ('proprietaire','date_disponibilite_debut', 'date_disponibilite_fin', 'etat')
+        exclude = ('proprietaire', 'date_disponibilite_debut', 'date_disponibilite_fin', 'etat')
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
@@ -51,6 +59,8 @@ class BiensCreationForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+
 # class BiensCreationForm(forms.ModelForm):
 #     class Meta:
 #         model = Biens
@@ -59,12 +69,10 @@ class BiensCreationForm(forms.ModelForm):
 #
 
 
-
 class AvisForm(forms.ModelForm):
     class Meta:
         model = Avis
         exclude = ('created_at', 'bien', 'locataire')
-
 
 
 class ReservationForm(forms.ModelForm):
@@ -80,14 +88,10 @@ class ReservationForm(forms.ModelForm):
         }
 
 
-
-
 class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['nom', 'numero_tel', 'email', 'password']  # Ajoutez d'autres champs au besoin
-
-
 
 
 class ContactForm(forms.Form):
@@ -95,4 +99,3 @@ class ContactForm(forms.Form):
     email = forms.EmailField()
     # subject = forms.CharField(max_length=100)
     message = forms.CharField(widget=forms.Textarea)
-

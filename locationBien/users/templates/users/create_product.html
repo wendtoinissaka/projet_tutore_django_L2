@@ -15,15 +15,31 @@
 <div class="content-container_login">
   <div class="login-form_login">
     <h1 class="text-white">Créer un nouveau produit</h1>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <fieldset class="form-group ">
-        {{ form|crispy }}
-      </fieldset>
-      <div class="form-group mt-2 bg-warning" id="signup-button">
-        <button class="btn ">Créer le produit</button>
-      </div>
-    </form>
+<!--    <form method="post" enctype="multipart/form-data">-->
+<!--      {% csrf_token %}-->
+<!--      <fieldset class="form-group ">-->
+<!--        {{ form|crispy }}-->
+<!--      </fieldset>-->
+<!--      <div class="form-group mt-2 bg-warning" id="signup-button">-->
+<!--        <button class="btn ">Créer le produit</button>-->
+<!--      </div>-->
+<!--    </form>-->
+    <form method="post" enctype="multipart/form-data" onsubmit="disableSubmitButton()">
+  {% csrf_token %}
+  <fieldset class="form-group">
+    {{ form|crispy }}
+  </fieldset>
+  <div class="form-group mt-2 bg-warning" id="signup-button">
+    <button class="btn" id="submit-btn">Créer le produit</button>
+  </div>
+</form>
+
+<script>
+  function disableSubmitButton() {
+    document.getElementById("submit-btn").disabled = true;
+  }
+</script>
+
   </div>
 </div>
 {% endblock %}

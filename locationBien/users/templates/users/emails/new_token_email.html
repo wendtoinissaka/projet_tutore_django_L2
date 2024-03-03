@@ -1,0 +1,13 @@
+{% autoescape off %}
+Bonjour {{ user.username }},
+
+Vous avez demandé un nouveau token de confirmation pour votre compte chez CAPADATA.
+
+Veuillez cliquer sur le lien ci-dessous pour confirmer votre compte :
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Si vous n'avez pas demandé ce token, veuillez ignorer cet e-mail.
+
+Cordialement,
+L'équipe CAPADATA
+{% endautoescape %}

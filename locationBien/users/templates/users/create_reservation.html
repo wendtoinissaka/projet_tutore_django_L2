@@ -75,6 +75,8 @@
       {% csrf_token %}
       {{ form.as_p }}
       <p><label class="text-white">Prix Total : </label><span class="mx-4 text-warning" id="total-price">{{ bien.prix }} F</span></p>
+    <p class="text-warning text-center col-sm-12"><strong>Conditions de paiement :</strong> 15 minutes</p>
+
       <!-- <button type="submit" class="btn bg-warning" style="color: dark; background-color: yellow;">CONFIRMER</button> -->
       <div class="text-center">
         <div class="form-group mt-2 bg-warning" id="signup-button">
@@ -98,7 +100,7 @@
       <li class="list-group-item"><strong>Prix Total :</strong> <span class="text-warning" id="total-price2">{{ bien.prix }} F</span></li>
     </ul>
 
-    <p class="text-warning text-center col-sm-12"><strong>Conditions de paiement :</strong> 24 heures</p>
+    <p class="text-warning text-center col-sm-12"><strong>Conditions de paiement :</strong> 15 minutes</p>
 
     <div class="col-sm-12 text-center mt-2">
       <div class="form-group bg-warning" id="signup-button">

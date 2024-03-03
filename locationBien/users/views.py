@@ -20,7 +20,7 @@ from django.views.generic import UpdateView, DeleteView
 from matplotlib import pyplot as plt
 
 from .forms import UserRegisterForm, BiensCreationForm, UserUpdateForm, AvisForm, ReservationForm, LoginForm, \
-    CustomUserForm, ContactForm
+    CustomUserForm, ContactForm, RequestNewTokenForm
 from .models import Biens, Reservation, Payment, CustomUser, Avis
 from django.contrib.auth.decorators import login_required
 from paypalrestsdk import Payment, configure
@@ -36,9 +36,12 @@ from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+from PIL import Image
+from io import BytesIO
 
-#stripe intégration
-stripe.api_key=settings.STRIPE_SECRET_KEY
+# stripe intégration
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -56,12 +59,57 @@ def user_login(request):
     return render(request, 'users/login.html', {'form': form})
 
 
+def process_image(image):
+    # Ouvrir l'image avec PIL
+    img = Image.open(image)
+    # Convertir l'image en mode RGB
+    img = img.convert('RGB')
+
+    # Effectuer le traitement de l'image (redimensionnement, recadrage, etc.)
+    # Par exemple, redimensionnez l'image à une taille spécifique
+    img.thumbnail((300, 300))
+
+    # Créer un objet BytesIO pour stocker l'image traitée
+    processed_image_io = BytesIO()
+
+    # Sauvegarder l'image traitée dans l'objet BytesIO au format JPEG
+    img.save(processed_image_io, format='JPEG')
+
+    # Retourner l'objet BytesIO contenant l'image traitée
+    return processed_image_io
+
+
+# @login_required()
+# def create_product(request):
+#     if request.method == 'POST':
+#         form = BiensCreationForm(request.POST, request.FILES, request=request)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect('/')
+#     else:
+#         form = BiensCreationForm(request=request)
+#
+#     return render(request, 'users/create_product.html', {'form': form})
+
 @login_required()
 def create_product(request):
     if request.method == 'POST':
         form = BiensCreationForm(request.POST, request.FILES, request=request)
         if form.is_valid():
-            form.save()
+            # Récupérer l'instance du formulaire
+            new_product = form.save(commit=False)
+
+            # Récupérer les images téléchargées depuis le formulaire
+            image_principale = form.cleaned_data['image_principale']
+            # image_facultative_1 = form.cleaned_data['image_facultative_1']
+            # Répétez pour les autres images facultatives
+
+            # Traitement de l'image principale (redimensionnement par exemple)
+            if image_principale:
+                image_principale = process_image(image_principale)
+
+            new_product.save()
+
             return HttpResponseRedirect('/')
     else:
         form = BiensCreationForm(request=request)
@@ -100,7 +148,6 @@ def home_without_filter(request):
     return render(request, 'users/home.html', {'biens': biens, 'category': category, 'etat': etat})
 
 
-
 # from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # def home_without_filter(request):
@@ -137,9 +184,6 @@ def home_without_filter(request):
 #     return render(request, 'users/home.html', {'biens': biens, 'category': category, 'etat': etat})
 
 
-
-
-
 # def home_with_filter(request):
 #     category = request.GET.get('category', 'all')  # Récupérer la valeur de la catégorie depuis l'URL
 #     if category == 'all':
@@ -167,10 +211,10 @@ def home_without_filter(request):
 #                                                       'related_biens': related_biens})  # reservation = Biens.objects.get(pk=bien_id)
 
 
-
 def detail_bien(request, bien_id):
     bien = Biens.objects.get(pk=bien_id)
-    total_images = sum([bool(getattr(bien, attr)) for attr in ['image_principale', 'image_facultative_1', 'image_facultative_2']])
+    total_images = sum(
+        [bool(getattr(bien, attr)) for attr in ['image_principale', 'image_facultative_1', 'image_facultative_2']])
     images = []
     for i in range(total_images):
         attr = f"image_principale" if i == 0 else f"image_facultative_{i}"
@@ -192,7 +236,6 @@ def detail_bien(request, bien_id):
                                                       'related_biens': related_biens, 'page_obj': page_obj})
 
 
-
 def register(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
@@ -204,7 +247,7 @@ def register(request):
             # Envoi de l'e-mail de confirmation
             current_site = get_current_site(request)
             subject = 'Activation de compte chez CAPADATA'
-            message = render_to_string('users/activation_email.html', {
+            message = render_to_string('users/emails/activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -212,7 +255,8 @@ def register(request):
             })
             send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
 
-            messages.success(request, f'Bienvenue! {user.username}, Verifiez votre email pour valider votre compte svp!')
+            messages.success(request,
+                             f'Bienvenue! {user.username}, Verifiez votre email pour valider votre compte svp!')
             return redirect('registration_confirmation')
             # return redirect(reverse('registration_confirmation'))
     else:
@@ -220,8 +264,19 @@ def register(request):
 
     return render(request, 'users/register.html', {'form': form})
 
-
-
+# def activate(request, uidb64, token):
+#     try:
+#         uid = force_str(urlsafe_base64_decode(uidb64))
+#         user = CustomUser.objects.get(pk=uid)
+#     except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+#         user = None
+#
+#     if user is not None and default_token_generator.check_token(user, token):
+#         user.is_active = True
+#         user.save()
+#         return render(request, 'users/emails/activation_done.html')
+#     else:
+#         return render(request, 'users/emails/activation_invalid.html')
 
 def activate(request, uidb64, token):
     try:
@@ -235,7 +290,67 @@ def activate(request, uidb64, token):
         user.save()
         return render(request, 'users/emails/activation_done.html')
     else:
-        return render(request, 'users/emails/activation_invalid.html')
+        # Si le token est invalide ou l'utilisateur n'existe pas, demander un nouveau token
+        if user is None:
+            messages.error(request, "Cet utilisateur n'existe pas.")
+        else:
+            messages.error(request,
+                           "Le lien de confirmation est invalide ou a expiré. Veuillez demander un nouveau token.")
+
+        # Rediriger l'utilisateur vers la page de demande de nouveau token ou une autre page appropriée
+        return redirect('demande_nouveau_token')
+        # return render(request, 'users/emails/activation_invalid.html')
+
+
+
+# def request_new_token(request):
+#     if request.method == "POST":
+#         form = RequestNewTokenForm(request.POST)
+#         if form.is_valid():
+#             # Traitez la demande de nouveau token ici (envoyer un e-mail avec un nouveau token, etc.)
+#             # Ajoutez votre logique ici pour traiter la demande de nouveau token
+#             # Par exemple, vous pouvez envoyer un e-mail avec un nouveau token à l'utilisateur
+#             # et afficher un message indiquant que le nouveau token a été envoyé avec succès.
+#             # Vous pouvez également rediriger l'utilisateur vers une page de confirmation.
+#             pass
+#     else:
+#         form = RequestNewTokenForm()
+#
+#     return render(request, 'users/request_new_token.html', {'form': form})
+
+
+def request_new_token(request):
+    if request.method == "POST":
+        form = RequestNewTokenForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            try:
+                user = CustomUser.objects.get(email=email)
+            except CustomUser.DoesNotExist:
+                user = None
+
+            if user is not None:
+
+                # Générez un nouveau token et envoyez-le par e-mail
+                user.generate_activation_token()
+                subject = 'Nouveau token de confirmation de compte chez CAPADATA'
+                message = render_to_string('users/emails/new_token_email.html', {
+                    'user': user,
+                    'domain': get_current_site(request).domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': default_token_generator.make_token(user),
+                })
+                send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
+
+                messages.success(request, f'Un nouveau token a été envoyé à {email}. Vérifiez votre e-mail.')
+                return redirect('demande_nouveau_token')
+            else:
+                messages.error(request, "Cet utilisateur n'existe pas.")
+    else:
+        form = RequestNewTokenForm()
+
+    return render(request, 'users/emails/request_new_token.html', {'form': form})
+
 
 def registration_confirmation(request):
     return render(request, 'users/emails/registration_confirmation.html')
@@ -288,8 +403,6 @@ def header(request):
     return render(request, 'users/header.html')
 
 
-
-
 @login_required
 def list_user_bien(request):
     # Récupérer les biens de l'utilisateur connecté
@@ -299,7 +412,6 @@ def list_user_bien(request):
     search_query = request.GET.get('q')
     if search_query:
         user_biens = user_biens.filter(nom__icontains=search_query)
-
 
     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
     category = request.GET.get('category')
@@ -324,7 +436,6 @@ def list_user_bien1(request):
     if search_query:
         user_biens = user_biens.filter(nom__icontains=search_query)
 
-
     # Filtrer les biens en fonction de la catégorie (si spécifiée dans la requête GET)
     category = request.GET.get('category')
     if category and category != 'all':
@@ -336,7 +447,6 @@ def list_user_bien1(request):
         user_biens = user_biens.filter(etat=etat)
 
     return render(request, 'users/list_user_bien1.html', {'user_biens': user_biens, 'category': category})
-
 
 
 @method_decorator(login_required, name='dispatch')
@@ -441,8 +551,6 @@ def cancel_payment(request):
     return render(request, 'users/paiement/payment_cancel.html')
 
 
-
-
 def payment_success(request):
     return render(request, 'users/paiement/payment_success.html')
 
@@ -504,7 +612,9 @@ def reservation_page(request):
         'etat': etat
     })
 
+
 from .models import Reservation, Biens
+
 
 @login_required
 def reservations_sur_mes_biens(request):
@@ -533,6 +643,7 @@ def reservations_sur_mes_biens(request):
         'reservations_triees_paginated': reservations_triees_paginated,  # Passer la variable paginée au template
         'etat': etat
     })
+
 
 # Dans votre fichier views.py
 
@@ -574,9 +685,6 @@ def reservation_status_chart(request):
 
     # Passer le chemin de l'image au modèle
     return render(request, 'users/reservation_status_chart.html', {'chart_image_path': chart_image_path})
-
-
-
 
 
 @login_required
@@ -622,6 +730,7 @@ def cancel_reservation(request, reservation_id):
             bien.etat = 'disponible'
             bien.date_disponibilite_debut = timezone.now()
             bien.date_expiration_paiement = 0
+            # bien.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=15)
             bien.save()
 
             messages.success(request, "La réservation a été annulée avec succès.")
@@ -658,10 +767,8 @@ def contactUs(request):
     return render(request, 'users/contactUs.html', {'form': form})
 
 
-
 def stripeHome(request):
     return render(request, 'users/paiement/stripe_home.html')
-
 
 
 # def checkout(request):
@@ -736,7 +843,6 @@ def stripeHome(request):
 #     return redirect(checkout_session_stripe.url, code=303)
 
 
-
 def checkout(request):
     reservation_id = request.GET.get('reservation_id')
     if not reservation_id:
@@ -747,7 +853,6 @@ def checkout(request):
     except Reservation.DoesNotExist:
         # Gérer le cas où la réservation n'existe pas
         return HttpResponse("La réservation n'existe pas.", status=404)
-
 
     if reservation.is_payment_expired():
         # Paiement expiré, remettre l'état du bien à disponible
@@ -766,9 +871,6 @@ def checkout(request):
     #     reservation_id.status = 'annulee'
     #     reservation_id.save()
     #     return render(request, 'users/payment_expired.html')
-
-
-
 
     montant_initial = reservation.prix_total
     montant_augmente = montant_initial * Decimal(1.20)
@@ -809,6 +911,7 @@ def checkout(request):
 
     # Rediriger l'utilisateur vers la page de paiement Stripe
     return redirect(checkout_session_stripe.url, code=303)
+
 
 # def cancel_payment(request, reservation_id):
 #     # Votre logique pour annuler le paiement et gérer la réservation
@@ -881,7 +984,6 @@ def stripe_confirm_payment(request):
         return JsonResponse({'error': "Méthode de requête non autorisée."}, status=405)
 
 
-
 @login_required
 def do_reservation(request, bien_id):
     bien = get_object_or_404(Biens, pk=bien_id)
@@ -927,6 +1029,12 @@ def do_reservation(request, bien_id):
             plain_message = strip_tags(html_message)  # Version texte brut du HTML
 
             send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
+
+            # try:
+            #     send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email],
+            #               html_message=html_message)
+            # except BadHeaderError:
+            #     return HttpResponseServerError('Invalid header found.')
 
         return redirect('reservation_detail', reservation_id=reservation.id)
     else:
@@ -1023,7 +1131,8 @@ def execute_payment(request):
                                                                       'total_price': reservation.prix_total})
         html_message = render_to_string('users/emails/paiement_template.html',
                                         {'bien': bien, 'reservation': reservation,
-                                         'total_price': reservation.prix_total})
+                                         'total_price': reservation.prix_total * Decimal(1.20)})
+        # 'total_price': reservation.prix_total})
         plain_message = strip_tags(html_message)  # Version texte brut du HTML
 
         send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
@@ -1038,6 +1147,8 @@ def execute_payment(request):
     reservation.save()
 
     return redirect('payment_success')  # Redirection vers une page par défaut
+
+
 def execute_payment1(request, reservation_id):
     # reservation_id = request.GET.get('reservation_id')
 
@@ -1082,5 +1193,3 @@ def execute_payment1(request, reservation_id):
     reservation.save()
 
     return redirect('payment_success')  # Redirection vers une page par défaut
-
-
