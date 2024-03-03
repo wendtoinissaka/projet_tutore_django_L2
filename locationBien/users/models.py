@@ -77,12 +77,14 @@ class Biens(models.Model):
     )
 
     proprietaire = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    nom = models.CharField(max_length=100)
+    # nom = models.CharField(max_length=100)
+    nom = models.CharField(max_length=50)
     date_created = models.DateTimeField(auto_now_add=True)
     categories = models.CharField(max_length=20, choices=CATEGORIES_CHOICES)
     localisation = models.CharField(max_length=255)
     description = models.TextField()
     prix = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    # image_principale = models.ImageField(upload_to='biens_photos/')
     image_principale = models.ImageField(upload_to='biens_photos/')
     # image_principale = models.ImageField(upload_to='biens_photos/', default='users/images/bg44.jpg')
     image_facultative_1 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
@@ -131,7 +133,8 @@ class Reservation(models.Model):
             bien.save()
         # Définir l'heure d'expiration du paiement (30 minutes après la création de la réservation)
         if not self.date_expiration_paiement:
-            self.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=30)
+            self.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=15)
+            # self.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=30)
             # self.date_expiration_paiement = timezone.now() + timezone.timedelta(heures=1)
 
         super().save(*args, **kwargs)

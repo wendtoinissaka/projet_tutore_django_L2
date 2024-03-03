@@ -621,6 +621,7 @@ def cancel_reservation(request, reservation_id):
             bien = reservation.bienloue
             bien.etat = 'disponible'
             bien.date_disponibilite_debut = timezone.now()
+            bien.date_expiration_paiement = 0
             bien.save()
 
             messages.success(request, "La réservation a été annulée avec succès.")

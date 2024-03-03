@@ -12,6 +12,7 @@
             <tr>
                 <th scope="col">Bien Loué</th>
                 <th scope="col">Propriétaire</th>
+                <th scope="col">Date</th>
                 <th scope="col">Nombre de Jours</th>
                 <th scope="col">Prix Total (F)</th>
                 <th scope="col">Status</th>
@@ -22,8 +23,9 @@
         <tbody>
             {% for reservation in reservations_en_attente %}
             <tr>
-                <td>{{ reservation.bienloue }}</td>
+                <td>{{ reservation.bienloue|truncatechars:40  }}</td>
                 <td>{{ reservation.proprietaire }}</td>
+                <td>{{ reservation.debut_reservation }}</td>
                 <td>{{ reservation.nombre_jours }}</td>
                 <td>{{ reservation.prix_total }}</td>
                 <td>{{ reservation.status }}</td>
@@ -67,8 +69,9 @@
         <thead>
             <tr>
                 <th scope="col">Bien Loué</th>
-                <th scope="col">Nombre de Jours</th>
+                <th scope="col">Propriétaire</th>
                 <th scope="col">Date de Debut</th>
+                <th scope="col">Nombre de Jours</th>
                 <th scope="col">Prix Total (F)</th>
                 <th scope="col">Status</th>
             </tr>
@@ -76,9 +79,10 @@
         <tbody>
             {% for reservation in reservations_triees_paginated %}
                 <tr>
-                    <td>{{ reservation.bienloue }}</td>
-                    <td>{{ reservation.nombre_jours }}</td>
+                    <td>{{ reservation.bienloue|truncatechars:40  }}</td>
+                    <td>{{ reservation.proprietaire }}</td>
                     <td>{{ reservation.debut_reservation }}</td>
+                    <td>{{ reservation.nombre_jours }}</td>
                     <td>{{ reservation.prix_total }}</td>
                     <td>{{ reservation.status }}</td>
                 </tr>

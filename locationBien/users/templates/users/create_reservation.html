@@ -74,7 +74,7 @@
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <p><label>Prix Total : </label><span class="mx-4 t" id="total-price">{{ bien.prix }} F</span></p>
+      <p><label class="text-white">Prix Total : </label><span class="mx-4 text-warning" id="total-price">{{ bien.prix }} F</span></p>
       <!-- <button type="submit" class="btn bg-warning" style="color: dark; background-color: yellow;">CONFIRMER</button> -->
       <div class="text-center">
         <div class="form-group mt-2 bg-warning" id="signup-button">

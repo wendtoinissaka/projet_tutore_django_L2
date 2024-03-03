@@ -11,8 +11,10 @@
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">Locataire</th>
                 <th scope="col">Bien Loué</th>
                 <th scope="col">Nombre de Jours</th>
+                <th scope="col">Date de debut de Jours</th>
                 <th scope="col">Prix Total (F)</th>
                 <th scope="col">Status</th>
                 <th scope="col">Annulation</th>
@@ -22,8 +24,10 @@
         <tbody>
             {% for reservation in reservations_en_attente %}
             <tr>
-                <td>{{ reservation.bienloue }}</td>
+                <td>{{ reservation.locataire }}</td>
+                <td>{{ reservation.bienloue|truncatechars:40 }}</td>
                 <td>{{ reservation.nombre_jours }}</td>
+                <td>{{ reservation.debut_reservation }}</td>
                 <td>{{ reservation.prix_total }}</td>
                 <td>{{ reservation.status }}</td>
                 <td>
@@ -67,7 +71,7 @@
         <thead>
             <tr>
                 <th scope="col">Locataire</th>
-                <th scope="col">Bien</th>
+                <th scope="col">Bien Loué</th>
                 <th scope="col">Nombre de Jours</th>
                 <th scope="col">Date de Debut</th>
                 <th scope="col">Prix Total (F)</th>
@@ -78,7 +82,7 @@
             {% for reservation in reservations_triees_paginated %}
                 <tr>
                     <td>{{ reservation.locataire }}</td>
-                    <td>{{ reservation.bienloue }}</td>
+                    <td>{{ reservation.bienloue|truncatechars:40 }}</td>
                     <td>{{ reservation.nombre_jours }}</td>
                     <td>{{ reservation.debut_reservation }}</td>
                     <td>{{ reservation.prix_total }}</td>
@@ -115,6 +119,7 @@
     </div>
     <div class="text-right"> <!-- Utilisez la classe text-right pour aligner le contenu à droite -->
         <span class="current">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span>
+
     </div>
     <div>
         {% if page_obj.has_next %}
