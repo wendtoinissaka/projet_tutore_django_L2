@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from . import views
-
+from django.contrib.auth import views as auth_views
 # from .views import register, activate
 from django.contrib.auth import views as auth_view
 from django.conf.urls import handler404
@@ -20,7 +20,27 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('activate/<uidb64>/<token>/', activate, name='activate'),
     path('request_new_token/', views.request_new_token, name='demande_nouveau_token'),
+    # # reinitialiser password
+path('password_reset/', views.CustomPasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', views.CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', views.CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', views.CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
+
+    # path('password_reset/', views.request_password_reset, name='password_reset'),
+    # # path('password_reset/', views.custom_password_reset, name='password_reset'),
+    # path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    # path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    # path('reset/', views.request_password_reset, name='password_reset'),
+    # path('reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    # path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # path('reset/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    # # ...
+
+    path('users/', views.user_list, name='user_list'),
+    path('users/create/', views.user_create, name='user_create'),
 
     path('registration_confirmation/', views.registration_confirmation, name='registration_confirmation'),
     path('profile/', views.profile, name='profile'),

@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
         ('administrateur', 'Administrateur'),
     )
     is_active = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=True)
     nom = models.CharField(max_length=100)
     numero_tel = models.CharField(max_length=15)
     email = models.EmailField(unique=True)  # Ajout du champ emails

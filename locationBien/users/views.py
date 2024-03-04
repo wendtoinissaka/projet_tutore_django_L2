@@ -3,7 +3,10 @@ from decimal import Decimal
 import stripe
 from django.conf import settings
 from django.contrib.auth import authenticate
+from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
+    PasswordResetCompleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -20,7 +23,7 @@ from django.views.generic import UpdateView, DeleteView
 from matplotlib import pyplot as plt
 
 from .forms import UserRegisterForm, BiensCreationForm, UserUpdateForm, AvisForm, ReservationForm, LoginForm, \
-    CustomUserForm, ContactForm, RequestNewTokenForm
+    CustomUserForm, ContactForm, RequestNewTokenForm, CustomUserCreationForm, CustomPasswordResetForm
 from .models import Biens, Reservation, Payment, CustomUser, Avis
 from django.contrib.auth.decorators import login_required
 from paypalrestsdk import Payment, configure
@@ -57,6 +60,136 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'users/login.html', {'form': form})
+
+
+def request_password_reset(request):
+    if request.method == "POST":
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            # Récupérer l'utilisateur par son adresse e-mail
+            try:
+                user = CustomUser.objects.get(email=email)
+            except CustomUser.DoesNotExist:
+                user = None
+
+            if user:
+                # Générer les valeurs uidb64 et token
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                token = default_token_generator.make_token(user)
+
+                # Construire l'URL de réinitialisation du mot de passe
+                reset_url = reverse('password_reset_confirm', kwargs={'uidb64': uidb64, 'token': token})
+
+                # Envoyer l'e-mail avec l'URL de réinitialisation
+                # Utilisez reset_url dans le contenu de votre e-mail
+
+                # return redirect('password_reset_done')
+                return render(request, 'users/registration/password_reset_done.html')
+
+    else:
+        form = PasswordResetForm()
+    return render(request, 'users/registration/password_reset_form.html', {'form': form})
+
+
+# def request_password_reset(request):
+#     if request.method == "POST":
+#         form = PasswordResetForm(request.POST)
+#         if form.is_valid():
+#             form.save(
+#                 request=request,
+#                 from_email=settings.DEFAULT_FROM_EMAIL,
+#                 email_template_name='users/registration/password_reset_email.html',
+#                 subject_template_name='users/registration/password_reset_subject.txt',
+#                 extra_email_context={'domain': request.get_host()},
+#             )
+#             messages.success(request, "Un email de réinitialisation de mot de passe a été envoyé à votre adresse.")
+#             # return redirect('password_reset_done')
+#             return render(request, 'users/registration/password_reset_done.html')
+#     else:
+#         form = PasswordResetForm()
+#     return render(request, 'users/registration/password_reset_form.html', {'form': form})
+
+
+# def request_password_reset(request):
+#     if request.method == "POST":
+#         form = PasswordResetForm(request.POST)
+#         if form.is_valid():
+#             form.save(
+#                 request=request,
+#                 use_https=request.is_secure(),
+#                 from_email=settings.DEFAULT_FROM_EMAIL,
+#                 email_template_name='users/registration/password_reset_email.html',
+#                 subject_template_name='users/registration/password_reset_subject.txt',
+#                 extra_email_context={'domain': request.get_host()},
+#             )
+#             return render(request, 'users/registration/password_reset_done.html')
+#     else:
+#         form = PasswordResetForm()
+#     return render(request, 'users/registration/password_reset_form.html', {'form': form})
+
+
+# from django.contrib.auth.views import PasswordResetView
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
+    template_name = 'users/registration/password_reset_form.html'
+    email_template_name = 'users/registration/password_reset_email.html'
+    success_url = reverse_lazy('password_reset_done')
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'users/registration/password_reset_done.html'
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'users/registration/password_reset_confirm.html'
+    success_url = reverse_lazy('password_reset_complete')
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'users/registration/password_reset_complete.html'
+
+
+@login_required
+def user_list(request):
+    if not request.user.is_admin:
+        messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
+        return redirect('home_without_filter')  # Rediriger vers la page d'accueil ou une autre page appropriée
+    users = CustomUser.objects.all()
+    return render(request, 'users/admin/user_list.html', {'users': users})
+
+
+@login_required
+def user_create(request):
+    if not request.user.is_admin:
+        messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
+        return redirect('home_without_filter')  # Rediriger vers la page d'accueil ou une autre page appropriée
+
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Utilisateur créé avec succès !')
+            return redirect('users/admin/user_list')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'users/admin/user_create.html', {'form': form})
+
+
+# @login_required
+# def user_list(request):
+#     users = CustomUser.objects.all()
+#     return render(request, 'user_list.html', {'users': users})
+#
+#
+# @login_required
+# def user_create(request):
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             return redirect('user_list')
+#     else:
+#         form = CustomUserCreationForm()
+#     return render(request, 'user_create.html', {'form': form})
 
 
 def process_image(image):
@@ -264,6 +397,7 @@ def register(request):
 
     return render(request, 'users/register.html', {'form': form})
 
+
 # def activate(request, uidb64, token):
 #     try:
 #         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -300,7 +434,6 @@ def activate(request, uidb64, token):
         # Rediriger l'utilisateur vers la page de demande de nouveau token ou une autre page appropriée
         return redirect('demande_nouveau_token')
         # return render(request, 'users/emails/activation_invalid.html')
-
 
 
 # def request_new_token(request):
@@ -516,8 +649,6 @@ class EditBienView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('detail_bien', args=[self.object.id])
-
-
 
 
 class DeleteBienView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):

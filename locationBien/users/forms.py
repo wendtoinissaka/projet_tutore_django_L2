@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
 from django import forms
 from .models import Biens, Avis
 from .models import CustomUser
@@ -36,6 +36,12 @@ class UserRegisterForm(UserCreationForm):
 class RequestNewTokenForm(forms.Form):
     email = forms.EmailField(label='Adresse e-mail')
 
+class CustomPasswordResetForm(PasswordResetForm):
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if not CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("Cet e-mail n'existe pas dans notre système.")
+        return email
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
@@ -92,6 +98,13 @@ class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['nom', 'numero_tel', 'email', 'password']  # Ajoutez d'autres champs au besoin
+
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'nom', 'email', 'type', 'is_active', 'password1', 'password2']
+
 
 
 class ContactForm(forms.Form):
