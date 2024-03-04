@@ -1177,16 +1177,17 @@ def do_reservation(request, bien_id):
             # Planifier la mise à jour de l'état du bien après la durée de la réservation
             update_bien_state.apply_async((bien.id,), countdown=nombre_jours * 24 * 60 * 60)
 
-            # Envoyer l'e-mail personnalisé
-            subject = "Confirmation de réservation chez Capadata"
-            message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation,
-                                                                          'total_price': reservation.prix_total})
-            html_message = render_to_string('users/emails/email_template.html',
-                                            {'bien': bien, 'reservation': reservation,
-                                             'total_price': reservation.prix_total})
-            plain_message = strip_tags(html_message)  # Version texte brut du HTML
+            # # Envoyer l'e-mail personnalisé
+            # subject = "Confirmation de réservation chez Capadata"
+            # message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation,
+            #                                                               'total_price': reservation.prix_total})
+            # html_message = render_to_string('users/emails/email_template.html',
+            #                                 {'bien': bien, 'reservation': reservation,
+            #                                  'total_price': reservation.prix_total})
+            # plain_message = strip_tags(html_message)  # Version texte brut du HTML
+            #
+            # send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
 
-            send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
 
             # try:
             #     send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email],
