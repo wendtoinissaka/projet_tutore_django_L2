@@ -252,8 +252,8 @@ def create_product(request):
 
 
 def home_without_filter(request):
-    # biens = Biens.objects.all().order_by('-date_created')
-    biens = Biens.objects.all().order_by('-date_modification')
+    biens = Biens.objects.all().order_by('-date_created')
+    # biens = Biens.objects.all().order_by('-date_modification')
     # biens = Biens.objects.annotate(avg_rating=Avg('avis__note')).order_by('-avg_rating', '-date_created')
     # Calculer la moyenne des avis pour chaque bien et les trier par cette moyenne
     # biens = Biens.objects.annotate(moyenne_avis=Avg('avis__note')).order_by('-moyenne_avis')
