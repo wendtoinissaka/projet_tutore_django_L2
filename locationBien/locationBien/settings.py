@@ -99,7 +99,8 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 #deployer sur render
 DATABASES = {
     "default": dj_database_url.parse(
-        'postgres://projet_tutore_user:gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD@dpg-cnfdkfq1hbls738uqpgg-a.oregon-postgres.render.com/projet_tutore')
+        'postgres://projet_tutore_user:gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD@dpg-cnfdkfq1hbls738uqpgg-a.oregon-postgres'
+        '.render.com/projet_tutore')
     # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
 # DATABASE_URL = config('DATABASE_URL')
