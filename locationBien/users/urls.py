@@ -39,8 +39,8 @@ path('password_reset/', views.CustomPasswordResetView.as_view(), name='password_
     # path('reset/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     # # ...
 
-    path('users/', views.user_list, name='user_list'),
-    path('users/create/', views.user_create, name='user_create'),
+    # path('users/', views.user_list, name='user_list'),
+    # path('users/create/', views.user_create, name='user_create'),
 
     path('registration_confirmation/', views.registration_confirmation, name='registration_confirmation'),
     path('profile/', views.profile, name='profile'),

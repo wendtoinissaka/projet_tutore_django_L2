@@ -149,30 +149,30 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'users/registration/password_reset_complete.html'
 
 
-@login_required
-def user_list(request):
-    if not request.user.is_admin:
-        messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
-        return redirect('home_without_filter')  # Rediriger vers la page d'accueil ou une autre page appropriée
-    users = CustomUser.objects.all()
-    return render(request, 'users/admin/user_list.html', {'users': users})
+# @login_required
+# def user_list(request):
+#     if not request.user.is_admin:
+#         messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
+#         return redirect('home_without_filter')  # Rediriger vers la page d'accueil ou une autre page appropriée
+#     users = CustomUser.objects.all()
+#     return render(request, 'users/admin/user_list.html', {'users': users})
 
 
-@login_required
-def user_create(request):
-    if not request.user.is_admin:
-        messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
-        return redirect('home_without_filter')  # Rediriger vers la page d'accueil ou une autre page appropriée
-
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Utilisateur créé avec succès !')
-            return redirect('users/admin/user_list')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'users/admin/user_create.html', {'form': form})
+# @login_required
+# def user_create(request):
+#     if not request.user.is_admin:
+#         messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
+#         return redirect('home_without_filter')  # Rediriger vers la page d'accueil ou une autre page appropriée
+#
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Utilisateur créé avec succès !')
+#             return redirect('users/admin/user_list')
+#     else:
+#         form = CustomUserCreationForm()
+#     return render(request, 'users/admin/user_create.html', {'form': form})
 
 
 # @login_required

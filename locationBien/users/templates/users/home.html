@@ -97,18 +97,33 @@
             </div>
             <div class="position-absolute" style="top: 10px; left: 150px;">
                 <!-- Etat des biens (Disponible / Non Disponible)-->
-                <div class="text-white bg-warning px-2 py-1 rounded">{{ bien.etat }}</div>
+<!--                <div class="text-white bg-warning px-2 py-1 rounded">{{ bien.etat }}</div>-->
+                <div class="text-white px-2 py-1 rounded {% if bien.etat == 'deja_reserve' %} {% elif bien.etat == 'en_cours' %}bg-dark text-warning{% elif bien.etat == 'disponible' %}bg-warning{% endif %}" style="{% if bien.etat == 'deja_reserve' %}background-color: #fd5e14;{% endif %}">
+                    {{ bien.etat }}
+                </div>
 
             </div>
- {% if bien.etat == 'deja_reserve' %}
-        {% with time_until_available=bien.get_time_until_available %}
-            {% if time_until_available %}
-                <p>Temps restant avant disponibilité : {{ time_until_available }}</p>
-            {% else %}
-                <p>Le bien sera disponible bientôt!</p>
-            {% endif %}
-        {% endwith %}
-    {% endif %}
+<!-- {% if bien.etat == 'deja_reserve' %}-->
+<!--        {% with time_until_available=bien.get_time_until_available %}-->
+<!--            {% if time_until_available %}-->
+<!--        <p class="text-warning">Temps restant avant disponibilité : {{ time_until_available }}</p>-->
+<!--        {% else %}-->
+<!--        <p  style="color: white; background-color: #fd5e14;" >Le bien sera disponible bientôt!</p>-->
+<!--            {% endif %}-->
+<!--        {% endwith %}-->
+<!--    {% endif %}-->
+
+        {% if bien.etat == 'deja_reserve' %}
+    {% with time_until_available=bien.get_time_until_available %}
+        {% if time_until_available %}
+            <p class="text-warning">Temps restant avant disponibilité : {{ time_until_available }}</p>
+        {% else %}
+            <p style="color: white; background-color: #fd5e14;">Le bien sera disponible bientôt!</p>
+        {% endif %}
+    {% endwith %}
+{% endif %}
+
+
         <div class="p-4 border-top-0 rounded-bottom d-flex flex-column ">
 
             <h4 class="text-warning text-center"><a href="{% url 'detail_bien' bien.id %}" class="text-decoration-none text-reset">{{ bien.nom|truncatechars:40 }}</a></h4>
@@ -133,9 +148,16 @@
                     <div class="form-group  bg-warning mx-1" id="signup-button">
                         <a href="{% url 'detail_bien'  bien.id %}"  class="text-decoration-none text-dark" >DETAILS</a>
                      </div>
-                    <div class="form-group  bg-warning" id="signup-button">
-                        <a href="{% url 'do_reservation' bien.id %}"   class="text-decoration-none text-dark" >RESERVER</a>
-                     </div>
+<!--                    <div class="form-group  bg-warning" id="signup-button">-->
+<!--                        <a href="{% url 'do_reservation' bien.id %}"   class="text-decoration-none text-dark" >RESERVER</a>-->
+<!--                     </div>-->
+                    <div class="form-group bg-warning" id="signup-button">
+    {% if bien.etat == 'disponible' %}
+        <a href="{% url 'do_reservation' bien.id %}" class="text-decoration-none text-dark">RESERVER</a>
+    {% else %}
+        <span class="text-decoration-none text-dark disabled">RESERVER</span>
+    {% endif %}
+</div>
 
 <!--                    <a href="{% url 'do_reservation' bien.id %}" class="btn border border-secondary rounded-pill text-primary">RESERVER</a>-->
                 </div>

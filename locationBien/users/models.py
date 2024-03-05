@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
         ('administrateur', 'Administrateur'),
     )
     is_active = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=True)
+    # is_admin = models.BooleanField(default=True)
     nom = models.CharField(max_length=100)
     numero_tel = models.CharField(max_length=15)
     email = models.EmailField(unique=True)  # Ajout du champ emails
@@ -125,12 +125,14 @@ class Biens(models.Model):
 
     def get_time_until_available(self):
         if self.etat == 'deja_reserve':
-            # Calculer le temps restant jusqu'à ce que le bien soit disponible
             now = timezone.now()
             if self.date_disponibilite_fin and now < self.date_disponibilite_fin:
                 time_difference = self.date_disponibilite_fin - now
-                return time_difference
+                hours, remainder = divmod(time_difference.seconds, 3600)
+                minutes, seconds = divmod(remainder, 60)
+                return f"{hours} heures, {minutes} minutes, {seconds} secondes"
         return None
+
 
 
 class Reservation(models.Model):

@@ -19,6 +19,7 @@ crispy-forms-materialize==0.2
 cryptography==42.0.3
 cssselect2==0.7.0
 cycler==0.12.1
+decouple==0.0.7
 defusedxml==0.7.1
 dj-database-url==1.2.0
 Django==5.0.1
