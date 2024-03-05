@@ -55,9 +55,12 @@
 
 </style>
 					<!-- /Product thumb imgs -->
-<div class="container mt-5 mb-5">
-  <div class="row align-items-center justify-content-md-between mt-5">
-    <div class="col-lg-6 order-last order-lg-first mt-5">
+<div class="container mt-5 mb-5 ">
+  <div class="row align-items-center justify-content-md-between mt-5" >
+
+
+
+    <div class="col-lg-6 order-last bg-dark pb-5 order-lg-first text-center mt-5">
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 <!--    <div class="carousel-inner">-->
 <!--      <div class="carousel-item active">-->
@@ -126,15 +129,20 @@
   </div>
 </div>
 
-    <div class="col-lg-5 ml-auto mt-5">
-      <h1>{{ bien.nom }}</h1>
-      <p><strong>Catégorie:</strong> {{ bien.categories }}</p>
-      <p><strong>Date:</strong> {{ bien.date_created }}</p>
-      <p><strong>Localisation:</strong> {{ bien.localisation }}</p>
-      <p><strong>Description:</strong></p>
-      <p>{{ bien.description|safe }}</p>
-      <p><strong>Prix:</strong> {{ bien.prix }} F</p>
-      <p><strong>État:</strong> {{ bien.etat }}</p>
+
+
+
+    <div class="col-lg-5 ml-auto mt-5 bg-dark text-white">
+<!--      <h1>{{ bien.nom }}</h1>-->
+        <legend class="border-bottom mb-4 text-center" style="color: white;">{{ bien.nom }}</legend>
+
+      <p>Catégorie: <strong class="fs-4  text-warning">{{ bien.categories }} </strong> </p>
+        <p>Date: <strong class="fs-4 text-warning">{{ bien.date_created }}</strong></p>
+        <p>Localisation: <strong class="fs-4 text-warning">{{ bien.localisation }}</strong></p>
+      <p>Description: </p>
+        <p><strong class="fs-5 text-warning">{{ bien.description|safe }}</strong></p>
+        <p>Prix: <strong class="fs-4 text-warning">{{ bien.prix }} F</strong></p>
+        <p>État: <strong class="fs-4 text-warning">{{ bien.etat }}</strong> </p>
 <!--
       &lt;!&ndash; Afficher la moyenne des avis &ndash;&gt;
 {% if moyenne_avis %}
@@ -163,7 +171,7 @@
 
         <!-- Affichage des avis paginés -->
 <div class="avis-container">
-    <h2 class="text-center text-decoration-underline">Avis sur le bien</h2>
+    <h2 class="text-center text-decoration-underline text-white">Avis sur le bien</h2>
     {% for avis in page_obj %}
     <div class="avis">
         <p><strong>Note:</strong>
@@ -184,8 +192,8 @@
     <div class="pagination justify-content-between">
         <div>
             {% if page_obj.has_previous %}
-                <a href="?page=1" class="pagination-link">&laquo; Première</a>
-                <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">Précédente</a>
+                <a  class="text-white" href="?page=1" class="pagination-link ">&laquo; Première</a>
+                <a  class="text-white" href="?page={{ page_obj.previous_page_number }}" class="pagination-link">Précédente</a>
             {% endif %}
         </div>
         <div class="text-right"> <!-- Utilisez la classe text-right pour aligner le contenu à droite -->
@@ -195,8 +203,8 @@
         </div>
         <div>
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Suivante</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">Dernière &raquo;</a>
+                <a  class="text-white" href="?page={{ page_obj.next_page_number }}" class="pagination-link">Suivante</a>
+                <a  class="text-white"  href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">Dernière &raquo;</a>
             {% endif %}
         </div>
     </div>
@@ -205,6 +213,10 @@
 </div>
 
     </div>
+
+
+
+
   </div>
 
 </div>

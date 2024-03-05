@@ -25,10 +25,19 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 
 # Enregistrez vos autres modèles
+# @admin.register(Biens)
+# class BiensAdmin(admin.ModelAdmin):
+#     list_display = ('nom', 'proprietaire', 'categories', 'localisation', 'prix', 'etat')
+#     search_fields = ('nom', 'localisation')
+
+from django.contrib import admin
+from .models import Biens
+
 @admin.register(Biens)
 class BiensAdmin(admin.ModelAdmin):
-    list_display = ('nom', 'proprietaire', 'categories', 'localisation', 'prix')
+    list_display = ('nom', 'proprietaire', 'categories', 'localisation', 'prix', 'etat')
     search_fields = ('nom', 'localisation')
+    list_filter = ('etat',)  # Ajoutez cette ligne pour ajouter le filtre par état
 
 @admin.register(Avis)
 class AvisAdmin(admin.ModelAdmin):

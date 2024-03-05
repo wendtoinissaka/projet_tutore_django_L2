@@ -84,6 +84,7 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 #
+#local
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
@@ -95,6 +96,7 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 #     }
 # }
 #
+#deployer sur render
 DATABASES = {
     "default": dj_database_url.parse(
         'postgres://projet_tutore_user:gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD@dpg-cnfdkfq1hbls738uqpgg-a.oregon-postgres.render.com/projet_tutore')
