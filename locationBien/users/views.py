@@ -137,6 +137,7 @@ class CustomPasswordResetView(PasswordResetView):
     email_template_name = 'users/registration/password_reset_email.html'
     success_url = reverse_lazy('password_reset_done')
 
+
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'users/registration/password_reset_done.html'
 
@@ -1340,7 +1341,7 @@ def execute_payment(request):
                                                                       'total_price': reservation.prix_total})
         html_message = render_to_string('users/emails/paiement_template.html',
                                         {'bien': bien, 'reservation': reservation,
-                                         'total_price': reservation.prix_total * Decimal(1.20)})
+                                         'total_price': round(reservation.prix_total * Decimal(1.20))})
         # 'total_price': reservation.prix_total})
         plain_message = strip_tags(html_message)  # Version texte brut du HTML
 
@@ -1388,7 +1389,7 @@ def execute_payment1(request, reservation_id):
         html_message = render_to_string('users/emails/paiement_template.html',
                                         {'bien': bien, 'reservation': reservation,
                                          # 'total_price': reservation.prix_total})
-                                         'total_price': reservation.prix_total * Decimal(1.20)})
+                                         'total_price': round(reservation.prix_total * Decimal(1.20))})
         plain_message = strip_tags(html_message)  # Version texte brut du HTML
 
         send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
