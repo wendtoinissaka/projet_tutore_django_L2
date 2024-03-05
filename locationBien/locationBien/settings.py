@@ -97,8 +97,7 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 #
 DATABASES = {
     "default": dj_database_url.parse(
-        'postgres://projet_tutore_user:gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD@dpg-cnfdkfq1hbls738uqpgg-a.oregon-postgres'
-        '.render.com/projet_tutore')
+        'postgres://projet_tutore_user:gUwY0cdlJgzoGgvTmwrO6aPKW2W9uNGD@dpg-cnfdkfq1hbls738uqpgg-a.oregon-postgres.render.com/projet_tutore')
     # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
 # DATABASE_URL = config('DATABASE_URL')
@@ -221,7 +220,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # ]
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'users/medias/users/')
 
-# configuration local
+## configuration local
 
 # STATIC_URL = "static/"
 # STATIC_ROOT = BASE_DIR / "static"
