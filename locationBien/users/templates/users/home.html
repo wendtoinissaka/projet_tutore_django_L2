@@ -34,46 +34,57 @@
         <div class="tab-class text-center">
             <div class="row g-4">
                 <div class="col-lg-4 text-start">
-                    <h1 class="text-dark">Nos différents biens</h1>
+                    <h1 class="text-dark">Les différents biens</h1>
 
                 </div>
 
                 <div class="col-lg-8 text-end">
+<!--                    <ul class="nav nav-pills d-inline-flex text-center mb-3">-->
+<!--    <li class="nav-item">-->
+<!--        <a href="?category=all" class="nav-link {% if category == 'all' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: #ffc107 ;">Tous les produits</a>-->
+<!--    </li>-->
+<!--    <li class="nav-item">-->
+<!--        <a href="?category=immobiliers" class="nav-link {% if category == 'immobilier' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: #ffc107 ;">Immobilier</a>-->
+<!--    </li>-->
+<!--    <li class="nav-item">-->
+<!--        <a href="?category=vehicules" class="nav-link {% if category == 'vehicule' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: #ffc107 ;">Vehicule</a>-->
+<!--    </li>-->
+<!--    <li class="nav-item">-->
+<!--        <a href="?category=equipements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Équipements</a>-->
+<!--    </li>-->
+<!--    <li class="nav-item">-->
+<!--        <a href="?category=autres" class="nav-link {% if category == 'autres' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Autres</a>-->
+<!--    </li>-->
+<!--    <li class="nav-item">-->
+<!--        <a href="?category=services" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Services</a>-->
+<!--    </li>-->
+<!--    <li class="nav-item">-->
+<!--        <a href="?category=vetements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Vêtements</a>-->
+<!--    </li>-->
 
 
-<ul class="nav nav-pills d-inline-flex text-center mb-3">
-    <li class="nav-item">
-        <a href="?category=all" class="nav-link {% if category == 'all' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: #ffc107 ;">Tous les produits</a>
-    </li>
-    <li class="nav-item">
-        <a href="?category=immobiliers" class="nav-link {% if category == 'immobilier' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: #ffc107 ;">Immobilier</a>
-    </li>
-    <li class="nav-item">
-        <a href="?category=vehicules" class="nav-link {% if category == 'vehicule' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: #ffc107 ;">Vehicule</a>
-    </li>
-    <li class="nav-item">
-        <a href="?category=equipements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Équipements</a>
-    </li>
-    <li class="nav-item">
-        <a href="?category=autres" class="nav-link {% if category == 'autres' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Autres</a>
-    </li>
-    <li class="nav-item">
-        <a href="?category=services" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Services</a>
-    </li>
-    <li class="nav-item">
-        <a href="?category=vetements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Vêtements</a>
-    </li>
-
-
-</ul>
-
-
-</div>
-
+<!--</ul>-->
+                </div>
 
             </div>
 <!-- templates/users/detail_bien.html -->
 <div class="row g-4">
+    <div class="col-lg-8 text-end">
+    <form action="#" method="get">
+        <label for="category" class="text-dark mx-4">Filtrer par catégorie :</label>
+        <select name="category" id="category" class="p-2 rounded border-2" style="background-color: #ffc107;" onchange="this.form.submit()">
+            <option value="all" {% if category == 'all' %}selected{% endif %}>Tous les produits</option>
+            <option value="immobiliers" {% if category == 'immobiliers' %}selected{% endif %}>Immobilier</option>
+            <option value="vehicules" {% if category == 'vehicules' %}selected{% endif %}>Véhicule</option>
+            <option value="equipements" {% if category == 'equipements' %}selected{% endif %}>Équipements</option>
+            <option value="autres" {% if category == 'autres' %}selected{% endif %}>Autres</option>
+            <option value="services" {% if category == 'services' %}selected{% endif %}>Services</option>
+            <option value="vetements" {% if category == 'vetements' %}selected{% endif %}>Vêtements</option>
+            <!-- Ajoutez d'autres options de catégorie selon vos besoins -->
+        </select>
+    </form>
+</div>
+
     <form action="#" method="get">
     <label for="etat" class="text-dark mx-4">Filtrer par état :</label>
     <select name="etat" id="etat" class="p-2  rounded border-2"  style="background-color: #ffc107 ;" onchange="this.form.submit()">

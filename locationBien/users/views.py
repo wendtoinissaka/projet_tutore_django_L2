@@ -782,7 +782,8 @@ def reservation_page(request):
     })
 
 
-from .models import Reservation, Biens
+
+
 
 
 @login_required
