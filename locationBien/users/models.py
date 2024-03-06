@@ -83,6 +83,7 @@ class Biens(models.Model):
         ('vehicules', 'Véhicules'),
         ('equipements', 'Équipements'),
         ('services', 'Services'),
+        ('vetements', 'vetements'),
         ('autres', 'Autres'),
     )
 
@@ -107,7 +108,7 @@ class Biens(models.Model):
     image_facultative_2 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
     image_facultative_3 = models.ImageField(upload_to='biens_photos/', blank=True, null=True)
     etat = models.CharField(max_length=20, choices=ETAT_CHOICES, default='disponible')
-    # date_modification = models.DateTimeField(auto_now=True)
+    date_modification = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         self.date_modification = timezone.now()
