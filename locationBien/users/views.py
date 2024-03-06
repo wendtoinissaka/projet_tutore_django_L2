@@ -141,9 +141,11 @@ class CustomPasswordResetView(PasswordResetView):
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'users/registration/password_reset_done.html'
 
+
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'users/registration/password_reset_confirm.html'
     success_url = reverse_lazy('password_reset_complete')
+
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'users/registration/password_reset_complete.html'
@@ -1209,6 +1211,57 @@ def stripe_confirm_payment(request):
 #
 #     return render(request, 'users/create_reservation.html', {'form': form, 'bien': bien})
 
+# @login_required
+# def do_reservation(request, bien_id):
+#     bien = get_object_or_404(Biens, pk=bien_id)
+#     if bien.etat != 'disponible':
+#         messages.error(request, "Le bien n'est pas disponible pour le moment.")
+#         return redirect('detail_bien', bien_id=bien.id)
+#
+#     if request.method == 'POST':
+#         form = ReservationForm(request.POST)
+#         if form.is_valid():
+#             reservation = form.save(commit=False)
+#             reservation.bienloue = bien
+#             reservation.locataire = request.user
+#             reservation.proprietaire = bien.proprietaire
+#
+#             debut_reservation = form.cleaned_data['debut_reservation']
+#             fin_reservation = form.cleaned_data['fin_reservation']
+#             nombre_jours = (fin_reservation - debut_reservation).days + 1
+#             reservation.nombre_jours = nombre_jours
+#
+#             reservation.prix_total = bien.prix * nombre_jours
+#             reservation.save()
+#
+#             reservation.status = 'en_attente'
+#             reservation.date_expiration_paiement = timezone.now() + timezone.timedelta(minutes=15)
+#             reservation.save()
+#             reservation.bienloue.etat = 'en_cours'
+#             reservation.bienloue.save()
+#
+#             update_bien_state.apply_async((bien.id,), countdown=nombre_jours * 24 * 60 * 60)
+#
+#             # Vérifier si la réservation a été enregistrée avec succès avant d'envoyer l'e-mail
+#             reservation_success = True  # Remplacez cela par votre propre logique de vérification
+#             if reservation_success:
+#                 subject = "Confirmation de réservation chez Capadata"
+#                 message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation,
+#                                                                               'total_price': reservation.prix_total})
+#                 html_message = render_to_string('users/emails/email_template.html',
+#                                                 {'bien': bien, 'reservation': reservation,
+#                                                  'total_price': reservation.prix_total})
+#                 plain_message = strip_tags(html_message)
+#
+#                 send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
+#
+#             return redirect('reservation_detail', reservation_id=reservation.id)
+#     else:
+#         form = ReservationForm()
+#
+#     return render(request, 'users/create_reservation.html', {'form': form, 'bien': bien})
+
+
 @login_required
 def do_reservation(request, bien_id):
     bien = get_object_or_404(Biens, pk=bien_id)
@@ -1240,9 +1293,10 @@ def do_reservation(request, bien_id):
 
             update_bien_state.apply_async((bien.id,), countdown=nombre_jours * 24 * 60 * 60)
 
-            # Vérifier si la réservation a été enregistrée avec succès avant d'envoyer l'e-mail
-            reservation_success = True  # Remplacez cela par votre propre logique de vérification
-            if reservation_success:
+            # Ajout de messages de débogage pour vérifier les informations d'envoi d'e-mail
+            print("Tentative d'envoi d'e-mail...")
+            print("Destination:", request.user.email)
+            try:
                 subject = "Confirmation de réservation chez Capadata"
                 message = render_to_string('users/emails/facture_email.txt', {'bien': bien, 'reservation': reservation,
                                                                               'total_price': reservation.prix_total})
@@ -1251,14 +1305,17 @@ def do_reservation(request, bien_id):
                                                  'total_price': reservation.prix_total})
                 plain_message = strip_tags(html_message)
 
-                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email], html_message=html_message)
+                send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [request.user.email],
+                          html_message=html_message)
+                print("E-mail envoyé avec succès.")
+            except Exception as e:
+                print("Erreur lors de l'envoi d'e-mail:", e)
 
             return redirect('reservation_detail', reservation_id=reservation.id)
     else:
         form = ReservationForm()
 
     return render(request, 'users/create_reservation.html', {'form': form, 'bien': bien})
-
 
 
 @login_required
