@@ -1291,7 +1291,7 @@ def do_reservation(request, bien_id):
             reservation.bienloue.etat = 'en_cours'
             reservation.bienloue.save()
 
-            update_bien_state.apply_async((bien.id,), countdown=nombre_jours * 24 * 60 * 60)
+            # update_bien_state.apply_async((bien.id,), countdown=nombre_jours * 24 * 60 * 60)
 
             # Ajout de messages de débogage pour vérifier les informations d'envoi d'e-mail
             print("Tentative d'envoi d'e-mail...")
