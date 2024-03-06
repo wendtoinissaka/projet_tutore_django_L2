@@ -879,7 +879,7 @@ def validate_reservation(request, reservation_id):
     reservation.bienloue.save()
 
     # Planifier la mise à jour de l'état du bien après la durée de la réservation
-    update_bien_state.apply_async((reservation.id,), countdown=reservation.nombre_jours * 24 * 60 * 60)
+    # update_bien_state.apply_async((reservation.id,), countdown=reservation.nombre_jours * 24 * 60 * 60)
 
     return redirect('reservation_detail', reservation_id=reservation.id)
 
