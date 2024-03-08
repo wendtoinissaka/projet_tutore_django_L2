@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 #
-#local
+# local
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
@@ -99,7 +99,8 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 # #deployer sur render
 DATABASES = {
     "default": dj_database_url.parse(
-        'postgres://projet_tutore_8ize_user:kmo6pnTcgf2W9mSx7oJ8n99drdcZQVmS@dpg-cnjsvg21hbls739q9n90-a.oregon-postgres.render.com/projet_tutore_8ize')
+        'postgres://projet_tutore_8ize_user:kmo6pnTcgf2W9mSx7oJ8n99drdcZQVmS@dpg-cnjsvg21hbls739q9n90-a.oregon'
+        '-postgres.render.com/projet_tutore_8ize')
     # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
 # DATABASE_URL = config('DATABASE_URL')
@@ -234,13 +235,21 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 # configuration deploiement render
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_ROOT = BASE_DIR / 'media'
-if not DEBUG:  # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
-    # and renames the files with unique names for each version to support long-term caching
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# if not DEBUG:  # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#     # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+#     # and renames the files with unique names for each version to support long-term caching
+#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Définir le chemin du répertoire de fichiers statiques
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Liste des dossiers où Django recherchera les fichiers statiques de votre application
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
