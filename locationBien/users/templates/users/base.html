@@ -24,43 +24,11 @@
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-<!--    <style>-->
-<!--        .navbar-nav .nav-link {-->
-<!--            font-size: 16px; /* Taille de police pour les liens de la navbar */-->
-<!--            padding: 0.5rem 1rem; /* Espacement des liens de la navbar */-->
-<!--        color:black;-->
 
-<!--        }-->
-<!--        @media (max-width: 992px) {-->
-<!--    .navbar-nav .nav-link {-->
-<!--        margin-top : 5px;-->
-<!--        width: 100%;-->
-<!--        background-color:black;-->
-
-<!--    }-->
-<!--}-->
-
-
-<!--        @media (max-width: 992px) {-->
-<!--            .navbar-nav .nav-link {-->
-<!--                font-size: 14px; /* Réduire la taille de police sur les petits écrans */-->
-<!--            }-->
-
-<!--            .navbar-toggler.custom-toggler {-->
-<!--                background-color: #fd5e14; /* Couleur du bouton du menu sur les petits écrans */-->
-<!--                border-color: #ffffff; /* Bordure du bouton du menu sur les petits écrans */-->
-<!--            }-->
-<!--        }-->
-<!--        /* Style pour ajouter une ligne en bas lors du survol */-->
-<!--.underline-on-hover:hover {-->
-<!--    border-bottom: 5px solid Yellow; /* Couleur et épaisseur de la ligne */-->
-<!--}-->
-
-<!--    </style>-->
 </head>
 
-<!--<body id="bg" style="background-image: url({% static 'users/images/4bg.png' %});">-->
-<body id="bg" style="" class="">
+<body id="bg" style="background-image: url({% static 'users/images/4bg.png' %});">
+<!--<body id="bg" style="" class="">-->
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5  fixed-top" id="main-navbar">
     <div class="container">
@@ -74,13 +42,14 @@
     <div class="navbar-nav">
         <a href="{% url 'home_without_filter' %}" class="nav-link {% if current_page == 'home' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover"> ACCUEIL </a>
          <!-- Utilisation d'un dropdown pour les options de réservation -->
-        <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle {% if current_page == 'reservation' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="nav-item dropdown" >
+            <a class="nav-link dropdown-toggle {% if current_page == 'reservation' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
                 RESERVATION
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li ><a class="dropdown-item " href="{% url 'reservation_page' %}">MES RESERVATIONS</a></li>
-                <li><a class="dropdown-item" href="{% url 'reservations_sur_mes_biens' %}">RESERVATION SUR MES BIENS</a></li>
+<!--                <li><a>ali</a></li>-->
+                <li ><a class="dropdown-item text-dark bg-white " href="{% url 'reservation_page' %}">MES RESERVATIONS</a></li>
+                <li><a class="dropdown-item text-dark bg-white" href="{% url 'reservations_sur_mes_biens' %}">RESERVATION SUR MES BIENS</a></li>
             </ul>
         </div>
         <a href="{% url 'create_product' %}" class="nav-link {% if current_page == 'create_product' %}active{% endif %} py-2 px-3 mx-1 text-white underline-on-hover">AJOUTER UN BIEN</a>
@@ -94,8 +63,8 @@
                 MES BIENS
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li ><a class="dropdown-item " href="{% url 'list_user_bien1' %}">VOIR MES BIENS</a></li>
-                <li><a class="dropdown-item" href="{% url 'list_user_bien' %}">MODIFIER MES BIENS</a></li>
+                <li ><a class="dropdown-item text-dark bg-white" href="{% url 'list_user_bien1' %}">VOIR MES BIENS</a></li>
+                <li><a class="dropdown-item text-dark bg-white" href="{% url 'list_user_bien' %}">MODIFIER MES BIENS</a></li>
             </ul>
         </div>
 
@@ -118,7 +87,8 @@
         <a href="{% url 'profile' %}"  class="text-decoration-none text-dark" > Profile </a>
 
     </div>
-        <button class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Se Deconnecter </button>
+        <button class="btn mx-1" style="color: dark; background-color: #ffc107 ;" type="submit" id="header-links"> Se Deconnecter </button>
+<!--        <button class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links"> Se Deconnecter </button>-->
     {% else %}
     <div class="form-group  bg-warning mx-2" id="signup-button">
         <a href="{% url 'register' %}"  class="text-decoration-none text-dark" > Creer un compte </a>

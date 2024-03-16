@@ -96,6 +96,8 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 #     }
 # }
 #
+
+
 # #deployer sur render
 DATABASES = {
     "default": dj_database_url.parse(
@@ -127,7 +129,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 
@@ -245,11 +248,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 #     # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
 #     # and renames the files with unique names for each version to support long-term caching
 #     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# Définir le chemin du répertoire de fichiers statiques
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Liste des dossiers où Django recherchera les fichiers statiques de votre application
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'

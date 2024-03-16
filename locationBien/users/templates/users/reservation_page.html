@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<h1 class="mt-5 text-center">Mes Réservations</h1>
+<h1 class="mt-5 text-center text-white">Mes Réservations</h1>
 
 <!-- Section pour les réservations en attente -->
 <h2 class="bg-warning py-2 px-2">Réservations en attente</h2>
 {% if reservations_en_attente %}
-    <table class="table">
+    <table class="table text-white bg-dark">
         <thead>
             <tr>
                 <th scope="col">Bien Loué</th>
@@ -45,7 +45,7 @@
         </tbody>
     </table>
 {% else %}
-    <p class="text-center">Aucune réservation en attente.</p>
+    <p class="text-center text-white">Aucune réservation en attente.</p>
 {% endif %}
 
 <!--&lt;!&ndash; Section pour les réservations triées &ndash;&gt;-->
@@ -65,7 +65,7 @@
 
 <!-- Section pour les réservations triées -->
 {% if reservations_triees_paginated %}
-    <table class="table">
+    <table class="table text-white bg-dark">
         <thead>
             <tr>
                 <th scope="col">Bien Loué</th>

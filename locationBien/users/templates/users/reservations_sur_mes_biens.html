@@ -3,12 +3,12 @@
 {% block content %}
 
 
-<h1 class="mt-5 text-center">Les Réservations sur mes biens</h1>
+<h1 class="mt-5 text-center text-white">Les Réservations sur mes biens</h1>
 
 <!-- Section pour les réservations en attente -->
 <h2 class="bg-warning py-2 px-2">Réservations en attente</h2>
 {% if reservations_en_attente %}
-    <table class="table">
+    <table class="table text-white bg-dark">
         <thead>
             <tr>
                 <th scope="col">Locataire</th>
@@ -67,7 +67,7 @@
     </select>
 </form>
 {% if reservations_triees_paginated %}
-    <table class="table">
+    <table class="table text-white bg-dark">
         <thead>
             <tr>
                 <th scope="col">Locataire</th>
