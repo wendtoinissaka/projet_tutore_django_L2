@@ -3,9 +3,12 @@ from django.contrib.auth.admin import UserAdmin
 from .models import Biens, Avis, Reservation, CustomUser
 
 # Créez une classe d'administration personnalisée pour votre modèle CustomUser
+
+
+@admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-    list_display = ('username', 'email', 'nom', 'type')  # Ajoutez les champs que vous souhaitez afficher dans l'interface d'administration
+    # model = CustomUser
+    list_display = ('username', 'email', 'nom', 'type', 'numero_tel')  # Ajoutez les champs que vous souhaitez afficher dans l'interface d'administration
     search_fields = ('username', 'email', 'nom', 'type')  # Ajoutez les champs que vous souhaitez inclure dans la recherche
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -21,7 +24,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
 # Enregistrez votre modèle CustomUser avec la classe d'administration personnalisée
-admin.site.register(CustomUser, CustomUserAdmin)
+# admin.site.register(CustomUser, CustomUserAdmin)
 
 # Enregistrez vos autres modèles
 # @admin.register(Biens)

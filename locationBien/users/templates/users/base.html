@@ -127,11 +127,12 @@
 
 <!--</main>-->
 
-        <main role="main" class="container-fluid mb-5">
-    <div class="container mt-5">
+        <main role="main" class="container-fluid mb-5 ">
+    <div class="container mt-5 ">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert text-danger alert-{{ message.tags }}">{{ message }}</div>
+                <strong class="alert text-warning text-center mt-3 alert-{{ message.tags }}">{{ message }}</strong>
+<!--                <div class="alert text-warning  mt-3 alert-{{ message.tags }}">{{ message }}</div>-->
             {% endfor %}
         {% endif %}
     </div>

@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     # 'crispy_bootstrap5',
     'crispy_bootstrap4',
     'users.apps.UsersConfig',
-    'gestionBiens',
     'paypal.standard.ipn',
     'widget_tweaks',
     'bootstrap4',
@@ -239,15 +238,19 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # configuration deploiement render
 
 # STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_URL = '/media/'
+# # STATIC_ROOT = BASE_DIR / 'staticfiles'
+#
+# MEDIA_ROOT = BASE_DIR / 'media'
 # if not DEBUG:  # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
 #     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #     # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
 #     # and renames the files with unique names for each version to support long-term caching
 #     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# settings.py
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

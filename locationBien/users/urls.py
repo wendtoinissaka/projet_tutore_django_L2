@@ -94,4 +94,3 @@ path('password_reset/', views.CustomPasswordResetView.as_view(), name='password_
 ]
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

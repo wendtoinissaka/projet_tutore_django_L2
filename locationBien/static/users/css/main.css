@@ -4,6 +4,15 @@
   background-attachment: fixed;
 }
 
+title {
+  background-image: url({% static "users/images/location-svgrepo-com.svg" %});
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-left: 20px; /* Ajuster le padding en fonction de l'icône */
+}
+
+
+
 /* base nav bar */
 /* Navbar */
 .navbar-nav .nav-link {
@@ -30,6 +39,7 @@
         border-color: #ffffff;
     }
 }
+
 
 /* Underline on hover */
 .underline-on-hover:hover {
