@@ -91,7 +91,7 @@
     <div class="row g-4 mx-2">
         <form action="#" method="get">
     <label for="etat" class="text-white mx-4">Filtrer par état :</label>
-    <select name="etat" id="etat" class="p-2  rounded border-2" style="background-color: #ffc107 ;"  onchange="this.form.submit()">
+    <select name="etat" id="etat" class="p-2  rounded border-2" style="background-color: #007bff; color:white ;"  onchange="this.form.submit()">
         <option value="all" {% if etat == 'all' %}selected{% endif %}>Tous les états</option>
         <option value="disponible" {% if etat == 'disponible' %}selected{% endif %}>Disponible</option>
         <option value="deja_reserve" {% if etat == 'deja_reserve' %}selected{% endif %}>Déjà réservé</option>
@@ -143,7 +143,7 @@
                     <div class="form-group  bg-warning" id="signup-button">
                         <a href="{% url 'detail_bien'  bien.id %}"  class="text-decoration-none text-dark" >DETAILS</a>
                      </div>
-                    <a href="{% url 'edit_bien' bien.id %}" id="header-links"  class="mx-1 text-decoration-none text-dark" style="color: white; background-color: #fd5e14;">MODIFIER</a>
+                    <a href="{% url 'edit_bien' bien.id %}" id="header-links"  class="mx-1 text-decoration-none text-white" style="color:white; background-color: #007bff;">MODIFIER</a>
 
                 </div>
             </div>

@@ -72,7 +72,7 @@
     <div class="col-lg-8 text-end">
     <form action="#" method="get">
         <label for="category" class="text-white mx-4">Filtrer par catégorie :</label>
-        <select name="category" id="category" class="p-2 rounded border-2" style="background-color: #ffc107;" onchange="this.form.submit()">
+        <select name="category" id="category" class="p-2 rounded border-2" style="background-color: #007bff; color:white" onchange="this.form.submit()">
             <option value="all" {% if category == 'all' %}selected{% endif %}>Tous les produits</option>
             <option value="immobiliers" {% if category == 'immobiliers' %}selected{% endif %}>Immobilier</option>
             <option value="vehicules" {% if category == 'vehicules' %}selected{% endif %}>Véhicule</option>
@@ -87,7 +87,7 @@
 
     <form action="#" method="get">
     <label for="etat" class="text-white mx-4">Filtrer par état :</label>
-    <select name="etat" id="etat" class="p-2  rounded border-2"  style="background-color: #ffc107 ;" onchange="this.form.submit()">
+    <select name="etat" id="etat" class="p-2  rounded border-2"  style="background-color: #007bff; color:white ;" onchange="this.form.submit()">
         <option value="all" {% if etat == 'all' %}selected{% endif %}>Tous les états</option>
         <option value="disponible" {% if etat == 'disponible' %}selected{% endif %}>Disponible</option>
         <option value="deja_reserve" {% if etat == 'deja_reserve' %}selected{% endif %}>Déjà réservé</option>
@@ -109,13 +109,13 @@
                 <a href="{% url 'detail_bien' bien.id %}"><img src="{% static 'users/images/bg44.jpg' %}" class="img-fluid w-100 rounded-top bien-image" alt="Image par défaut" height="200px" style="cursor: pointer;"></a>
                 {% endif %}
             </div>
-                    <div class="position-absolute" style="top: 10px; left: 10px;">
-                <div class="text-dark bg-warning px-2 py-1 rounded">{{ bien.categories }}</div>
-            </div>
-            <div class="position-absolute" style="top: 10px; left: 150px;">
+<!--                    <div class="position-absolute" style="top: 10px; left: 10px;">-->
+<!--                <div class="text-white bg-primary px-2 py-1 rounded">{{ bien.categories }}</div>-->
+<!--            </div>-->
+            <div class="position-absolute" style="top: 10px; left: 100px;">
                 <!-- Etat des biens (Disponible / Non Disponible)-->
 <!--                <div class="text-white bg-warning px-2 py-1 rounded">{{ bien.etat }}</div>-->
-                <div class=" px-2 py-1 rounded {% if bien.etat == 'deja_reserve' %} {% elif bien.etat == 'en_cours' %}bg-dark text-white{% elif bien.etat == 'disponible' %}bg-warning{% endif %}" style="{% if bien.etat == 'deja_reserve' %}background-color: black;color:white;{% endif %}">
+                <div class=" px-2 py-1 rounded {% if bien.etat == 'deja_reserve' %} {% elif bien.etat == 'en_cours' %}bg-dark text-white{% elif bien.etat == 'disponible' %}bg-primary text-white{% endif %}" style="{% if bien.etat == 'deja_reserve' %}background-color: #ffc107;color:black;{% endif %}">
                     {{ bien.etat }}
                 </div>
 
@@ -135,7 +135,7 @@
         {% if time_until_available %}
             <p class="text-warning">Temps restant avant disponibilité : {{ time_until_available }}</p>
         {% else %}
-            <p style="color: black; background-color: #ffc107;">Le bien sera disponible bientôt!</p>
+            <p style="color: white; background-color: #007bff;">Le bien sera disponible bientôt!</p>
         {% endif %}
     {% endwith %}
 {% endif %}
@@ -143,7 +143,7 @@
 
         <div class="p-4 border-top-0 rounded-bottom d-flex flex-column ">
 
-            <h4 class="text-warning text-center"><a href="{% url 'detail_bien' bien.id %}" class="text-decoration-none text-reset">{{ bien.nom|truncatechars:20 }}</a></h4>
+            <h4 class="text-primary text-center"><a href="{% url 'detail_bien' bien.id %}" class="text-decoration-none text-reset">{{ bien.nom|truncatechars:20 }}</a></h4>
             <p class="text-dark mb-0">{{ bien.description|truncatechars:50 }}</p>
 
             <!-- Affichage de la moyenne des avis -->
@@ -168,9 +168,9 @@
 <!--                    <div class="form-group  bg-warning" id="signup-button">-->
 <!--                        <a href="{% url 'do_reservation' bien.id %}"   class="text-decoration-none text-dark" >RESERVER</a>-->
 <!--                     </div>-->
-                    <div class="form-group bg-warning" id="signup-button">
+                    <div class="form-group bg-primary" id="signup-button">
     {% if bien.etat == 'disponible' %}
-        <a href="{% url 'do_reservation' bien.id %}" class="text-decoration-none text-dark">RESERVER</a>
+        <a href="{% url 'do_reservation' bien.id %}" class="text-decoration-none text-white">RESERVER</a>
     {% else %}
         <span class="text-decoration-none text-dark disabled">RESERVER</span>
     {% endif %}

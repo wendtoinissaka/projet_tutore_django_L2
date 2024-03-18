@@ -53,6 +53,8 @@
 
 
 
+
+
 /*
 <script>
   // Fonction pour écrire et effacer le texte
