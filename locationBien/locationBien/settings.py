@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     # own
     'crispy_forms',
     # 'crispy_bootstrap5',
@@ -47,7 +48,65 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'bootstrap4',
     'anymail',
+    'django_recaptcha',
+    'social_django',
+    # 'django.contrib.sites'
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+
 ]
+
+SITE_ID = 1
+# EMAIL_VERIFICATION = 'optional'
+
+
+# Provider specific settings
+# SOCIALACCOUNT_PROVIDERS = {
+#     'github': {
+#         # For each OAuth based provider, either add a ''SocialApp''
+#         # (''socialaccount'' app) containing the required client
+#         # credentials, or list them here:
+#         'APP': {
+#             'client_id': '<your_client_id>',
+#             'secret': '<your_secret_key>',
+#             'key': ''
+#         }
+#     }
+# }
+#
+
+# AUTHENTICATION_BACKENDS = [
+#
+#     'django.contrib.auth.backends.ModelBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend',
+#     'socialcore.backends.google.GoogleOAuth2',
+# ]
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.github.GithubOAuth2', # github <----
+    'social_core.backends.twitter.TwitterOAuth', # twitter <----
+    'social_core.backends.facebook.FacebookOAuth2', # facebook <----
+    'social_core.backends.google.GoogleOAuth2',  # google <----
+    'django.contrib.auth.backends.ModelBackend',
+]
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'METHOD': 'oauth2',
+        'CLIENT_ID': config('GOOGLE_ID_CLIENT'),
+        'SECRET': config('GOOGLE_ID_SECRET'),
+        'VERIFIED_EMAIL': True,
+        'AUTH_PARAMS': {'prompt': 'select_account'}
+    }
+}
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,6 +117,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',  # <--
 ]
 
 ROOT_URLCONF = 'locationBien.urls'
@@ -73,6 +134,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # <--
+                'social_django.context_processors.login_redirect', # <--
             ],
         },
     },
@@ -156,10 +219,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-LOGIN_REDIRECT_URL = 'home_without_filter'
 # LOGOUT_REDIRECT_URL = 'logout'
 #
+
+LOGIN_REDIRECT_URL = 'home_without_filter'
 LOGIN_URL = 'login'
+
+
+
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -193,11 +260,9 @@ EMAIL_USE_TLS = True
 # PAYPAL_CLIENT_SECRET = "EMFGnxVn2GbRGADQ-XNaplbt1HITpdb6TERzuJrDFasjH8U0TMd2lgo9jhX929WT2QB2PZz6ua4cLijw"
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
-
 PAYPAL_MODE = "sandbox"  # "sandbox" or "live"
 # URL de retour après le paiement
 PAYPAL_RETURN_URL = "execute_payment"
-
 # URL d'annulation du paiement
 PAYPAL_CANCEL_URL = "cancel_payment"
 # settings.py
@@ -208,14 +273,41 @@ PAYPAL_CANCEL_URL = "cancel_payment"
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 
+# recaptcha
+RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
+
+#
+# SOCIAL_AUTH_GITHUB_KEY = 'f9ad627ad269b1f15c640afb7386bc092330bd41'
+# # SOCIAL_AUTH_GITHUB_KEY = 'b3a7b2d8409ac577686f0009babeddb4a000b3fd'
+# # SOCIAL_AUTH_GITHUB_SECRET = 'SHA256:9+eUfu2F3bn9SFXzFP5JOqb4wGOEaAbgyWvmnOlON3I='
+# SOCIAL_AUTH_GITHUB_SECRET = 'XcGj112zWVTXXh7kFSvnK8WVQ77qwV5BNExxizsiahU='
+# # Optional settings for better user experience
+# SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']  # Request user email
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'  # Redirect to homepage after login
+
+# authentification google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='598508082634-u1s334a6nuhu0v50jdko1n479vvrtr3k.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET='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'
+
+# authentification github
+SOCIAL_AUTH_GITHUB_KEY='Iv1.9a50dc1be0f9e85d'
+SOCIAL_AUTH_GITHUB_SECRET='0e243dde97367d8bf0505f0a351a86e208e750c7'
+
+#
+# SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
+#
+# SOCIALACCOUNT_LOGIN_REDIRECT_URL = '/profile/'
+
+
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_BROKER_URL = 'amqp://localhost'
+# CELERY_BROKER_URL = 'amqp://localhost'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 # confirmation avant creation de compte
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 # MEDIA_URL = 'media/'
 # # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -250,8 +342,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # settings.py
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
-
+STATIC_URL = 'static/'
+STATICFILES_DIR = [BASE_DIR, 'static']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

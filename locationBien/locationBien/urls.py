@@ -23,6 +23,8 @@ urlpatterns = [
     path('administrateur/', admin.site.urls),
     path('', include('users.urls')),
     path('', include('paypal.standard.ipn.urls')),
+    # path('accounts/', include('allauth.urls')),
+    path('oauth/', include('social_django.urls', namespace='social')),  # Corrected typo
 
 ]
 # if settings.DEBUG:

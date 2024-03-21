@@ -99,13 +99,7 @@
 
     </div>
 
-
-<!--    <button class="btn_login bg-warning text-dark " style="">-->
-<!--        <a href="{% url 'login' %}"  class="text-decoration-none text-dark" > Se Connecter </a>-->
-<!--        </button>-->
-<!--        <a href="{% url 'register' %}" class="btn" style="color: black; background-color: yellow;"> Creer un compte </a>-->
-<!--        <a href="{% url 'login' %}" class="btn" style="color: black; background-color: yellow; margin-left: 10px;"> Se Connecter </a>-->
-    {% endif %}
+{% endif %}
 </form>
 
         </div>
@@ -115,23 +109,13 @@
 <div style="margin-top: calc(3.5rem + 25px);"> <!-- 3.5rem est la hauteur estimée de votre navbar, 16px est un exemple de marge que vous pouvez ajuster -->
     <!-- Contenu à décaler -->
     <div >
-<!--    <div class="container mt-5">-->
-<!--{% if messages %}-->
-<!--    {% for message in messages %}-->
-<!--        <div class="alert text-danger alert-{{message.tags}}">{{message}}</div>-->
-<!--    {% endfor %}-->
-<!--{% endif %}-->
-<!--</div>-->
 
-<!--<main role="main" class="container-fluid mb-5">-->
-
-<!--</main>-->
 
         <main role="main" class="container-fluid mb-5 ">
-    <div class="container mt-5 ">
+    <div class="container mt-5  ">
         {% if messages %}
             {% for message in messages %}
-                <strong class="alert text-warning text-center mt-3 alert-{{ message.tags }}">{{ message }}</strong>
+                <strong class="alert text-warning bg-dark text-center mt-3 alert-{{ message.tags }}">{{ message }}</strong>
 <!--                <div class="alert text-warning  mt-3 alert-{{ message.tags }}">{{ message }}</div>-->
             {% endfor %}
         {% endif %}

@@ -14,8 +14,8 @@ class CustomUser(AbstractUser):
     )
     is_active = models.BooleanField(default=False)
     # is_admin = models.BooleanField(default=True)
-    nom = models.CharField(max_length=100)
-    numero_tel = models.IntegerField()
+    nom = models.CharField(max_length=35)
+    numero_tel = models.IntegerField(blank=True, null=True)
     email = models.EmailField(unique=True)  # Ajout du champ emails
     type = models.CharField(max_length=20, choices=TYPES_USERS, default='locataire')  # Par défaut, type = 'locataire'
     # Ajout des related_names pour résoudre les conflits
@@ -42,8 +42,6 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-
-
 
 
 

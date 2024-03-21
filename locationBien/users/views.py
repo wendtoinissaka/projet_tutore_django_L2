@@ -45,6 +45,11 @@ from io import BytesIO
 # stripe intégration
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from allauth.socialaccount.models import SocialAccount
+from .forms import LoginForm
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -55,11 +60,49 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect(
-                    'profile')  # Rediriger vers la page de profil ou toute autre page après la connexion réussie
+                return redirect('profile')  # Rediriger vers la page de profil après une connexion réussie
     else:
         form = LoginForm()
+
+    # Si l'utilisateur est déjà connecté via un fournisseur social, le rediriger vers la page de profil
+    if request.user.is_authenticated and SocialAccount.objects.filter(user=request.user).exists():
+        return redirect('profile')
+
     return render(request, 'users/login.html', {'form': form})
+
+
+def register(request):
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            # user.is_active = False  # Compte inactif jusqu'à confirmation par e-mail
+            user.save()
+
+            # Envoi de l'e-mail de confirmation
+            current_site = get_current_site(request)
+            subject = 'Activation de compte chez CAPADATA'
+            message = render_to_string('users/emails/activation_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
+
+            messages.success(request,
+                             f'Bienvenue! {user.username}, Verifiez votre email pour valider votre compte svp!')
+            return redirect('registration_confirmation')
+            # return redirect(reverse('registration_confirmation'))
+    else:
+        form = UserRegisterForm()
+
+    return render(request, 'users/register.html', {'form': form})
+
+def social_login_complete(request, backend, *args, **kwargs):
+    # ...
+    return redirect('profile')  # Redirection vers la page de profil après la connexion
+
 
 
 def request_password_reset(request):
@@ -380,33 +423,6 @@ def detail_bien(request, bien_id):
                                                       'related_biens': related_biens, 'page_obj': page_obj})
 
 
-def register(request):
-    if request.method == "POST":
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False  # Compte inactif jusqu'à confirmation par e-mail
-            user.save()
-
-            # Envoi de l'e-mail de confirmation
-            current_site = get_current_site(request)
-            subject = 'Activation de compte chez CAPADATA'
-            message = render_to_string('users/emails/activation_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': default_token_generator.make_token(user),
-            })
-            send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
-
-            messages.success(request,
-                             f'Bienvenue! {user.username}, Verifiez votre email pour valider votre compte svp!')
-            return redirect('registration_confirmation')
-            # return redirect(reverse('registration_confirmation'))
-    else:
-        form = UserRegisterForm()
-
-    return render(request, 'users/register.html', {'form': form})
 
 
 # def activate(request, uidb64, token):

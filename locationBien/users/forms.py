@@ -5,7 +5,7 @@ from .models import Biens, Avis
 from .models import CustomUser
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Reservation
-
+from django_recaptcha.fields import ReCaptchaField
 
 #
 # class UserRegisterForm(UserCreationForm):
@@ -24,17 +24,20 @@ class LoginForm(AuthenticationForm):
 
 
 class UserRegisterForm(UserCreationForm):
-    nom = forms.CharField(max_length=100)
-    numero_tel = forms.CharField(max_length=15)
+    captcha = ReCaptchaField()
+    # nom = forms.CharField(max_length=100)
+    # numero_tel = forms.CharField(max_length=15)
     email = forms.EmailField()
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'nom', 'numero_tel', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2', 'captcha']
+        # fields = ['username', 'nom', 'numero_tel', 'email', 'password1', 'password2', 'captcha']
 
 
 class RequestNewTokenForm(forms.Form):
     email = forms.EmailField(label='Adresse e-mail')
+
 
 class CustomPasswordResetForm(PasswordResetForm):
     def clean_email(self):

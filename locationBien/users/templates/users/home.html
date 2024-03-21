@@ -39,38 +39,12 @@
                 </div>
 
                 <div class="col-lg-8 text-end">
-<!--                    <ul class="nav nav-pills d-inline-flex text-center mb-3">-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=all" class="nav-link {% if category == 'all' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: #ffc107 ;">Tous les produits</a>-->
-<!--    </li>-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=immobiliers" class="nav-link {% if category == 'immobilier' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: #ffc107 ;">Immobilier</a>-->
-<!--    </li>-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=vehicules" class="nav-link {% if category == 'vehicule' %}active{% endif %} d-flex m-2 py-1 rounded-pill text-dark" style="background-color: #ffc107 ;">Vehicule</a>-->
-<!--    </li>-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=equipements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Équipements</a>-->
-<!--    </li>-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=autres" class="nav-link {% if category == 'autres' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Autres</a>-->
-<!--    </li>-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=services" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Services</a>-->
-<!--    </li>-->
-<!--    <li class="nav-item">-->
-<!--        <a href="?category=vetements" class="nav-link {% if category == 'equipements' %}active{% endif %} d-flex m-2 py-1  rounded-pill text-dark" style="background-color: #ffc107 ;">Vêtements</a>-->
-<!--    </li>-->
-
-
-<!--</ul>-->
                 </div>
-
             </div>
 <!-- templates/users/detail_bien.html -->
 <div class="row g-4">
     <div class="col-lg-8 text-end">
-    <form action="#" method="get">
+    <form action="#" method="get" >
         <label for="category" class="text-white mx-4">Filtrer par catégorie :</label>
         <select name="category" id="category" class="p-2 rounded border-2" style="background-color: #007bff; color:white" onchange="this.form.submit()">
             <option value="all" {% if category == 'all' %}selected{% endif %}>Tous les produits</option>
@@ -83,8 +57,7 @@
             <!-- Ajoutez d'autres options de catégorie selon vos besoins -->
         </select>
     </form>
-</div>
-
+    </div>
     <form action="#" method="get">
     <label for="etat" class="text-white mx-4">Filtrer par état :</label>
     <select name="etat" id="etat" class="p-2  rounded border-2"  style="background-color: #007bff; color:white ;" onchange="this.form.submit()">
@@ -120,22 +93,13 @@
                 </div>
 
             </div>
-<!-- {% if bien.etat == 'deja_reserve' %}-->
-<!--        {% with time_until_available=bien.get_time_until_available %}-->
-<!--            {% if time_until_available %}-->
-<!--        <p class="text-warning">Temps restant avant disponibilité : {{ time_until_available }}</p>-->
-<!--        {% else %}-->
-<!--        <p  style="color: white; background-color: #fd5e14;" >Le bien sera disponible bientôt!</p>-->
-<!--            {% endif %}-->
-<!--        {% endwith %}-->
-<!--    {% endif %}-->
 
         {% if bien.etat == 'deja_reserve' %}
     {% with time_until_available=bien.get_time_until_available %}
         {% if time_until_available %}
             <p class="text-warning">Temps restant avant disponibilité : {{ time_until_available }}</p>
         {% else %}
-            <p style="color: white; background-color: #007bff;">Le bien sera disponible bientôt!</p>
+            <p style="color: white; background-color: #007bff;">Le bien sera  bientôt disponible!</p>
         {% endif %}
     {% endwith %}
 {% endif %}
@@ -186,7 +150,7 @@
     {% endfor %}
     {% else %}
         <div class="mt-5">
-        <p class="text-danger fs-5">Aucun bien disponible pour le moment!</p>
+        <p class="text-white bg-primary fs-4  fs-5">Aucun bien disponible pour le moment!</p>
 
         </div>
     {% endif %}

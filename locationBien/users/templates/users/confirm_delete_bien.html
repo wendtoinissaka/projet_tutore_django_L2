@@ -10,16 +10,19 @@
 <div class="content-container_login">
   <div class="login-form_login" >
 
-  <h1 class="text-danger">{% trans "Supprimer le bien" %}</h1>
+  <h1 class="text-white">{% trans "Supprimer le bien" %}</h1>
   <p class="text-warning">{% blocktrans %}Êtes-vous sûr de vouloir supprimer ce bien ? Cette opération est irréversible.{% endblocktrans %}</p>
   <form method="post">
     {% csrf_token %}
-    <div class="form-group mt-2" id="signup-button">
-<!--    <button class="btn_login bg-warning text-white" type="submit">{% trans "Oui, supprimer ce bien" %}</button>-->
-        <button class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links">{% trans "Oui, supprimer ce bien" %}</button>
+<!--    <div class="form-group mt-2" id="signup-button">-->
+<!--&lt;!&ndash;    <button class="btn_login bg-warning text-white" type="submit">{% trans "Oui, supprimer ce bien" %}</button>&ndash;&gt;-->
+<!--        <button class="btn mx-1" style="color: white; background-color: #fd5e14;" type="submit" id="header-links">{% trans "Oui, supprimer ce bien" %}</button>-->
 
-<!--      <button class="btn_login bg-"><a href="{% url 'updateProfile' %} " class="text-white" style="text-decoration:none" >MODIFIER</a></button>-->
-    </div>
+<!--&lt;!&ndash;      <button class="btn_login bg-"><a href="{% url 'updateProfile' %} " class="text-white" style="text-decoration:none" >MODIFIER</a></button>&ndash;&gt;-->
+<!--    </div>-->
+      <div class="form-group mt-2 bg-warning" id="signup-button">
+                <button type="submit" class="btn_login bg-warning text-dark" >{% trans "Oui, supprimer ce bien" %}</button>
+            </div>
   </form>
 
   </div>

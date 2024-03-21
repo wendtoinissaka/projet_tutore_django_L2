@@ -7,10 +7,15 @@
 
     <div class="content-container_login mt-5">
         <div class="login-form_login" >
+            <legend class="border-bottom mb-4" style="color: white;">Inscription</legend>
+            <div class="container mt-4 bg-white p-3">
+   <a class="btn btn-warning" href="{% url 'social:begin' 'github' %}"><i class="fab fa-github"></i>&nbsp;Login</a>
+      <a class="btn btn-warning" href="{% url 'social:begin' 'google-oauth2' %}"> <i class="fab fa-google"></i>&nbsp;Login</a>
+</div>
+            <div class="text-white">Ou </div>
             <form action="" method="POST">
                 {% csrf_token %}
                 <fieldset class="form-group">
-                    <legend class="border-bottom mb-4" style="color: white;">Inscription</legend>
                     {{ form|crispy }}
                 </fieldset>
                 <div class="form-group mt-2 bg-warning" id="signup-button">

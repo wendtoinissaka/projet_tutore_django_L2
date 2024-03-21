@@ -17,6 +17,12 @@ login page
                 <div class="form-group mt-2 bg-warning" id="signup-button">
                     <button class="btn_login bg-warning text-dark">Se connecter</button>
                 </div>
+<!--                <div class="text-white">ou</div>-->
+            <div class="container mt-4  p-3">
+   <a class="btn btn-warning" href="{% url 'social:begin' 'github' %}"><i class="fab fa-github"></i>&nbsp;Github</a>
+      <a class="btn btn-warning" href="{% url 'social:begin' 'google-oauth2' %}"> <i class="fab fa-google"></i>&nbsp;Google</a>
+    </div>
+
                 <div class="form-group">
                     <small class="text-muted ml-3">Mot de passe oublié? <a class="text-warning" href="{% url 'password_reset' %}"> Réinitialiser le mot de passe</a></small>
                 </div>

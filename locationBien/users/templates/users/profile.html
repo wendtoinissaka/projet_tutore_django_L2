@@ -36,7 +36,11 @@
                 <p class="text-white mb-0">Numéro:</p>
             </div>
             <div class="col-auto">
+                {% if user.numero_tel %}
                 <strong class="text-warning mx-5">{{ user.numero_tel }}</strong>
+                {% else %}
+                <strong class="text-warning mx-5"> </strong>
+                {% endif %}
             </div>
         </div>
 
