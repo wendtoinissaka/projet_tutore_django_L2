@@ -63,27 +63,8 @@ SITE_ID = 1
 # EMAIL_VERIFICATION = 'optional'
 
 
-# Provider specific settings
-# SOCIALACCOUNT_PROVIDERS = {
-#     'github': {
-#         # For each OAuth based provider, either add a ''SocialApp''
-#         # (''socialaccount'' app) containing the required client
-#         # credentials, or list them here:
-#         'APP': {
-#             'client_id': '<your_client_id>',
-#             'secret': '<your_secret_key>',
-#             'key': ''
-#         }
-#     }
-# }
-#
 
-# AUTHENTICATION_BACKENDS = [
-#
-#     'django.contrib.auth.backends.ModelBackend',
-#     'allauth.account.auth_backends.AuthenticationBackend',
-#     'socialcore.backends.google.GoogleOAuth2',
-# ]
+
 
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.github.GithubOAuth2', # github <----
@@ -147,26 +128,26 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 #
 # local
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': 5432,
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         'NAME': config('DB_NAME'),
+#         'USER': config('DB_USER'),
+#         'PASSWORD': config('DB_PASSWORD'),
+#         'HOST': config('DB_HOST'),
+#         'PORT': 5432,
+#     }
+# }
 #
 
 
 # #deployer sur render
-# DATABASES = {
-#     "default": dj_database_url.parse(
-#         'postgres://projet_tutore_8ize_user:kmo6pnTcgf2W9mSx7oJ8n99drdcZQVmS@dpg-cnjsvg21hbls739q9n90-a.oregon'
-#         '-postgres.render.com/projet_tutore_8ize')
-#     # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
-# }
+DATABASES = {
+    "default": dj_database_url.parse(
+        'postgres://projet_tutore_8ize_user:kmo6pnTcgf2W9mSx7oJ8n99drdcZQVmS@dpg-cnjsvg21hbls739q9n90-a.oregon'
+        '-postgres.render.com/projet_tutore_8ize')
+    # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
 # DATABASE_URL = config('DATABASE_URL')
 
 
@@ -234,30 +215,8 @@ EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', 587)
 EMAIL_USE_TLS = True
 
-# PAYPAL_CONFIG = {
-#     "mode": "sandbox",
-#     "client_id": "sb-a5rrc29637788@personal.example.com",
-#     "client_secret": "sb-wg7h329637786@business.example.com",
-# }
-#
-# PAYPAL_MODE = "sandbox"
-# PAYPAL_REDIRECT_URI = "http://localhost:8000/execute_payment/"
-# PAYPAL_CANNEL_URI = "http://localhost:8000/cancel_payment/"
-# # Add this line after your other settings :
-# NOTIFY_URL = "http://localhost:8000/ipn/"
-# # Add this line after your other settings :
-# EXPERIENCE_PROFILE_ID = ""
-#
-# if PAYPAL_MODE == "sandbox":
-#     PAYPAL_CLIENT_ID = "sb-a5rrc29637788@personal.example.com"
-#     PAYPAL_SECRET = "sb-wg7h329637786@business.example.com"
-# else:
-#     PAYPAL_CLIENT_ID = "sb-a5rrc29637788@personal.example.com"
-#     PAYPAL_SECRET = "sb-wg7h329637786@business.example.com"
-#
 
-# PAYPAL_CLIENT_ID = "AcUb_UCmYGIN5ivl6Y9IArqmdprh8bB2dFnPDo1OXI9-LxTgRJpA9gwNxSFg39H9MT4kjO3QooMHqy4l"
-# PAYPAL_CLIENT_SECRET = "EMFGnxVn2GbRGADQ-XNaplbt1HITpdb6TERzuJrDFasjH8U0TMd2lgo9jhX929WT2QB2PZz6ua4cLijw"
+
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
 PAYPAL_MODE = "sandbox"  # "sandbox" or "live"
@@ -277,11 +236,7 @@ STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
 
-#
-# SOCIAL_AUTH_GITHUB_KEY = 'f9ad627ad269b1f15c640afb7386bc092330bd41'
-# # SOCIAL_AUTH_GITHUB_KEY = 'b3a7b2d8409ac577686f0009babeddb4a000b3fd'
-# # SOCIAL_AUTH_GITHUB_SECRET = 'SHA256:9+eUfu2F3bn9SFXzFP5JOqb4wGOEaAbgyWvmnOlON3I='
-# SOCIAL_AUTH_GITHUB_SECRET = 'XcGj112zWVTXXh7kFSvnK8WVQ77qwV5BNExxizsiahU='
+
 # # Optional settings for better user experience
 # SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']  # Request user email
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'  # Redirect to homepage after login
