@@ -147,26 +147,26 @@ WSGI_APPLICATION = 'locationBien.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 #
 # local
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         'NAME': config('DB_NAME'),
-#         'USER': config('DB_USER'),
-#         'PASSWORD': config('DB_PASSWORD'),
-#         'HOST': config('DB_HOST'),
-#         'PORT': 5432,
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': 5432,
+    }
+}
 #
 
 
 # #deployer sur render
-DATABASES = {
-    "default": dj_database_url.parse(
-        'postgres://projet_tutore_8ize_user:kmo6pnTcgf2W9mSx7oJ8n99drdcZQVmS@dpg-cnjsvg21hbls739q9n90-a.oregon'
-        '-postgres.render.com/projet_tutore_8ize')
-    # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
-}
+# DATABASES = {
+#     "default": dj_database_url.parse(
+#         'postgres://projet_tutore_8ize_user:kmo6pnTcgf2W9mSx7oJ8n99drdcZQVmS@dpg-cnjsvg21hbls739q9n90-a.oregon'
+#         '-postgres.render.com/projet_tutore_8ize')
+#     # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+# }
 # DATABASE_URL = config('DATABASE_URL')
 
 
