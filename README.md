@@ -7,7 +7,7 @@ des utilisateurs._
 
 
 #### DERA SAOUDATOU
-#### OUEDRAOGO W.ISSAKA
+#### OUEDRAOGO WENDTOIN ISSAKA
 
 
 ![# projet_tutore_django_L2](locationBien/biens_photos/2_location-de-bien.png)
